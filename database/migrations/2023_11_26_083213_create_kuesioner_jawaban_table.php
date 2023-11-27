@@ -11,13 +11,13 @@ return new class extends Migration
 	 */
 	public function up(): void
 	{
-		Schema::create('quisioner_jawaban', function (Blueprint $table) {
+		Schema::create('kuesioner_jawaban', function (Blueprint $table) {
 			$table->increments("id");
 			$table->integer("bank_soal_id")->unsigned();
 			$table->integer("bank_soal_jawaban_id")->unsigned();
-			$table->integer("quisioner_id")->unsigned();
+			$table->integer("kuesioner_id")->unsigned();
 
-			$table->foreign("quisioner_id")->references("id")->on("quisioner");
+			$table->foreign("kuesioner_id")->references("id")->on("kuesioner");
 			$table->foreign("bank_soal_id")->references("id")->on("bank_soal");
 			$table->foreign("bank_soal_jawaban_id")->references("id")->on("bank_soal_jawaban");
 			$table->timestamps();

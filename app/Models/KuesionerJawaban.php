@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QuisionerJawaban extends Model
+class KuesionerJawaban extends Model
 {
     use HasFactory;
-    public $table = "quisioner_jawaban";
+    public $table = "kuesioner_jawaban";
 
     public function bank_soal()
     {
@@ -18,8 +18,8 @@ class QuisionerJawaban extends Model
     {
         return $this->hasOne(BankSoalJawaban::class,"bank_soal_jawaban_id","id");
     }
-    public function quisioner()
+    public function kuesioner()
     {
-        return $this->belongsTo(Quisioner::class,"quisioner_id","id");
+        return $this->belongsTo(Kuesioner::class,"kuesioner_id","id");
     }
 }

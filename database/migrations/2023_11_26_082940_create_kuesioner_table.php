@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quisioner', function (Blueprint $table) {
+        Schema::create('kuesioner', function (Blueprint $table) {
             $table->increments("id");
             $table->string("nama_lengkap",200);
             $table->string("tempat_lahir",200);
