@@ -17,7 +17,7 @@
 </head>
 <body>
     <div style="background-image: url('https://apps.internusagroup.online/regis/images/bg1.jpg')" class="min-h-screen bg-repeat-y bg-contain p-4">
-        <form action="" method="POST">
+        <form action="{{ route('kuesioner.formStore') }}" method="POST">
             @csrf
             <div class="w-md bg-[#AAD2FF] p-3 rounded-xl max-w-full w-[920px] m-auto px-8 py-4">
                 <div class="text-center mb-10">
@@ -38,12 +38,12 @@
                     <div class="bg-white rounded-lg py-3 px-5 mb-3">
                         <label class="text-xs uppercase font-semibold">Jenis Kelamin*</label>
                         <div class="flex items-center mt-4 mb-2">
-                            <input id="laki-laki" type="radio" value="laki-laki" name="jenis_kelamin" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="laki-laki" required class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Laki-laki</label>
+                            <input id="laki-laki" required type="radio" value="laki-laki" name="jenis_kelamin" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="laki-laki" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Laki-laki</label>
                         </div>
                         <div class="flex items-center mb-2">
                             <input id="perempuan" type="radio" value="perempuan" name="jenis_kelamin" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="perempuan" required class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Perempuan</label>
+                            <label for="perempuan" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Perempuan</label>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-3">
@@ -99,10 +99,10 @@
                     <div class="bg-white rounded-lg py-3 px-5 mb-3">
                         <label class="text-md uppercase font-semibold">{{ $number+1 }}. {{ $soal->pertanyaan }} :</label>
                         <div class="mt-4">
-                            @foreach($soal->bank_soal_jawaban as $jwb)
+                            @foreach($soal->bank_soal_jawaban as $key => $jwb)
                             <div class="flex items-center mt-4 mb-2">
-                                <input id="jwb_{{ $jwb->id }}" type="radio" value="{{ $jwb->type }}" name="jawaban[{{ $jwb->bank_soal_id }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="jwb_{{ $jwb->id }}" required class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">{{ ucfirst($jwb->jawaban) }}</label>
+                                <input id="jwb_{{ $jwb->id }}" {{ $key == 0 ? "required" : "" }} type="radio" value="{{ $jwb->id }}" name="jawaban[{{ $jwb->bank_soal_id }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="jwb_{{ $jwb->id }}" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">{{ ucfirst($jwb->jawaban) }}</label>
                             </div>
                             @endforeach
                         </div>

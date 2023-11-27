@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get("/form",[KuesionerController::class,"form"])->name("kuesioner.form");
 Route::post("/form/store",[KuesionerController::class,"form_store"])->name("kuesioner.formStore");
+Route::get("/sertifikat/{kuesioner_id}",[KuesionerController::class,"sertifikat"])->name("kuesioner.sertifikat");

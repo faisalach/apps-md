@@ -16,7 +16,7 @@ class KuesionerJawaban extends Model
     }
     public function bank_soal_jawaban()
     {
-        return $this->hasOne(BankSoalJawaban::class,"bank_soal_jawaban_id","id");
+        return $this->hasOne(BankSoalJawaban::class,"id","bank_soal_jawaban_id");
     }
     public function kuesioner()
     {
