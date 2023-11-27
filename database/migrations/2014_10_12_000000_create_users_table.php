@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('no_wa_admin')->nullable();
             $table->string('token_wa_admin')->nullable();
+            $table->string('email_admin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

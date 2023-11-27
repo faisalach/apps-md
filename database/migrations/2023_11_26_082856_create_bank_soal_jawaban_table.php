@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('bank_soal_jawaban', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('bank_soal_id');
+            $table->integer('bank_soal_id')->unsigned();
             $table->string("jawaban",255);
             $table->enum("type",["visual","auditory","kinestetik"]);
-            $table->foreign("bank_soal_id")->references("id")->on("bank_soal")->onDelete("cascade");
+            $table->foreign("bank_soal_id")->references("id")->on("bank_soal");
             $table->timestamps();
         });
     }
