@@ -35,11 +35,11 @@ class DatabaseSeeder extends Seeder
 						"type"      => "visual"
 					],
 					[
-						"jawaban"   => "menggambar peta jalan pada sebuah kertas",
+						"jawaban"   => "memberitahu secara lisan (melalui ucapan)",
 						"type"      => "auditory"
 					],
 					[
-						"jawaban"   => "menggambar peta jalan pada sebuah kertas",
+						"jawaban"   => "mencoba memberitahu dengan isyarat tangan atau langsung mengantarkannya",
 						"type"      => "kinestetik"
 					],
 					

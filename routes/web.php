@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KuesionerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get("/form",[KuesionerController::class,"form"])->name("kuesioner.form");
+Route::post("/form/store",[KuesionerController::class,"form_store"])->name("kuesioner.formStore");

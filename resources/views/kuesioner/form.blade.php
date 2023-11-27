@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Aplikasi Mengenal Diri</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/montserrat" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <style>
+        *{
+            font-family: 'Montserrat',sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div style="background-image: url('https://apps.internusagroup.online/regis/images/bg1.jpg')" class="min-h-screen bg-repeat-y bg-contain p-4">
+        <form action="" method="POST">
+            @csrf
+            <div class="w-md bg-[#AAD2FF] p-3 rounded-xl max-w-full w-[920px] m-auto px-8 py-4">
+                <div class="text-center mb-10">
+                    <h1 class="text-4xl leading-tight font-bold">Form Test</h1>
+                    <h1 class="text-4xl leading-tight font-bold"><span class="text-[#008000]">Apps</span><span class="text-white">MD</span> <span class="text-[#0000ff]">& Gaya Belajar</span></h1>
+                    <h3 class="text-xl leading-tight mt-2 font-semibold italic ">Aplikasi Mengenal Diri</h3>
+                </div>
+                <div class="mb-3">
+                    <h5 class="font-semibold ml-6 mb-3"><span class="text-lg">FORM 1</span> <span class="text-sm">KET : <span class="text-red-500 italic">* WAJIB DIISI</span></span></h5>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label for="nama_lengkap" class="text-xs uppercase font-semibold">Nama Lengkap*</label>
+                        <input type="text" required id="nama_lengkap" name="nama_lengkap" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Nama Lengkap">
+                    </div>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label for="agama" class="text-xs uppercase font-semibold">Agama*</label>
+                        <input type="text" required id="agama" name="agama" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Agama">
+                    </div>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label class="text-xs uppercase font-semibold">Jenis Kelamin*</label>
+                        <div class="flex items-center mt-4 mb-2">
+                            <input id="laki-laki" type="radio" value="laki-laki" name="jenis_kelamin" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="laki-laki" required class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Laki-laki</label>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <input id="perempuan" type="radio" value="perempuan" name="jenis_kelamin" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="perempuan" required class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">Perempuan</label>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                            <label for="tempat_lahir" class="text-xs uppercase font-semibold">Tempat Lahir*</label>
+                            <input type="text" required id="tempat_lahir" name="tempat_lahir" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Tempat Lahir">
+                        </div>
+                        <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                            <label for="tanggal_lahir" class="text-xs uppercase font-semibold">Tanggal Lahir*</label>
+                            <input type="date" required id="tanggal_lahir" name="tanggal_lahir" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Tanggal Lahir">
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label class="text-xs uppercase font-semibold">Golongan Darah</label>
+                        <div class="flex items-center mt-4 mb-2">
+                            <input id="gol_a" type="radio" value="A" name="golongan_darah" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="gol_a" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">A</label>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <input id="gol_b" type="radio" value="B" name="golongan_darah" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="gol_b" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">B</label>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <input id="gol_ab" type="radio" value="AB" name="golongan_darah" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="gol_ab" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">AB</label>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <input id="gol_o" type="radio" value="O" name="golongan_darah" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="gol_o" class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">O</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mb-3">
+                    <h5 class="font-semibold ml-6 mb-3"><span class="text-lg">FORM 2</span></h5>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label for="alamat" class="text-xs uppercase font-semibold">Alamat *</label>
+                        <input type="text" required id="alamat" name="alamat" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Masukkan Alamat">
+                    </div>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label for="email" class="text-xs uppercase font-semibold">Email *</label>
+                        <input type="email" required id="email" name="email" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Masukkan Email">
+                    </div>
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label for="no_wa" class="text-xs uppercase font-semibold">No Telepon / WA *</label>
+                        <input type="text" required id="no_wa" name="no_wa" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Masukkan No. Telp / WA">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5 class="font-semibold ml-6 mb-3"><span class="text-lg">FORM TEST GAYA BELAJAR</span></h5>
+
+                    @foreach($bank_soal as $number => $soal)
+                    <div class="bg-white rounded-lg py-3 px-5 mb-3">
+                        <label class="text-md uppercase font-semibold">{{ $number+1 }}. {{ $soal->pertanyaan }} :</label>
+                        <div class="mt-4">
+                            @foreach($soal->bank_soal_jawaban as $jwb)
+                            <div class="flex items-center mt-4 mb-2">
+                                <input id="jwb_{{ $jwb->id }}" type="radio" value="{{ $jwb->type }}" name="jawaban[{{ $jwb->bank_soal_id }}]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="jwb_{{ $jwb->id }}" required class="ms-2 text-lg font-medium text-gray-900 dark:text-gray-300">{{ ucfirst($jwb->jawaban) }}</label>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <button type="submit" class=" w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Kirim</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
