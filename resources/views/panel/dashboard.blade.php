@@ -16,6 +16,33 @@
                             No Peserta
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Tempat Lahir
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Tanggal Lahir
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Hasil Tes
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Golongan Darah
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Agama
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Jenis Kelamin
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Alamat
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Email
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            No WA
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Persentase Visual
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -55,6 +82,51 @@
                     { 
                         data: 'no_peserta',
                         name: 'no_peserta',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'tempat_lahir',
+                        name: 'tempat_lahir',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'tanggal_lahir',
+                        name: 'tanggal_lahir',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'hasil_tes',
+                        name: 'number_tgl_lahir',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'golongan_darah',
+                        name: 'golongan_darah',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'agama',
+                        name: 'agama',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'jenis_kelamin',
+                        name: 'jenis_kelamin',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'alamat',
+                        name: 'alamat',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'email',
+                        name: 'email',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'no_wa',
+                        name: 'no_wa',
                         class : "px-6 py-4"
                     },
                     { 

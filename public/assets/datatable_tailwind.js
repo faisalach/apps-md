@@ -20,7 +20,7 @@ $.extend( DataTable.ext.classes, {
 	"sInfo": "text-sm mt-2",
 	"sPaging": "inline-flex -space-x-px text-sm lg:ml-auto ", /* Note that the type is postfixed */
 	"sLength": "datatable_length mt-1",
-	"sProcessing": "text-center p-5",
+	"sProcessing": "text-center p-5 absolute z-10 w-full top-20",
 
 	/* Sorting */
 	"sSortAsc": "sorting_asc",

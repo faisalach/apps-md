@@ -28,12 +28,16 @@ class KuesionerController extends Controller
         if(!empty($search)){
             $data->where(function($query) use ($search,$columns){
                 foreach($columns as $col){
-                    $query->where($col["name"],"like","%$search%");
+                    if($col["searchable"]){
+                        $query->orWhere($col["name"],"like","%$search%");
+                    }
                 }
             });
         }
         foreach($order as $ord){
-            $data->orderBy($columns[$ord["column"]]["name"],$ord["dir"]);
+            if($columns[$ord["column"]]["orderable"]){
+                $data->orderBy($columns[$ord["column"]]["name"],$ord["dir"]);
+            }
         }
         
         $record_filtered   = $data->count();
@@ -42,6 +46,10 @@ class KuesionerController extends Controller
         $data->offset($start);
         
         $result = $data->get();
+
+        foreach($result as $row){
+            $row->hasil_tes    = CustomHelper::get_value_number_tgl_lahir($row->number_tgl_lahir);
+        }
 
         return [
             "draw"=> $draw,
