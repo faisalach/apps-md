@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
 
 class CustomHelper
@@ -51,6 +52,15 @@ class CustomHelper
         ];
 
         return $presentase;
+    }
+
+    public static function get_no_peserta(){
+        $last_kuesioner     = Kuesioner::orderBy("no_peserta","DESC")->limit(1);
+        $latest             = !empty($last_kuesioner->no_peserta) ? intval($last_kuesioner->no_peserta) : 0;
+        $latest++;
+        
+        $nomor_urut     = substr('000000' . $latest,-6);
+        return $nomor_urut;
     }
 
     public static function get_value_number_tgl_lahir($number_tgl_lahir){

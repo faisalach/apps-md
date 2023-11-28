@@ -6,6 +6,7 @@ use App\Helpers\CustomHelper;
 use App\Models\BankSoal;
 use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 
 class KuesionerController extends Controller
@@ -15,6 +16,7 @@ class KuesionerController extends Controller
 
         $data   = [];
         $data["bank_soal"]  = $bank_soal;
+        $data["no_peserta"]  = $request->input("no_peserta");
         return view("kuesioner.form",$data);
     }
 
@@ -43,6 +45,7 @@ class KuesionerController extends Controller
         $alamat             = $request->input("alamat");
         $email              = $request->input("email");
         $no_wa              = $request->input("no_wa");
+        $no_peserta         = !empty($request->input("no_peserta")) ? $request->input("no_peserta") : CustomHelper::get_no_peserta();
         $jawaban            = $request->input("jawaban");
 
         $kuesioner          = new Kuesioner();
@@ -56,7 +59,7 @@ class KuesionerController extends Controller
         $kuesioner->alamat    = $alamat;
         $kuesioner->email    = $email;
         $kuesioner->no_wa    = $no_wa;
-        $kuesioner->no_peserta    = "PESERTA01";
+        $kuesioner->no_peserta    = $no_peserta;
         if($kuesioner->save()){
             
             foreach($jawaban as $bank_soal_id => $bank_soal_jawaban_id){
@@ -67,12 +70,15 @@ class KuesionerController extends Controller
                 $kuesioner_jawaban->save();
             }
 
+            $sertifikat_url   = $this->sertifikat($kuesioner);
+            
+            return redirect(route("kuesioner.form"))->with(["message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat"]);
         }
-
+        
+        return redirect(route("kuesioner.form"))->withErrors(["message" => "Failed, Please try again."]);
     }
 
-    public function sertifikat($kuesioner_id){
-        $kuesioner                  = Kuesioner::find($kuesioner_id);
+    private function sertifikat($kuesioner){
         $value_number_tgl_lahir     = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $presentase_jawaban         = CustomHelper::get_presentase_kuesioner_jawaban($kuesioner->id);
 
@@ -80,8 +86,13 @@ class KuesionerController extends Controller
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
         $data["presentase_jawaban"]     = $presentase_jawaban;
+        $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.jpg')));
 
-        return view("kuesioner.sertifikat",$data);
-
+        $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
+        $pdf_filepath   = 'sertifikat/'.$pdf_filename;
+        $pdf = PDF::loadView('kuesioner.sertifikat', $data);
+        $pdf->save($pdf_filepath);
+        
+        return $pdf_filepath;
     }
 }
