@@ -1,4 +1,4 @@
 @extends('layout.navbar')
 @section('navbarContent')
-    <h1>OKE</h1>
+    <h1>Dashboard</h1>
 @endsection

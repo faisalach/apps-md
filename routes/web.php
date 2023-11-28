@@ -31,8 +31,8 @@ Route::group(["middleware" => "guest"],function(){
 Route::group(["middleware" => "auth"],function(){
     Route::get("/panel/dashboard",[DashboardController::class,"dashboard"])->name("dashboard");
 
-    Route::get("/panel/settings",[AuthController::class,"settings"])->name("settings");
-    Route::post("/panel/settings",[AuthController::class,"settings"])->name("settings");
+    Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");
+    Route::post("/panel/settings",[DashboardController::class,"settings"])->name("settings");
 
     Route::get("/panel/logout",[AuthController::class,"logout"])->name("logout");
 });

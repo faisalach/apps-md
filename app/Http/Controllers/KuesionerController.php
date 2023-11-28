@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class KuesionerController extends Controller
 {
+
+    public function datatable(Request $request){
+
+    }
+    
     public function form(Request $request){
         $bank_soal  = BankSoal::with(["bank_soal_jawaban"])->orderBy("no_urut","ASC")->get();
 
@@ -80,7 +85,6 @@ class KuesionerController extends Controller
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
 
-            
             return redirect(route("kuesioner.form"))->with(["message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat"]);
         }
         
