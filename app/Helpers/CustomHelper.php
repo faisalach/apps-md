@@ -23,7 +23,7 @@ class CustomHelper
         }
     }
 
-    public static function get_presentase_kuesioner_jawaban($kuesioner_id){
+    public static function get_persentase_kuesioner_jawaban($kuesioner_id){
         $kuesioner_jawaban  = KuesionerJawaban::with(["bank_soal_jawaban"])
         ->where("kuesioner_id",$kuesioner_id)
         ->get();
@@ -55,7 +55,7 @@ class CustomHelper
     }
 
     public static function get_no_peserta(){
-        $last_kuesioner     = Kuesioner::orderBy("no_peserta","DESC")->limit(1);
+        $last_kuesioner     = Kuesioner::orderBy("no_peserta","DESC")->limit(1)->first();
         $latest             = !empty($last_kuesioner->no_peserta) ? intval($last_kuesioner->no_peserta) : 0;
         $latest++;
         

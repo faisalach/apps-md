@@ -60,6 +60,9 @@ class KuesionerController extends Controller
         $kuesioner->email    = $email;
         $kuesioner->no_wa    = $no_wa;
         $kuesioner->no_peserta    = $no_peserta;
+        $kuesioner->persentase_visual   = 0;
+        $kuesioner->persentase_auditory   = 0;
+        $kuesioner->persentase_kinestetik   = 0;
         if($kuesioner->save()){
             
             foreach($jawaban as $bank_soal_id => $bank_soal_jawaban_id){
@@ -69,23 +72,27 @@ class KuesionerController extends Controller
                 $kuesioner_jawaban->kuesioner_id    = $kuesioner->id;
                 $kuesioner_jawaban->save();
             }
+            $persentase_jawaban         = CustomHelper::get_persentase_kuesioner_jawaban($kuesioner->id);
+            $kuesioner->persentase_visual   = $persentase_jawaban["visual"];
+            $kuesioner->persentase_auditory   = $persentase_jawaban["auditory"];
+            $kuesioner->persentase_kinestetik   = $persentase_jawaban["kinestetik"];
+            $kuesioner->save();
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
+
             
             return redirect(route("kuesioner.form"))->with(["message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat"]);
         }
         
-        return redirect(route("kuesioner.form"))->withErrors(["message" => "Failed, Please try again."]);
+        return redirect(route("kuesioner.form"))->with(["message" => "Failed, Please try again."]);
     }
 
     private function sertifikat($kuesioner){
-        $value_number_tgl_lahir     = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
-        $presentase_jawaban         = CustomHelper::get_presentase_kuesioner_jawaban($kuesioner->id);
+        $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
 
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
-        $data["presentase_jawaban"]     = $presentase_jawaban;
         $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.jpg')));
 
         $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';

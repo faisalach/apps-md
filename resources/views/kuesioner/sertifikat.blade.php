@@ -36,9 +36,9 @@
         text-align: center;
         font-size: 22px;
         font-weight: bold;">
-            Visual : {{ round($presentase_jawaban["visual"]) }}%
-            Auditory : {{ round($presentase_jawaban["auditory"]) }}%
-            Kinestetik : {{ round($presentase_jawaban["kinestetik"]) }}%
+            Visual : {{ round($kuesioner->persentase_visual) }}%
+            Auditory : {{ round($kuesioner->persentase_auditory) }}%
+            Kinestetik : {{ round($kuesioner->persentase_kinestetik) }}%
         </p>
         <p style="position: absolute;
         left: 3.8cm;

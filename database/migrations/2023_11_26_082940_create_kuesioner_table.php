@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string("email",100);
             $table->string("no_wa",100);
             $table->string("no_peserta",100);
+            $table->integer("persentase_visual");
+            $table->integer("persentase_auditory");
+            $table->integer("persentase_kinestetik");
             $table->timestamps();
         });
     }
