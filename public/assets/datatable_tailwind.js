@@ -1,5 +1,5 @@
 $.extend( DataTable.ext.classes, {
-	"sTable": "col-span-2 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400",
+	"sTable": "lg:col-span-2 !w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400",
 	"sNoFooter": "",
 
 	/* Paging buttons */
@@ -15,27 +15,27 @@ $.extend( DataTable.ext.classes, {
 	"sRowEmpty": "text-center p-5",
 
 	/* Features */
-	"sWrapper": "grid grid-cols-2 gap-2",
-	"sFilter": "ml-auto datatable_filter mt-1",
+	"sWrapper": "grid lg:grid-cols-2 gap-2 w-full",
+	"sFilter": "lg:ml-auto datatable_filter mt-1",
 	"sInfo": "text-sm mt-2",
-	"sPaging": "inline-flex -space-x-px text-sm ml-auto ", /* Note that the type is postfixed */
+	"sPaging": "inline-flex -space-x-px text-sm lg:ml-auto ", /* Note that the type is postfixed */
 	"sLength": "datatable_length mt-1",
 	"sProcessing": "text-center p-5",
 
 	/* Sorting */
 	"sSortAsc": "sorting_asc",
 	"sSortDesc": "sorting_desc",
-	"sSortable": "sorting", /* Sortable in both directions */
+	"sSortable": "relative sorting", /* Sortable in both directions */
 	"sSortableAsc": "sorting_desc_disabled",
 	"sSortableDesc": "sorting_asc_disabled",
 	"sSortableNone": "sorting_disabled",
 	"sSortColumn": "sorting_", /* Note that an int is postfixed for the sorting order */
 
 	/* Filtering */
-	"sFilterInput": "",
+	"sFilterInput": "px-2 py-1 rounded-lg ml-2 border-gray-300",
 
 	/* Page length */
-	"sLengthSelect": "",
+	"sLengthSelect": "px-2 py-1 rounded-lg ml-2 border-gray-300",
 
 	/* Scrolling */
 	"sScrollWrapper": "dataTables_scroll",
@@ -50,7 +50,7 @@ $.extend( DataTable.ext.classes, {
 	"sFooterTH": "",
 
 	// Deprecated
-	"sSortJUIAsc": "",
+	"sSortJUIAsc": "asdsa",
 	"sSortJUIDesc": "",
 	"sSortJUI": "",
 	"sSortJUIAscAllowed": "",

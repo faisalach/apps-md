@@ -13,7 +13,42 @@ class KuesionerController extends Controller
 {
 
     public function datatable(Request $request){
+
+
+        $draw   = $request->input("draw");
+        $start   = $request->input("start");
+        $length   = $request->input("length");
+        $columns   = $request->input("columns");
+        $order   = $request->input("order");
+        $search   = $request->input("search")["value"];
+
+        $data   = Kuesioner::select("*");
+        $record_total   = $data->count();
+
+        if(!empty($search)){
+            $data->where(function($query) use ($search,$columns){
+                foreach($columns as $col){
+                    $query->where($col["name"],"like","%$search%");
+                }
+            });
+        }
+        foreach($order as $ord){
+            $data->orderBy($columns[$ord["column"]]["name"],$ord["dir"]);
+        }
         
+        $record_filtered   = $data->count();
+
+        $data->limit($length);
+        $data->offset($start);
+        
+        $result = $data->get();
+
+        return [
+            "draw"=> $draw,
+            "recordsTotal"=> $record_total,
+            "recordsFiltered"=> $record_filtered,
+            "data" => $result
+        ];
     }
 
     public function form(Request $request){

@@ -10,62 +10,23 @@
                 <thead class="text-xs text-gray-700 uppercase bg-green-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Product name
+                            Nama Lengkap
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Color
+                            No Peserta
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Category
+                            Persentase Visual
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Price
+                            Persentase Auditory
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Persentase Kinestetik
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="px-6 py-4">
-                            Apple MacBook Pro 17"
-                        </td>
-                        <td class="px-6 py-4">
-                            Silver
-                        </td>
-                        <td class="px-6 py-4">
-                            Laptop
-                        </td>
-                        <td class="px-6 py-4">
-                            $2999
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4">
-                            Microsoft Surface Pro
-                        </td>
-                        <td class="px-6 py-4">
-                            White
-                        </td>
-                        <td class="px-6 py-4">
-                            Laptop PC
-                        </td>
-                        <td class="px-6 py-4">
-                            $1999
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4">
-                            Magic Mouse 2
-                        </td>
-                        <td class="px-6 py-4">
-                            Black
-                        </td>
-                        <td class="px-6 py-4">
-                            Accessories
-                        </td>
-                        <td class="px-6 py-4">
-                            $99
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -76,7 +37,53 @@
     <script src="/assets/datatable_tailwind.js"></script>
     <script>
         $(() => {
-            $("#dt_kuesioner").DataTable();
+            $("#dt_kuesioner").DataTable({
+                processing : true,
+                serverSide : true,
+                ajax    : {
+                    url     : "{{ route('kuesioner.datatable') }}",
+                    data    : function(data) {
+                        return data
+                    }
+                },
+                columns: [
+                    { 
+                        data: 'nama_lengkap',
+                        name: 'nama_lengkap',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'no_peserta',
+                        name: 'no_peserta',
+                        class : "px-6 py-4"
+                    },
+                    { 
+                        data: 'persentase_visual',
+                        name: 'persentase_visual',
+                        class : "px-6 py-4",
+                        render : (data) => {
+                            return data + "%";
+                        }
+                    },
+                    { 
+                        data: 'persentase_auditory',
+                        name: 'persentase_auditory',
+                        class : "px-6 py-4",
+                        render : (data) => {
+                            return data + "%";
+                        }
+                    },
+                    { 
+                        data: 'persentase_kinestetik',
+                        name: 'persentase_kinestetik',
+                        class : "px-6 py-4",
+                        render : (data) => {
+                            return data + "%";
+                        }
+                    },
+                ]
+                
+            });
         })
     </script>
 @endsection
