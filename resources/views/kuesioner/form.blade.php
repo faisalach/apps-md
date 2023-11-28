@@ -1,21 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Aplikasi Mengenal Diri</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
-    <link href="https://fonts.cdnfonts.com/css/montserrat" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-    <style>
-        *{
-            font-family: 'Montserrat',sans-serif;
-        }
-    </style>
-</head>
-<body>
+@include('layout.header')
     <div style="background-image: url('https://apps.internusagroup.online/regis/images/bg1.jpg')" class="min-h-screen bg-repeat-y bg-contain p-4">
         <form action="{{ route('kuesioner.formStore') }}" method="POST">
             @csrf
@@ -119,5 +102,4 @@
             </div>
         </form>
     </div>
-</body>
-</html>
+@include('layout.footer')
