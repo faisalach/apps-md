@@ -13,9 +13,9 @@ class KuesionerController extends Controller
 {
 
     public function datatable(Request $request){
-
+        
     }
-    
+
     public function form(Request $request){
         $bank_soal  = BankSoal::with(["bank_soal_jawaban"])->orderBy("no_urut","ASC")->get();
 
