@@ -8,6 +8,7 @@ use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KuesionerController extends Controller
 {
@@ -22,8 +23,48 @@ class KuesionerController extends Controller
         $order   = $request->input("order");
         $search   = $request->input("search")["value"];
 
+        $filter   = $request->input("filter");
+
         $data   = Kuesioner::select("*");
         $record_total   = $data->count();
+
+        if(!empty($filter)){
+            $data->where(function($query) use ($filter){
+                foreach($filter as $column => $value){
+                    if(empty($value)){
+                        continue;
+                    }
+                    switch($column){
+                        case 'min_persentase':
+                            foreach($value as $col => $min){
+                                if($min != null){
+                                    $query->where($col,">=",$min);
+                                }
+                            }
+                            break;
+                        case 'max_persentase':
+                            foreach($value as $col => $max){
+                                if($max != null){
+                                    $query->where($col,"<=",$max);
+                                }
+                            }
+                            break;
+                        case 'tahun_lahir':
+                            $query->where(DB::raw("YEAR(tanggal_lahir)"),"like","%$value%");
+                            break;
+                        case 'bulan_lahir':
+                            $query->where(DB::raw("MONTH(tanggal_lahir)"),"like","%$value%");
+                            break;
+                        case 'tanggal_lahir':
+                            $query->where(DB::raw("DAY(tanggal_lahir)"),"like","%$value%");
+                            break;
+                        default :
+                            $query->where($column,"like","%$value%");
+                            break;
+                    }
+                }
+            });
+        }
 
         if(!empty($search)){
             $data->where(function($query) use ($search,$columns){
@@ -34,6 +75,7 @@ class KuesionerController extends Controller
                 }
             });
         }
+
         foreach($order as $ord){
             if($columns[$ord["column"]]["orderable"]){
                 $data->orderBy($columns[$ord["column"]]["name"],$ord["dir"]);
