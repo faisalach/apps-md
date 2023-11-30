@@ -1,4 +1,10 @@
 @include('layout.header')
+    
+    @if (Session::has('url_open'))
+    <script>
+        window.open("{{ Session::get('url_open') }}","_blank")
+    </script>
+    @endif
     <div style="background-image: url('https://apps.internusagroup.online/regis/images/bg1.jpg')" class="min-h-screen bg-repeat-y bg-contain p-4">
         <form action="{{ route('kuesioner.formStore') }}" method="POST">
             @csrf

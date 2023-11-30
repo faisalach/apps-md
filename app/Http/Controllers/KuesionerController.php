@@ -169,9 +169,11 @@ class KuesionerController extends Controller
             $kuesioner->save();
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
-            Redirect::away(url($sertifikat_url));
 
-            return redirect(route("kuesioner.form"))->with(["message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat"]);
+            return redirect(route("kuesioner.form"))->with([
+                "message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat",
+                "url_open"  => url($sertifikat_url)
+            ]);
         }
         
         return redirect(route("kuesioner.form"))->with(["message" => "Failed, Please try again."]);
