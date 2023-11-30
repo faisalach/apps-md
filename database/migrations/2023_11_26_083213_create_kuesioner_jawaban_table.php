@@ -17,9 +17,9 @@ return new class extends Migration
 			$table->integer("bank_soal_jawaban_id")->unsigned();
 			$table->integer("kuesioner_id")->unsigned();
 
-			$table->foreign("kuesioner_id")->references("id")->on("kuesioner");
-			$table->foreign("bank_soal_id")->references("id")->on("bank_soal");
-			$table->foreign("bank_soal_jawaban_id")->references("id")->on("bank_soal_jawaban");
+			$table->foreign("kuesioner_id")->references("id")->on("kuesioner")->onDelete("cascade");
+			$table->foreign("bank_soal_id")->references("id")->on("bank_soal")->onDelete("cascade");
+			$table->foreign("bank_soal_jawaban_id")->references("id")->on("bank_soal_jawaban")->onDelete("cascade");
 			$table->timestamps();
 		});
 	}

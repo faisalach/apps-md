@@ -9,12 +9,12 @@ use App\Models\KuesionerJawaban;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class KuesionerController extends Controller
 {
 
     public function datatable(Request $request){
-
 
         $draw   = $request->input("draw");
         $start   = $request->input("start");
@@ -169,6 +169,7 @@ class KuesionerController extends Controller
             $kuesioner->save();
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
+            Redirect::away(url($sertifikat_url));
 
             return redirect(route("kuesioner.form"))->with(["message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat"]);
         }
