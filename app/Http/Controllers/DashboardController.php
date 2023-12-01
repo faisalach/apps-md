@@ -127,12 +127,12 @@ class DashboardController extends Controller
             "Alamat",
             "Email",
             "No WA",
-            "Persentase Visual",
-            "Persentase Auditory",
-            "Persentase Kinestetik"
+            "Persentase Visual (%)",
+            "Persentase Auditory (%)",
+            "Persentase Kinestetik (%)"
         ];
-
-        $handle = fopen('php://output', 'w');
+        $filecsv = "file.csv";
+        $handle = fopen($filecsv, 'w+');
         fputcsv($handle, $header,";"); // Add more headers as needed
 
         foreach ($result as $row) {
@@ -147,16 +147,20 @@ class DashboardController extends Controller
                 $row->jenis_kelamin,
                 $row->alamat,
                 $row->email,
-                $row->no_wa,
-                $row->persentase_visual,
-                $row->persentase_auditory,
-                $row->persentase_kinestetik,
+                '="'.$row->no_wa.'"',
+                $row->persentase_visual."%",
+                $row->persentase_auditory."%",
+                $row->persentase_kinestetik."%",
             ],";"); // Add more fields as needed
         }
 
         fclose($handle);
+        
+        $headers = array(
+            'Content-Type' => 'text/csv',
+        );
+        return response()->download($filecsv, $csvFileName, $headers);
 
-        return Response::make('', 200, $headers);
     }
 
 }

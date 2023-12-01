@@ -1,20 +1,20 @@
 .sorting:before{
-    bottom: 50%;
-    content: "▲";
-    content: "▲"/"";
+    bottom: 52%;
+    content: '\25BA';
+    transform: rotate(-90deg);
 }
 .sorting:after{
-    top: 50%;
-    content: "▼";
-    content: "▼"/"";
+    top: 52%;
+    content: '\25BA';
+    transform: rotate(90deg);
 }
 .sorting:before, .sorting:after {
     position: absolute;
     display: block;
     opacity: .125;
-    right: 10px;
+    right: 5px;
     line-height: 9px;
-    font-size: 1.1rem;
+    font-size: .75rem;
     color: inherit;
 }
 .sorting_asc:before, .sorting_desc:after {
