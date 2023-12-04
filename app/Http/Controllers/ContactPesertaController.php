@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 
 class ContactPesertaController extends Controller
 {
-    public function show(){
-        return view('contact.show');
+    public function contact(){
+        return view('panel.contact');
     }
 
     public function datatable(Request $request){

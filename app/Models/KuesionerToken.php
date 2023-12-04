@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class KuesionerToken extends Model
 {
     use HasFactory;
+    public $table = "kuesioner_token";
 }

@@ -6,6 +6,7 @@ use App\Models\HasilTes;
 use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
 use App\Models\KuesionerToken;
+use App\Models\Settings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -88,15 +89,17 @@ class CustomHelper
             $check  = KuesionerToken::where("token",$str_token);
         } while (!empty($check));
 
+        $setting_time   = Settings::where("key","time_expired_token")->first();
+        $time_interval  = !empty($setting_time->value) ? $setting_time->value : 60;
+
         $token      = new KuesionerToken();
         $token->start_date  = date("Y-m-d H:i:s");
-        $token->end_date    = date("Y-m-d H:i:s",strtotime("+60 minutes"));
+        $token->end_date    = date("Y-m-d H:i:s",strtotime("+$time_interval minutes"));
         $token->sudah_diisi     = 0;
         $token->token       = $str_token;
         $token->save();
 
 
         return url(route("kuesioner.form",["token" => $token->token]));
-
     }
 }

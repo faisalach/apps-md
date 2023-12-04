@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class HasilTesController extends Controller
 {
-    public function upload_file_pdf(Request $request,$kode_angka){
+    public function update(Request $request,$kode_angka){
         $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();
 
         if(!empty($request->file("file_pdf"))){

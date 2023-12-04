@@ -185,7 +185,8 @@ class KuesionerController extends Controller
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
-        $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.jpg')));
+        $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.png')));
+        // return view('kuesioner.sertifikat', $data);
 
         $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
         $pdf_filepath   = 'sertifikat/'.$pdf_filename;

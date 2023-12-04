@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactPesertaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HasilTesController;
 use App\Http\Controllers\KuesionerController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +37,12 @@ Route::group(["middleware" => "auth"],function(){
 
     Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");
     Route::post("/panel/settings",[DashboardController::class,"settings"])->name("settings");
+    Route::post("/panel/settings/hasil_tes",[HasilTesController::class,"update"])->name("settings.hasil_tes");
+
+    Route::get("/panel/contact",[ContactPesertaController::class,"contact"])->name("contact");
+    Route::get("/panel/contact/datatable",[ContactPesertaController::class,"datatable"])->name("contact.datatable");
+    Route::post("/panel/contact/insert",[ContactPesertaController::class,"insert"])->name("contact.insert");
+    Route::post("/panel/contact/delete/{id}",[ContactPesertaController::class,"delete"])->name("contact.delete");
 
     Route::get("/panel/logout",[AuthController::class,"logout"])->name("logout");
 });
