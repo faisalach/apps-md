@@ -313,5 +313,13 @@ class DatabaseSeeder extends Seeder
 				]);
 			}
 		}
+
+		for ($i=1; $i < 10; $i++) { 
+			\App\Models\HasilTes::create([
+				'kode_angka' => $i,
+				'title' => "Multitalent",
+				'file_pdf' => "",
+			]);
+		}
 	}
 }
