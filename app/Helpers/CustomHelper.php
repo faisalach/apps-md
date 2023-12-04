@@ -75,8 +75,8 @@ class CustomHelper
 
     public static function form_url($nomor_contact){
         $token  = KuesionerToken::where("nomor_contact",$nomor_contact)
-        ->where("start_date <=",DB::raw("NOW()"))
-        ->where("end_date >=",DB::raw("NOW()"))
+        ->where("start_date","<=",date("Y-m-d H:i:s"))
+        ->where("end_date",">=",date("Y-m-d H:i:s"))
         ->where("sudah_diisi",0)
         ->first();
 
@@ -86,16 +86,17 @@ class CustomHelper
 
         do {
             $str_token  = Str::random(30);
-            $check  = KuesionerToken::where("token",$str_token);
+            $check  = KuesionerToken::where("token",$str_token)->first();
         } while (!empty($check));
 
         $setting_time   = Settings::where("key","time_expired_token")->first();
         $time_interval  = !empty($setting_time->value) ? $setting_time->value : 60;
 
-        $token      = new KuesionerToken();
+        $token              = new KuesionerToken();
         $token->start_date  = date("Y-m-d H:i:s");
         $token->end_date    = date("Y-m-d H:i:s",strtotime("+$time_interval minutes"));
-        $token->sudah_diisi     = 0;
+        $token->sudah_diisi = 0;
+        $token->nomor_contact = $nomor_contact;
         $token->token       = $str_token;
         $token->save();
 
