@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kuesioner_token', function (Blueprint $table) {
             $table->increments('id');
             $table->string('token');
+            $table->string('nomor_contact',20);
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->boolean('sudah_diisi');
