@@ -321,5 +321,10 @@ class DatabaseSeeder extends Seeder
 				'file_pdf' => "",
 			]);
 		}
+
+		\App\Models\Settings::create([
+			'key' => "time_expired_token",
+			'value' => "60",
+		]);
 	}
 }

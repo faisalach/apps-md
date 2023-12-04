@@ -1,5 +1,5 @@
 @include('layout.header')
-    <div style="background-image: url('https://apps.internusagroup.online/regis/images/bg1.jpg')" class="min-h-screen bg-repeat-y bg-cover p-4">
+    <div style="background-image: url('/assets/bg1.jpg')" class="min-h-screen bg-repeat-y bg-cover p-4">
         <form action="{{ route('authenticated') }}" method="POST">
             @csrf
             <div class="w-md bg-[#AAD2FF] p-3 rounded-xl max-w-full w-[920px] m-auto px-8 py-4">

@@ -2,8 +2,12 @@
 
 namespace App\Helpers;
 
+use App\Models\HasilTes;
 use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
+use App\Models\KuesionerToken;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CustomHelper
 {
@@ -64,34 +68,35 @@ class CustomHelper
     }
 
     public static function get_value_number_tgl_lahir($number_tgl_lahir){
-        switch ($number_tgl_lahir) {
-            case 1:
-                return "Multitalent";
-                break;
-            case 2:
-                return "Multitalent";
-                break;
-            case 3:
-                return "Multitalent";
-                break;
-            case 4:
-                return "Multitalent";
-                break;
-            case 5:
-                return "Multitalent";
-                break;
-            case 6:
-                return "Multitalent";
-                break;
-            case 7:
-                return "Multitalent";
-                break;
-            case 8:
-                return "Multitalent";
-                break;
-            case 9:
-                return "Multitalent";
-                break;
+        $hasil_tes  = HasilTes::where("kode_angka",$number_tgl_lahir)->first();
+        return !empty($hasil_tes->title) ? $hasil_tes->title : "";
+    }
+
+    public static function form_url($nomor_contact){
+        $token  = KuesionerToken::where("nomor_contact",$nomor_contact)
+        ->where("start_date <=",DB::raw("NOW()"))
+        ->where("end_date >=",DB::raw("NOW()"))
+        ->where("sudah_diisi",0)
+        ->first();
+
+        if(!empty($token->token)){
+            return url(route("kuesioner.form",["token" => $token->token]));
         }
+
+        do {
+            $str_token  = Str::random(30);
+            $check  = KuesionerToken::where("token",$str_token);
+        } while (!empty($check));
+
+        $token      = new KuesionerToken();
+        $token->start_date  = date("Y-m-d H:i:s");
+        $token->end_date    = date("Y-m-d H:i:s",strtotime("+60 minutes"));
+        $token->sudah_diisi     = 0;
+        $token->token       = $str_token;
+        $token->save();
+
+
+        return url(route("kuesioner.form",["token" => $token->token]));
+
     }
 }

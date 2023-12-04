@@ -7,12 +7,27 @@ use Illuminate\Http\Request;
 
 class HasilTesController extends Controller
 {
-    public function settings(){
-        $data   = HasilTes::orderBy('kode_angka',"ASC")->get();
-        return view("hasil_test.settings",$data);
-    }
+    public function upload_file_pdf(Request $request,$kode_angka){
+        $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();
 
-    public function upload_file_pdf(Request $request){
-        
+        if(!empty($request->file("file_pdf"))){
+            $file = $request->file('file');
+            $filename   = "pdf_".time().".".$file->getClientOriginalExtension();
+            if($file->move("/pdf_file/",$filename)){
+                $hasil_tes->file_pdf = $filename;
+            }
+        }
+
+        $hasil_tes->title   = $request->input("title");
+
+        if($hasil_tes->save()){
+            return back()->with([
+                "success"   => "Successfuly update"
+            ]);
+        }else{
+            return back()->with([
+                "error"   => "Failed, please try again"
+            ]);
+        }
     }
 }
