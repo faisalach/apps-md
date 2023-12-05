@@ -62,11 +62,9 @@
 						</li>
 					</ul>
 				</div>
-				<div id="message-container" class="hidden p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert"></div>
 				<div id="default-tab-content">
 					<div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 						<form id="form_input" action="{{ route('contact.insert') }}" class="p-4 md:p-5" method="POST">
-							@csrf
 							<div class="mb-4">
 								<label for="nomor_contact" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Contact</label>
 								<input type="text" name="nomor_contact" id="nomor_contact" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type number" required="">
@@ -78,11 +76,10 @@
 						</form>
 					</div>
 					<div class="hidden" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-						<form id="form_csv" action="{{ route('contact.insert') }}" class="p-4 md:p-5" method="POST">
-							@csrf
+						<form id="form_csv" action="{{ route('contact.insert_csv') }}" class="p-4 md:p-5" method="POST">
 							<div class="mb-4">
 								<label for="file" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File CSV</label>
-								<input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file" name="file" type="file">
+								<input accept=".csv" id="file" name="file" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" >
 							</div>
 							<button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
 								<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -170,6 +167,103 @@
 					dropdown.show();
 				}
 				
+			})
+
+			$("body").on("submit","#form_input",(e) => {
+				e.preventDefault();
+
+				
+				let form 		= $(e.target);
+				let nomor_contact 	= $("#nomor_contact").val();
+				let url 		= form.attr("action");
+				let method 		= form.attr("method");
+
+				form.find("[type=submit]").prop("disabled",true);
+				if(form.find(".alert").length > 0){
+					form.find(".alert")[0].outerHTML = '';
+				}
+
+				$.ajax({
+					type : method,
+					url : url,
+					data : {
+						_token	: $(`{{ csrf_field() }}`).val(),
+						nomor_contact : nomor_contact
+					},
+					success : (response) => {
+						form.find("[type=submit]").prop("disabled",false);
+						$("#crud-modal").find("[data-modal-toggle]").click();
+						$("#dt_contact").DataTable().ajax.reload();
+
+						form[0].reset();
+						
+						Swal.fire({
+							title: response?.message,
+							icon: "success"
+						});
+					},
+					error : (response) => {
+						form.find("[type=submit]").prop("disabled",false);
+
+						let message 	= response?.responseJSON?.message;
+
+						form.prepend(`
+							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+								${message}
+							</div>
+						`);
+					}
+				});
+			})
+
+			$("body").on("submit","#form_csv",(e) => {
+				e.preventDefault();
+				
+				let form 		= $(e.target);
+				let file 		= $("#file").prop("files")[0];
+				let url 		= form.attr("action");
+				let method 		= form.attr("method");
+
+				let formData 	= new FormData();
+				formData.append("file", file);
+				formData.append("_token", $(`{{ csrf_field() }}`).val());
+
+
+				form.find("[type=submit]").prop("disabled",true);
+				if(form.find(".alert").length > 0){
+					form.find(".alert")[0].outerHTML = '';
+				}
+
+				$.ajax({
+					type : method,
+					url : url,
+					processData: false,
+					contentType: false,
+					data : formData,
+					success : (response) => {
+						form.find("[type=submit]").prop("disabled",false);
+						$("#crud-modal").find("[data-modal-toggle]").click();
+						$("#dt_contact").DataTable().ajax.reload();
+
+						form[0].reset();
+						
+						Swal.fire({
+							title: response?.message,
+							icon: "success"
+						});
+					},
+					error : (response) => {
+						form.find("[type=submit]").prop("disabled",false);
+
+						let message 	= response?.responseJSON?.message;
+
+						form.prepend(`
+							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+								${message}
+							</div>
+						`);
+					}
+				});
 			})
 		})
 	</script>

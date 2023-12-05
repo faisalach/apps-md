@@ -61,36 +61,103 @@ class ContactPesertaController extends Controller
     public function insert(Request $request){
 
         $request->validate([
-            "nomor_contact"     => "required|numeric"
+            "nomor_contact"     => "required|digits_between:10,20"
         ]);
 
         $nomor_contact  = $request->input("nomor_contact");
-        $nomor_contact  = preg_replace("/[^0-9]/g","",$nomor_contact);
-        $nomor_contact  = preg_replace("/^0/g","62",$nomor_contact);
+        $nomor_contact  = preg_replace("/[^0-9]/","",$nomor_contact);
+        $nomor_contact  = preg_replace("/^0/","62",$nomor_contact);
+
+        $check      = ContactPeserta::where("nomor_contact",$nomor_contact)->first();
+        if(!empty($check)){
+            return response()->json([
+                "message"   => "Nomor sudah terdaftar"
+            ],422);
+        }
 
         $contact    = new ContactPeserta();
         $contact->nomor_contact = $nomor_contact;
         if($contact->save()){
-            return back()->with([
-                "success"   => "Successfuly insert data"
+            return response()->json([
+                "message"   => "Successfuly insert data"
             ]);
         }else{
-            return back()->with([
-                "error"   => "Failed, please try again"
+            return response()->json([
+                "message"   => "Failed, please try again"
+            ],422);
+        }
+    }
+
+    public function insert_csv(Request $request){
+        $nomor_contact_arr  = [];
+
+        $file_csv   = $request->file("file");
+
+        if(empty($file_csv) || $file_csv->getClientOriginalExtension() != "csv"){
+            return response()->json([
+                "message"   => "File CSV not found"
+            ],422);
+        }
+
+        $data   = [];
+
+        echo "OKE";
+
+        if (($handle = fopen($file_csv, 'r')) !== FALSE) {
+            $i = 0;
+            $delimiter = ',';
+            while (($lineArray = fgetcsv($handle, 4000, $delimiter, '"')) !== FALSE) {
+                for ($j = 0; $j < count($lineArray); $j  ) {
+                    $data[$i][$j] = $lineArray[$j];
+                }
+                $i++;
+            }
+            fclose($handle);
+        }
+        echo "<pre>";
+        print_r($data);
+        exit;
+
+
+        foreach($nomor_contact_arr as $key => $nomor_contact){
+            $nomor_contact  = preg_replace("/[^0-9]/","",$nomor_contact);
+            $nomor_contact  = preg_replace("/^0/","62",$nomor_contact);
+
+            if(strlen($nomor_contact) < 10 || strlen($nomor_contact) > 20){
+                continue;
+            }
+    
+            $check      = ContactPeserta::where("nomor_contact",$nomor_contact)->first();
+            if(!empty($check)){
+                unset($nomor_contact_arr[$key]);
+            }
+        }
+
+        $nomor_contact_arr  = array_values($nomor_contact_arr);
+
+
+        $contact    = ContactPeserta::create($nomor_contact_arr);
+        if($contact){
+            return response()->json([
+                "message"   => "Successfuly insert data"
             ]);
+        }else{
+            return response()->json([
+                "message"   => "Failed, please try again"
+            ],422);
         }
     }
 
     public function delete(Request $request,$id){
         $contact    = ContactPeserta::find($id);
         if($contact->delete()){
-            return back()->with([
-                "success"   => "Successfuly delete data"
+            return response()->json([
+                "message"   => "Successfuly delete data"
             ]);
         }else{
-            return back()->with([
-                "error"   => "Failed, please try again"
-            ]);
+            return response()->json([
+                "message"   => "Failed, please try again"
+            ],422);
         }
     }
 
