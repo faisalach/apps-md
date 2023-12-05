@@ -62,9 +62,7 @@
 						</li>
 					</ul>
 				</div>
-				<div id="message-container" class="hidden p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-					<span class="font-medium">Success alert!</span> Change a few things up and try submitting again.
-				</div>
+				<div id="message-container" class="hidden p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert"></div>
 				<div id="default-tab-content">
 					<div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 						<form id="form_input" action="{{ route('contact.insert') }}" class="p-4 md:p-5" method="POST">

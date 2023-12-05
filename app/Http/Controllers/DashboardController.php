@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CustomHelper;
+use App\Models\HasilTes;
 use App\Models\Kuesioner;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,7 +38,9 @@ class DashboardController extends Controller
                 "message"   => "Failed, Please try again"
             ]);
         }else{
-            return view("panel.settings");
+            $data   = [];
+            $data["hasil_tes"]  = HasilTes::orderBy("kode_angka")->get();
+            return view("panel.settings",$data);
         }
     }
 
