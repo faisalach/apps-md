@@ -37,7 +37,8 @@ Route::group(["middleware" => "auth"],function(){
 
     Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");
     Route::post("/panel/settings",[DashboardController::class,"settings"])->name("settings");
-    Route::post("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"update"])->name("settings.hasil_tes");
+    Route::get("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"get"])->name("settings.hasil_tes.get");
+    Route::post("/panel/settings/hasil_tes/{kode_angka}/update",[HasilTesController::class,"update"])->name("settings.hasil_tes.update");
 
     Route::get("/panel/contact",[ContactPesertaController::class,"contact"])->name("contact");
     Route::get("/panel/contact/datatable",[ContactPesertaController::class,"datatable"])->name("contact.datatable");

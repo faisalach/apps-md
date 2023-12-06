@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 
 class HasilTesController extends Controller
 {
+    public function get($kode_angka){
+        return HasilTes::where("kode_angka",$kode_angka)->first();
+    }
     public function update(Request $request,$kode_angka){
         $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();
 
         if(!empty($request->file("file_pdf"))){
-            $file = $request->file('file');
+            $file = $request->file('file_pdf');
             $filename   = "pdf_".time().".".$file->getClientOriginalExtension();
-            if($file->move("/pdf_file/",$filename)){
+            $move   = $file->move("pdf_file/",$filename);
+            if($move){
                 $hasil_tes->file_pdf = $filename;
             }
         }

@@ -64,7 +64,10 @@
 							{{ $row->title }}
 						</td>
 						<td class="px-6 py-4">
-							{{ $row->fie_pdf }}
+
+							@if(!empty($row->file_pdf))							
+							<iframe src="{{ url('pdf_file/'.$row->file_pdf) }}" type=""></iframe>
+							@endif
 						</td>
 						<td class="px-3 py-2">
 							<button type="button" data-id="{{ $row->kode_angka }}" class="btn-edit-hasil-tes focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -100,12 +103,13 @@
 				<form id="form_edit_hasil_tes" enctype="multipart/form-data" class="p-4 md:p-5" method="POST">
 					@csrf
 					<div class="mb-4">
-						<label for="nomor_contact" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Contact</label>
-						<input type="text" name="nomor_contact" id="nomor_contact" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type number" required="">
+						<label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+						<input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Title">
 					</div>
 					<div class="mb-4">
-						<label for="file_pdf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Contact</label>
-						<input type="file" name="file_pdf" id="file_pdf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type number" required="">
+						<label for="file_pdf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File PDF</label>
+						<input type="file" name="file_pdf" id="file_pdf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+						<small class="text-red-500">* upload untuk mengganti file sebelumnya</small>
 					</div>
 					<button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
 						<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -123,7 +127,19 @@
 
 			$("body").on("click",".btn-edit-hasil-tes",(e) => {
 				e.preventDefault();
-				crudModal.show();
+				
+				let id 		= $(e.target).data("id");
+				let url 	= `{{ route('settings.hasil_tes.update',['kode_angka' => ":kode_angka"]) }}`;
+				url 		= url.replace(":kode_angka",id);
+				$("#form_edit_hasil_tes").attr("action",url);
+
+				$.ajax({
+					url 	: `{{ route('settings.hasil_tes.get',['kode_angka' => ":kode_angka"]) }}`.replace(":kode_angka",id),
+					success : (response) => {
+						crudModal.show();
+						$("#title").val(response.title);
+					}
+				});
 			})
 
 			$("body").on("click",".btn-close-crud-modal",(e) => {
