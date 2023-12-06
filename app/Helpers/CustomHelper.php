@@ -102,8 +102,8 @@ class CustomHelper
             $check  = KuesionerToken::where("token",$str_token)->first();
         } while (!empty($check));
 
-        $setting_time   = Settings::where("key","time_expired_token")->first();
-        $time_interval  = !empty($setting_time->value) ? $setting_time->value : 60;
+        $setting_time   = CustomHelper::getSetting("time_expired_token");
+        $time_interval  = !empty($setting_time) ? $setting_time : 60;
 
         $token              = new KuesionerToken();
         $token->start_date  = date("Y-m-d H:i:s");
@@ -115,5 +115,47 @@ class CustomHelper
 
 
         return url(route("kuesioner.form",["token" => $token->token]));
+    }
+
+    public static function getSetting($key){
+        return Settings::where("key","time_expired_token")->value('value');
+    }
+
+    public static function sendWA($pesan,$no_hp,$url_file = ''){
+        $api_key    = CustomHelper::getSetting("wa_api_key");
+        $id_device  = CustomHelper::getSetting("wa_device_id");
+        $url        = 'https://api.watsap.id/send-media'; // URL API
+
+        if(!empty($url_file)){
+            $tipe  = 'image'; // Tipe Pesan Media Gambar
+        }
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 0); // batas waktu response
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_POST, 1);
+
+        $data_post = [
+            'id_device' => $id_device,
+            'api-key' => $api_key,
+            'no_hp'   => $no_hp,
+            'pesan'   => $pesan,
+        ];
+        if(!empty($url_file)){
+            $data_post['tipe']    = $tipe;
+            $data_post['link']    = $url_file; // pake http
+        }
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data_post));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return $response;
     }
 }

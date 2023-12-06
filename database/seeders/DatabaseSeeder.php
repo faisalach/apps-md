@@ -326,5 +326,25 @@ class DatabaseSeeder extends Seeder
 			'key' => "time_expired_token",
 			'value' => "60",
 		]);
+
+		\App\Models\Settings::create([
+			'key' => "wa_api_key",
+			'value' => "e82ca04c45eb1051f34ee4a18a82932e01aabcf2",
+		]);
+
+		\App\Models\Settings::create([
+			'key' => "wa_device_id",
+			'value' => "12345",
+		]);
+
+		\App\Models\Settings::create([
+			'key' => "template_pesan_kirim_link",
+			'value' => "Link Kuesioner : {link}",
+		]);
+
+		\App\Models\Settings::create([
+			'key' => "template_pesan_sertifikat",
+			'value' => "Sertifikat kamu",
+		]);
 	}
 }
