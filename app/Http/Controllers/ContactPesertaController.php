@@ -210,8 +210,6 @@ class ContactPesertaController extends Controller
             }
 
             $response = CustomHelper::sendWA($new_message,$nomor_contact);
-            print_r($response);
-            exit;
         }
 
         return response()->json([
