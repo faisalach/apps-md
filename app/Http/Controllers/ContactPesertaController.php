@@ -91,6 +91,7 @@ class ContactPesertaController extends Controller
     public function insert_csv(Request $request){
         $nomor_contact_arr  = [];
 
+
         $file_csv   = $request->file("file");
 
         if(empty($file_csv) || $file_csv->getClientOriginalExtension() != "csv"){
@@ -99,25 +100,36 @@ class ContactPesertaController extends Controller
             ],422);
         }
 
-        $data   = [];
 
-        echo "OKE";
+        $header_csv   = [];
+        $index_phone    = [];
 
         if (($handle = fopen($file_csv, 'r')) !== FALSE) {
             $i = 0;
-            $delimiter = ',';
-            while (($lineArray = fgetcsv($handle, 4000, $delimiter, '"')) !== FALSE) {
-                for ($j = 0; $j < count($lineArray); $j  ) {
-                    $data[$i][$j] = $lineArray[$j];
+            while(! feof($handle))
+            {
+                if($i == 0){
+                    $header_csv     = fgetcsv($handle,0,";");
+                    for($i = 1; $i <= 10;$i++){
+                        $index   = array_search("Phone $i - Value",$header_csv);
+                        if($index !== false){
+                            $index_phone[] = $index;
+                        }
+                    }
+                }else{
+                    $data_csv       = fgetcsv($handle,0,";");
+                    foreach($index_phone as $indx){
+                        if(!empty($data_csv[$indx])){
+                            $nomor_contact_arr[]     = $data_csv[$indx];
+                        }
+                    }
                 }
                 $i++;
             }
             fclose($handle);
         }
-        echo "<pre>";
-        print_r($data);
-        exit;
 
+        $data_insert    = [];
 
         foreach($nomor_contact_arr as $key => $nomor_contact){
             $nomor_contact  = preg_replace("/[^0-9]/","",$nomor_contact);
@@ -126,17 +138,23 @@ class ContactPesertaController extends Controller
             if(strlen($nomor_contact) < 10 || strlen($nomor_contact) > 20){
                 continue;
             }
+
+            
+            if(array_search($nomor_contact,$nomor_contact_arr)){
+                continue;
+            }
     
             $check      = ContactPeserta::where("nomor_contact",$nomor_contact)->first();
             if(!empty($check)){
-                unset($nomor_contact_arr[$key]);
+                continue;
             }
+
+            $data_insert[]    = [
+                "nomor_contact" => $nomor_contact
+            ];
         }
 
-        $nomor_contact_arr  = array_values($nomor_contact_arr);
-
-
-        $contact    = ContactPeserta::create($nomor_contact_arr);
+        $contact    = ContactPeserta::insert($data_insert);
         if($contact){
             return response()->json([
                 "message"   => "Successfuly insert data"
@@ -148,7 +166,7 @@ class ContactPesertaController extends Controller
         }
     }
 
-    public function delete(Request $request,$id){
+    public function delete($id){
         $contact    = ContactPeserta::find($id);
         if($contact->delete()){
             return response()->json([

@@ -129,12 +129,12 @@
 								<div id="menu_dropdown_contact_${id}" class="menu-dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
 									<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
 										<li>
-											<a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<a href="#" data-id="${id}" class="btn-send-wa block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fas fa-fw fa-paper-plane"></i>
 												Send WA</a>
 										</li>
 										<li>
-											<a href="#" class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<a href="#" data-id="${id}" class="btn-delete-contact block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fas fa-fw fa-trash-alt"></i>
 												Hapus
 											</a>
@@ -228,7 +228,6 @@
 				formData.append("file", file);
 				formData.append("_token", $(`{{ csrf_field() }}`).val());
 
-
 				form.find("[type=submit]").prop("disabled",true);
 				if(form.find(".alert").length > 0){
 					form.find(".alert")[0].outerHTML = '';
@@ -237,9 +236,12 @@
 				$.ajax({
 					type : method,
 					url : url,
+					cache: false,
 					processData: false,
 					contentType: false,
 					data : formData,
+					dataType : "JSON",
+					timeout: 30000,
 					success : (response) => {
 						form.find("[type=submit]").prop("disabled",false);
 						$("#crud-modal").find("[data-modal-toggle]").click();
@@ -262,6 +264,43 @@
 								${message}
 							</div>
 						`);
+					}
+				});
+			})
+
+			$("body").on("click",".btn-delete-contact",(e) => {
+				let id 	= $(e.target).data("id");
+				let url 	= "{{ route('contact.delete',['id' => ':id']) }}".replace(":id",id);
+				Swal.fire({
+					title: "Hapus data ini?",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url 	: url,
+							type 	: "POST",
+							data 	: {
+								_token : $(`{{ csrf_field() }}`).val()
+							},
+							success 	: (response) => {
+								let message 	= response?.message;
+								Swal.fire({
+									title: message,
+									icon: "success"
+								});
+								$("#dt_contact").DataTable().ajax.reload();
+							},
+							error 	: (response) => {
+								let message 	= response?.responseJSON?.message;
+								Swal.fire({
+									title: message,
+									icon: "error"
+								});
+							}
+						})
 					}
 				});
 			})
