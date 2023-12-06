@@ -21,16 +21,24 @@ class DashboardController extends Controller
     public function settings(Request $request){
         if($request->method() === "POST"){
             $request->validate([
-                "password"  => ["required","min:8","max:32"],
-                "conf_password"     => ["required","same:password"]
+                "username"  => ["required","min:8","max:32"],
             ]);
+            if(!empty($request->input("password"))){
+                $request->validate([
+                    "password"  => ["required","min:8","max:32"],
+                    "conf_password"     => ["required","same:password"]
+                ]);
+            }
 
             $auth   = Auth::user();
             $user   = User::find($auth->id);
-            $user->password     = Hash::make($request->input("password"));
+            $user->username     = $request->input("username");
+            if(!empty($request->input("password"))){
+                $user->password     = Hash::make($request->input("password"));
+            }
             if($user->save()){
                 return back()->with([
-                    "message"   => "Successfuly change password"
+                    "message"   => "Successfuly change account"
                 ]);    
             }
 
