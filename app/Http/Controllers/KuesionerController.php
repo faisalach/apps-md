@@ -203,15 +203,16 @@ class KuesionerController extends Controller
         $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
 
+        $root_path                      = $_SERVER["DOCUMENT_ROOT"];
         foreach($pdf_hasil_tes as $key => $pdf){
-            $pdf_hasil_tes[$key]    = base64_encode(file_get_contents(public_path($pdf)));
+            $pdf_hasil_tes[$key]    = base64_encode(file_get_contents($root_path.$pdf));
         }
 
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
         $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
-        $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.png')));
+        $data["image"]                  = base64_encode(file_get_contents($root_path.'/assets/template_sertifikat.png'));
 
         $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
         $pdf_filepath   = 'sertifikat/'.$pdf_filename;
@@ -226,15 +227,16 @@ class KuesionerController extends Controller
         $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
 
+        $root_path                      = $_SERVER["DOCUMENT_ROOT"];
         foreach($pdf_hasil_tes as $key => $pdf){
-            $pdf_hasil_tes[$key]    = base64_encode(file_get_contents(public_path($pdf)));
+            $pdf_hasil_tes[$key]    = base64_encode(file_get_contents($root_path.$pdf));
         }
 
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
         $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
-        $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.png')));
+        $data["image"]                  = base64_encode(file_get_contents($root_path.'/assets/template_sertifikat.png'));
 
         // $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
         // $pdf_filepath   = 'sertifikat/'.$pdf_filename;
