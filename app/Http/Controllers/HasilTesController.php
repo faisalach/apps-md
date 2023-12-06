@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HasilTes;
 use Illuminate\Http\Request;
+use ZipArchive;
 
 class HasilTesController extends Controller
 {
@@ -13,12 +14,40 @@ class HasilTesController extends Controller
     public function update(Request $request,$kode_angka){
         $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();
 
-        if(!empty($request->file("file_pdf"))){
-            $file = $request->file('file_pdf');
-            $filename   = "pdf_".time().".".$file->getClientOriginalExtension();
-            $move   = $file->move("pdf_file/",$filename);
-            if($move){
-                $hasil_tes->file_pdf = $filename;
+        if(!empty($request->file("file_zip"))){
+            $file = $request->file('file_zip');
+
+            $zip = new ZipArchive;
+            $zip_open   = $zip->open($file->getPathName(), ZipArchive::CREATE);
+
+            // reset folder
+            $pathFolder     = "pdf_file/kode_".$kode_angka;
+            if(file_exists($pathFolder)){
+                $scanFile   = scandir($pathFolder);
+                foreach($scanFile as $sFile){
+                    if(is_file("$pathFolder/$sFile")){
+                        unlink("$pathFolder/$sFile");
+                    }
+                }
+                rmdir($pathFolder);
+            }
+            if(!file_exists($pathFolder)){
+                mkdir($pathFolder);
+            }
+
+            $pdf_file_arr = [];
+            if($zip_open){
+                $zip->extractTo($pathFolder);
+                for( $i = 0; $i < $zip->numFiles; $i++ ){ 
+                    $stat = $zip->statIndex( $i ); 
+                    $pdf_file_arr[]     = $stat["name"];
+                }                
+            }
+
+            sort($pdf_file_arr);
+            
+            if(!empty($pdf_file_arr)){
+                $hasil_tes->file_pdf = json_encode($pdf_file_arr);
             }
         }
 

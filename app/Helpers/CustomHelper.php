@@ -73,9 +73,16 @@ class CustomHelper
         return !empty($hasil_tes->title) ? $hasil_tes->title : "";
     }
 
-    public static function get_pdf_hasil_tes($number_tgl_lahir){
-        $hasil_tes  = HasilTes::where("kode_angka",$number_tgl_lahir)->first();
-        $pdf_file   = "pdf_file/" . (!empty($hasil_tes->file_pdf) ? $hasil_tes->file_pdf : "pdf 1.pdf");
+    public static function get_pdf_hasil_tes($kode_angka){
+        $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();
+        $pdf_file   = (!empty($hasil_tes->file_pdf) && json_decode($hasil_tes->file_pdf,true) ? json_decode($hasil_tes->file_pdf,true) : []);
+
+        if(!empty($pdf_file)){
+            foreach($pdf_file as $key => $file){
+                $file   = "/pdf_file/kode_$kode_angka/$file";
+                $pdf_file[$key]     = $file;
+            }
+        }
         return $pdf_file;
     }
 

@@ -55,8 +55,9 @@
             {{ $kuesioner->no_peserta }}
         </p>
     </div>
-    {{-- <embed style="width: 20.99cm;height:100%" 
-    type="application/pdf"
-    frameBorder="0"
-    src="data:application/pdf;base64, {{ $pdf_hasil_tes }}#toolbar=0&navpanes=0&scrollbar=0"> --}}
+    @foreach($pdf_hasil_tes as $img)
+    <div style="width:20.99cm;position: relative;">
+        <img src="data:image/jpeg;base64, {{ $img }}" alt="" style="width: 100%;">
+    </div>
+    @endforeach
 </body>

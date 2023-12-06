@@ -71,14 +71,22 @@
 							{{ $row->title }}
 						</td>
 						<td class="px-6 py-4">
-
-							@if(!empty($row->file_pdf))							
-							<iframe src="{{ url('pdf_file/'.$row->file_pdf) }}" type=""></iframe>
+							@php
+								$get_file_pdf = CustomHelper::get_pdf_hasil_tes($row->kode_angka);
+							@endphp
+							
+							@if (!empty($get_file_pdf))
+								<div class="overflow-y-auto w-64 h-64">
+									@foreach($get_file_pdf as $file)
+										<img src="{{ $file }}" alt="" class="w-auto h-auto">
+									@endforeach
+								</div>
 							@endif
 						</td>
 						<td class="px-3 py-2">
 							<button type="button" data-id="{{ $row->kode_angka }}" class="btn-edit-hasil-tes focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
 								<i class="fas fa-fw fa-pen"></i>
+								Edit
 							</button>
 						</td>
 					</tr>
@@ -114,9 +122,10 @@
 						<input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Title">
 					</div>
 					<div class="mb-4">
-						<label for="file_pdf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File PDF</label>
-						<input type="file" name="file_pdf" id="file_pdf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-						<small class="text-red-500">* upload untuk mengganti file sebelumnya</small>
+						<label for="file_zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File ZIP</label>
+						<input type="file" accept=".zip" name="file_zip" id="file_zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+						<small class="text-red-500 block">* Upload untuk mengganti file sebelumnya</small>
+						<small class="text-red-500 block">* Gunakan converter PDF to JPG di <a class="text-blue-500" href="https://www.ilovepdf.com/pdf_to_jpg" target="_blank">https://www.ilovepdf.com/pdf_to_jpg</a></small>
 					</div>
 					<button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
 						<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -132,10 +141,10 @@
 			const $targetElCrudModal = document.getElementById('crud-modal');
 			const crudModal = new Modal($targetElCrudModal);
 
-			$("body").on("click",".btn-edit-hasil-tes",(e) => {
+			$("body").on("click",".btn-edit-hasil-tes",function(e) {
 				e.preventDefault();
 				
-				let id 		= $(e.target).data("id");
+				let id 		= $(this).data("id");
 				let url 	= `{{ route('settings.hasil_tes.update',['kode_angka' => ":kode_angka"]) }}`;
 				url 		= url.replace(":kode_angka",id);
 				$("#form_edit_hasil_tes").attr("action",url);
@@ -149,7 +158,7 @@
 				});
 			})
 
-			$("body").on("click",".btn-close-crud-modal",(e) => {
+			$("body").on("click",".btn-close-crud-modal",function(e) {
 				e.preventDefault();
 				crudModal.hide();
 			})

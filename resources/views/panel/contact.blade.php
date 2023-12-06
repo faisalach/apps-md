@@ -65,6 +65,7 @@
 				<div id="default-tab-content">
 					<div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 						<form id="form_input" action="{{ route('contact.insert') }}" class="p-4 md:p-5" method="POST">
+							@csrf
 							<div class="mb-4">
 								<label for="nomor_contact" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Contact</label>
 								<input type="text" name="nomor_contact" id="nomor_contact" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type number" required="">
@@ -148,17 +149,17 @@
 				
 			});
 
-			$("body").on("click","#refresh_dt_contact",(e) => {
+			$("body").on("click","#refresh_dt_contact",function(e) {
 				e.preventDefault();
 				
 				$("#dt_contact").DataTable().ajax.reload();
 			})
 
-			$("body").on("click",".btn-dropdown",(e) => {
+			$("body").on("click",".btn-dropdown",function(e) {
 				e.preventDefault();
 
-				$targetEl   = $(e.target).closest('td').find(".menu-dropdown")[0];
-				const dropdown = new Dropdown($targetEl, e.target,{
+				$targetEl   = $(this).closest('td').find(".menu-dropdown")[0];
+				const dropdown = new Dropdown($targetEl, this,{
 					placement: 'left'
 				});
 				if(dropdown.isVisible()){
@@ -169,12 +170,10 @@
 				
 			})
 
-			$("body").on("submit","#form_input",(e) => {
+			$("body").on("submit","#form_input",function(e) {
 				e.preventDefault();
 
-				
-				let form 		= $(e.target);
-				let nomor_contact 	= $("#nomor_contact").val();
+				let form 		= $(this);
 				let url 		= form.attr("action");
 				let method 		= form.attr("method");
 
@@ -186,10 +185,7 @@
 				$.ajax({
 					type : method,
 					url : url,
-					data : {
-						_token	: $(`{{ csrf_field() }}`).val(),
-						nomor_contact : nomor_contact
-					},
+					data : $(this).serialize(),
 					success : (response) => {
 						form.find("[type=submit]").prop("disabled",false);
 						$("#crud-modal").find("[data-modal-toggle]").click();
@@ -206,7 +202,6 @@
 						form.find("[type=submit]").prop("disabled",false);
 
 						let message 	= response?.responseJSON?.message;
-
 						form.prepend(`
 							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
 								${message}
@@ -216,10 +211,10 @@
 				});
 			})
 
-			$("body").on("submit","#form_csv",(e) => {
+			$("body").on("submit","#form_csv",function(e) {
 				e.preventDefault();
 				
-				let form 		= $(e.target);
+				let form 		= $(this);
 				let file 		= $("#file").prop("files")[0];
 				let url 		= form.attr("action");
 				let method 		= form.attr("method");
@@ -268,8 +263,8 @@
 				});
 			})
 
-			$("body").on("click",".btn-delete-contact",(e) => {
-				let id 	= $(e.target).data("id");
+			$("body").on("click",".btn-delete-contact",function(e) {
+				let id 	= $(this).data("id");
 				let url 	= "{{ route('contact.delete',['id' => ':id']) }}".replace(":id",id);
 				Swal.fire({
 					title: "Hapus data ini?",

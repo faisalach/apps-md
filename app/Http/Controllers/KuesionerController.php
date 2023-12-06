@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class KuesionerController extends Controller
 {
@@ -111,8 +112,8 @@ class KuesionerController extends Controller
         ->where("end_date",">=",date("Y-m-d H:i:s"))
         ->where("sudah_diisi",0)
         ->first();
-
-        if(empty($check_token)){
+        
+        if(empty($check_token) && empty(Session::has("message"))){
             return view("kuesioner.failed");
         }
 
@@ -189,18 +190,22 @@ class KuesionerController extends Controller
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
 
-            return redirect(route("kuesioner.form"))->with([
+            return back()->with([
                 "message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat",
                 "url_open"  => url($sertifikat_url)
             ]);
         }
         
-        return redirect(route("kuesioner.form"))->with(["message" => "Failed, Please try again."]);
+        return back()->with(["message" => "Failed, Please try again."]);
     }
 
     private function sertifikat($kuesioner){
         $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
+
+        foreach($pdf_hasil_tes as $key => $pdf){
+            $pdf_hasil_tes[$key]    = base64_encode(file_get_contents(public_path($pdf)));
+        }
 
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
@@ -220,16 +225,21 @@ class KuesionerController extends Controller
         $kuesioner                      = Kuesioner::find($id);
         $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
+
+        foreach($pdf_hasil_tes as $key => $pdf){
+            $pdf_hasil_tes[$key]    = base64_encode(file_get_contents(public_path($pdf)));
+        }
+
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
-        $data["pdf_hasil_tes"]          = base64_encode(file_get_contents(public_path("/$pdf_hasil_tes")));
+        $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
         $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.png')));
 
         // $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
         // $pdf_filepath   = 'sertifikat/'.$pdf_filename;
         // $pdf = PDF::loadView('kuesioner.sertifikat', $data);
-        // $pdf->save($pdf_filepath);
+        // return $pdf->download($pdf_filepath);
         return view('kuesioner.sertifikat', $data);
     }
 }
