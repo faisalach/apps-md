@@ -21,11 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::redirect("/","/form");
+Route::get("/form",[KuesionerController::class,"form"])->name("kuesioner.form");
+Route::post("/form/store",[KuesionerController::class,"form_store"])->name("kuesioner.formStore");
+Route::get("/form/sertifikat/{id}",[KuesionerController::class,"show_sertifikat"]);
+
 Route::group(["middleware" => "guest"],function(){
-    Route::redirect("/","/form");
-    Route::get("/form",[KuesionerController::class,"form"])->name("kuesioner.form");
-    Route::post("/form/store",[KuesionerController::class,"form_store"])->name("kuesioner.formStore");
-    
     Route::redirect("/panel","/panel/login");
     Route::get("/panel/login",[AuthController::class,"login"])->name("login");
     Route::post("/panel/login",[AuthController::class,"authenticated"])->name("authenticated");

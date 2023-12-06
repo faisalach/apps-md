@@ -73,6 +73,12 @@ class CustomHelper
         return !empty($hasil_tes->title) ? $hasil_tes->title : "";
     }
 
+    public static function get_pdf_hasil_tes($number_tgl_lahir){
+        $hasil_tes  = HasilTes::where("kode_angka",$number_tgl_lahir)->first();
+        $pdf_file   = "pdf_file/" . (!empty($hasil_tes->file_pdf) ? $hasil_tes->file_pdf : "pdf 1.pdf");
+        return $pdf_file;
+    }
+
     public static function form_url($nomor_contact){
         $token  = KuesionerToken::where("nomor_contact",$nomor_contact)
         ->where("start_date","<=",date("Y-m-d H:i:s"))

@@ -6,6 +6,7 @@ use App\Helpers\CustomHelper;
 use App\Models\BankSoal;
 use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
+use App\Models\KuesionerToken;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -104,9 +105,21 @@ class KuesionerController extends Controller
     public function form(Request $request){
         $bank_soal  = BankSoal::with(["bank_soal_jawaban"])->orderBy("no_urut","ASC")->get();
 
+        $token  = $request->input("token");
+        $check_token  = KuesionerToken::where("token",$token)
+        ->where("start_date","<=",date("Y-m-d H:i:s"))
+        ->where("end_date",">=",date("Y-m-d H:i:s"))
+        ->where("sudah_diisi",0)
+        ->first();
+
+        if(empty($check_token)){
+            return view("kuesioner.failed");
+        }
+
         $data   = [];
         $data["bank_soal"]  = $bank_soal;
         $data["no_peserta"]  = $request->input("no_peserta");
+        $data["token_form"]  = $request->input("token");
         return view("kuesioner.form",$data);
     }
 
@@ -123,6 +136,7 @@ class KuesionerController extends Controller
             "email" => "required",
             "no_wa" => "required",
             "jawaban" => "required",
+            "token_form" => "required",
         ]);
 
         $nama_lengkap       = $request->input("nama_lengkap");
@@ -137,6 +151,7 @@ class KuesionerController extends Controller
         $no_wa              = $request->input("no_wa");
         $no_peserta         = !empty($request->input("no_peserta")) ? $request->input("no_peserta") : CustomHelper::get_no_peserta();
         $jawaban            = $request->input("jawaban");
+        $token_form         = $request->input("token_form");
 
         $kuesioner          = new Kuesioner();
         $kuesioner->nama_lengkap    = $nama_lengkap;
@@ -168,6 +183,10 @@ class KuesionerController extends Controller
             $kuesioner->persentase_kinestetik   = $persentase_jawaban["kinestetik"];
             $kuesioner->save();
 
+            $token  = KuesionerToken::where("token",$token_form)->first();
+            $token->sudah_diisi = 1;
+            $token->save();
+
             $sertifikat_url   = $this->sertifikat($kuesioner);
 
             return redirect(route("kuesioner.form"))->with([
@@ -181,12 +200,13 @@ class KuesionerController extends Controller
 
     private function sertifikat($kuesioner){
         $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
+        $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
 
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
+        $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
         $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.png')));
-        // return view('kuesioner.sertifikat', $data);
 
         $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
         $pdf_filepath   = 'sertifikat/'.$pdf_filename;
@@ -194,5 +214,22 @@ class KuesionerController extends Controller
         $pdf->save($pdf_filepath);
         
         return $pdf_filepath;
+    }
+
+    public function show_sertifikat($id){
+        $kuesioner                      = Kuesioner::find($id);
+        $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
+        $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
+        $data   = [];
+        $data["kuesioner"]              = $kuesioner;
+        $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
+        $data["pdf_hasil_tes"]          = base64_encode(file_get_contents(public_path("/$pdf_hasil_tes")));
+        $data["image"]                  = base64_encode(file_get_contents(public_path('/assets/template_sertifikat.png')));
+
+        // $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
+        // $pdf_filepath   = 'sertifikat/'.$pdf_filename;
+        // $pdf = PDF::loadView('kuesioner.sertifikat', $data);
+        // $pdf->save($pdf_filepath);
+        return view('kuesioner.sertifikat', $data);
     }
 }

@@ -22,6 +22,7 @@
                 <div class="mb-3">
                     <h5 class="font-semibold ml-6 mb-3"><span class="text-lg">FORM 1</span> <span class="text-sm">KET : <span class="text-red-500 italic">* WAJIB DIISI</span></span></h5>
                     <input type="hidden" name="no_peserta" value="{{ $no_peserta }}">
+                    <input type="hidden" name="token_form" value="{{ $token_form }}">
                     <div class="bg-white rounded-lg py-3 px-5 mb-3">
                         <label for="nama_lengkap" class="text-xs uppercase font-semibold">Nama Lengkap*</label>
                         <input type="text" required id="nama_lengkap" name="nama_lengkap" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Nama Lengkap">
