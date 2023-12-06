@@ -68,6 +68,13 @@ class ContactPesertaController extends Controller
         $nomor_contact  = preg_replace("/[^0-9]/","",$nomor_contact);
         $nomor_contact  = preg_replace("/^0/","62",$nomor_contact);
 
+        if(strlen($nomor_contact) < 10 || strlen($nomor_contact) > 20){
+            return response()->json([
+                "message"   => "Format nomor salah"
+            ],422);
+        }
+        
+
         $check      = ContactPeserta::where("nomor_contact",$nomor_contact)->first();
         if(!empty($check)){
             return response()->json([
@@ -116,6 +123,10 @@ class ContactPesertaController extends Controller
                             $index_phone[] = $index;
                         }
                     }
+
+                    if(empty($index_phone)){
+                        $index_phone[] = 0;
+                    }
                 }else{
                     $data_csv       = fgetcsv($handle,0,";");
                     foreach($index_phone as $indx){
@@ -139,7 +150,6 @@ class ContactPesertaController extends Controller
                 continue;
             }
 
-            
             if(array_search($nomor_contact,$nomor_contact_arr)){
                 continue;
             }
@@ -178,6 +188,5 @@ class ContactPesertaController extends Controller
             ],422);
         }
     }
-
     
 }
