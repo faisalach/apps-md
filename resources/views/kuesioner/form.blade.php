@@ -86,6 +86,9 @@
                     <div class="bg-white rounded-lg py-3 px-5 mb-3">
                         <label for="no_wa" class="text-xs uppercase font-semibold">No Telepon / WA *</label>
                         <input type="text" required id="no_wa" name="no_wa" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Masukkan No. Telp / WA">
+                        @if (Session::has('error_no_wa'))
+                        <p class="text-red-500 text-sm">* {{ Session::get('error_no_wa') }}</p>
+                        @endif
                     </div>
                 </div>
                 <div class="mb-3">
@@ -122,4 +125,15 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $(() => {
+            $("body").on("blur","#no_wa",function(){
+                let val     = $(this).val();
+                val         = val.replace(/[^0-9]/,'');
+                val         = val.replace(/[^0]/,'62');
+                $(this).val(val);
+            })
+        })
+    </script>
 @include('layout.footer')

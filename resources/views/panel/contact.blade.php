@@ -16,6 +16,12 @@
 				<thead class="text-xs text-gray-700 uppercase bg-green-300 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
 						<th scope="col" class="px-6 py-3">
+							<input id="check-contact-all" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+							<button id="button-send-wa" class="hidden ml-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium text-sm px-1 py-1 rounded text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+								Kirim
+							</button>
+						</th>
+						<th scope="col" class="px-6 py-3">
 							Nomor Contact
 						</th>
 						<th scope="col" class="px-6 py-3">
@@ -105,7 +111,18 @@
 				ajax    : {
 					url     : "{{ route('contact.datatable') }}",
 				},
+				order : [[1,"DESC"]],
 				columns: [
+					{ 
+						data: 'nomor_contact',
+						orderable : false,
+						class : "px-6 py-4",
+						render : (nomor_contact) => {
+							return `
+							<input type="checkbox" value="${nomor_contact}" class="checkbox-contact w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+							`;
+						}
+					},
 					{ 
 						data: 'nomor_contact',
 						name: 'nomor_contact',
@@ -113,7 +130,6 @@
 					},
 					{ 
 						data: 'url',
-						name: 'url',
 						orderable : false,
 						class : "px-6 py-4"
 					},
@@ -130,11 +146,6 @@
 								<div id="menu_dropdown_contact_${id}" class="menu-dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
 									<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
 										<li>
-											<a href="#" data-id="${id}" class="btn-send-wa block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-												<i class="fas fa-fw fa-paper-plane"></i>
-												Send WA</a>
-										</li>
-										<li>
 											<a href="#" data-id="${id}" class="btn-delete-contact block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fas fa-fw fa-trash-alt"></i>
 												Hapus
@@ -148,6 +159,8 @@
 				]
 				
 			});
+
+			
 
 			$("body").on("click","#refresh_dt_contact",function(e) {
 				e.preventDefault();
@@ -298,6 +311,62 @@
 						})
 					}
 				});
+			})
+
+			$("body").on("click","#check-contact-all",function(e){
+				if($(this).is(":checked")){
+					$(".checkbox-contact").prop("checked",true);
+				}else{
+					$(".checkbox-contact").prop("checked",false);
+				}
+
+				showHideBtnSendWa();
+			})
+			$("body").on("click",".checkbox-contact",function(e){
+				if($(".checkbox-contact:checked").length === $(".checkbox-contact").length){
+					$("#check-contact-all").prop("checked",true);
+				}else{
+					$("#check-contact-all").prop("checked",false);
+				}
+
+				showHideBtnSendWa();
+			});
+			
+			function showHideBtnSendWa(){
+				$("#button-send-wa").addClass("hidden");
+				if($(".checkbox-contact:checked").length > 0){
+					$("#button-send-wa").removeClass("hidden");
+				}
+			}
+
+			$("body").on("click", "#button-send-wa",function(e){
+				e.preventDefault();
+
+				let nomor_contact_arr 	= [];
+				$.each($(".checkbox-contact:checked"),function(k,el){
+					nomor_contact_arr.push($(el).val());
+				})
+
+				if(nomor_contact_arr.length < 1){
+					Swal.fire("Pilih contact terlebih dulu","","error");
+					return false;
+				}
+
+				$.ajax({
+					url : "{{ route('contact.send_wa') }}",
+					type 	: "POST",
+					data 	: {
+						_token 	: $(`{{ csrf_field() }}`).val(),
+						nomor_contact : nomor_contact_arr
+					},
+					success : function(response) {
+						$(".checkbox-contact").prop("checked",false);
+						Swal.fire(response?.message,"","success");
+					},
+					error : function(response) {
+						Swal.fire(response?.data?.message,"","error");
+					}
+				})
 			})
 		})
 	</script>

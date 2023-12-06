@@ -8,8 +8,13 @@
                 <h3 class="text-xl leading-tight mt-2 font-semibold italic ">Aplikasi Mengenal Diri</h3>
             </div>
             <div class="mb-3 bg-white p-5 text-center rounded-xl">
+                @if(!empty($check_token->sudah_diisi))
+                <h1 class="text-xl mb-4">Form Kuesioner telah diisi.</h1>
+                <h3 class=""> Silahkan memeriksa whatsapp anda untuk mendapatkan sertifikat.</h3>
+                @else
                 <h1 class="text-xl mb-4">Form Kuesioner telah expired.</h1>
                 <h3 class=""> Silahkan menghubungi admin untuk mendapatkan akses form kembali.</h3>
+                @endif
             </div>
         </div>
     </div>

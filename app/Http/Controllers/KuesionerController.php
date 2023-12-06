@@ -113,8 +113,12 @@ class KuesionerController extends Controller
         ->where("sudah_diisi",0)
         ->first();
         
-        if(empty($check_token) && empty(Session::has("message"))){
-            return view("kuesioner.failed");
+        if(empty($check_token)){
+
+            $check_token  = KuesionerToken::where("token",$token)
+            ->first();
+
+            return view("kuesioner.failed",compact("check_token"));
         }
 
         $data   = [];
@@ -154,6 +158,16 @@ class KuesionerController extends Controller
         $jawaban            = $request->input("jawaban");
         $token_form         = $request->input("token_form");
 
+        $no_wa  = $request->input("no_wa");
+        $no_wa  = preg_replace("/[^0-9]/","",$no_wa);
+        $no_wa  = preg_replace("/^0/","62",$no_wa);
+
+        if(strlen($no_wa) < 10 || strlen($no_wa) > 20){
+            return back()->with([
+                "error_no_wa"   => "Format nomor salah"
+            ]);
+        }
+
         $kuesioner          = new Kuesioner();
         $kuesioner->nama_lengkap    = $nama_lengkap;
         $kuesioner->tempat_lahir    = $tempat_lahir;
@@ -189,10 +203,12 @@ class KuesionerController extends Controller
             $token->save();
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
+            $template_pesan     = CustomHelper::getSetting("template_pesan_sertifikat");
+            CustomHelper::sendWA($template_pesan,$no_wa,url($sertifikat_url));
 
             return back()->with([
                 "message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat",
-                "url_open"  => url($sertifikat_url)
+                // "url_open"  => url($sertifikat_url)
             ]);
         }
         

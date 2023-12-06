@@ -26,7 +26,7 @@ class ContactPesertaController extends Controller
         if(!empty($search)){
             $data->where(function($query) use ($search,$columns){
                 foreach($columns as $col){
-                    if($col["searchable"]){
+                    if($col["searchable"] && !empty($col["name"])){
                         $query->orWhere($col["name"],"like","%$search%");
                     }
                 }
@@ -187,6 +187,37 @@ class ContactPesertaController extends Controller
                 "message"   => "Failed, please try again"
             ],422);
         }
+    }
+
+    public function send_wa(Request $request){
+        $request->validate([
+            "nomor_contact" => "required",
+            "nomor_contact.*" => "required"
+        ]);
+
+        $nomor_contact_arr  = $request->input("nomor_contact");
+        $message            = CustomHelper::getSetting("template_pesan_kirim_link");
+        
+        foreach($nomor_contact_arr as $nomor_contact){
+            $link_sertifikat    = CustomHelper::form_url($nomor_contact);
+            $data_replace       = [
+                "link"    => $link_sertifikat
+            ];
+
+            $new_message        = $message;
+            foreach($data_replace as $key => $val){
+                $new_message    = str_replace("{$key}",$val,$new_message);
+            }
+
+            $response = CustomHelper::sendWA($new_message,$nomor_contact);
+            print_r($response);
+            exit;
+        }
+
+        return response()->json([
+            "message" => "Success"
+        ]);
+
     }
     
 }

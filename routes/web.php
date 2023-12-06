@@ -44,6 +44,7 @@ Route::group(["middleware" => "auth"],function(){
     Route::get("/panel/contact",[ContactPesertaController::class,"contact"])->name("contact");
     Route::get("/panel/contact/datatable",[ContactPesertaController::class,"datatable"])->name("contact.datatable");
     Route::post("/panel/contact/insert",[ContactPesertaController::class,"insert"])->name("contact.insert");
+    Route::post("/panel/contact/send_wa",[ContactPesertaController::class,"send_wa"])->name("contact.send_wa");
     Route::post("/panel/contact/insert_csv",[ContactPesertaController::class,"insert_csv"])->name("contact.insert_csv");
     Route::post("/panel/contact/delete/{id}",[ContactPesertaController::class,"delete"])->name("contact.delete");
 
