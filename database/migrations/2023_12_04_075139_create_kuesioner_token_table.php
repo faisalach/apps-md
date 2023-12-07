@@ -15,9 +15,11 @@ return new class extends Migration
             $table->increments('id');
             $table->string('token');
             $table->string('nomor_contact',20);
+            $table->integer('id_cabang')->unsigned()->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->boolean('sudah_diisi');
+            $table->foreign("id_cabang")->references('id')->on("cabang")->onDelete("cascade");
             $table->timestamps();
         });
     }

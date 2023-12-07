@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CustomHelper;
 use App\Models\ContactPeserta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ContactPesertaController extends Controller
@@ -173,7 +174,9 @@ class ContactPesertaController extends Controller
             }
 
             $data_insert[]    = [
-                "nomor_contact" => $nomor_contact
+                "nomor_contact" => $nomor_contact,
+                "created_at"    => Carbon::now(),
+                "updated_at"    => Carbon::now(),
             ];
         }
 

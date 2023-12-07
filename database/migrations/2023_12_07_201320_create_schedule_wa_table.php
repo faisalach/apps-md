@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hasil_tes', function (Blueprint $table) {
+        Schema::create('schedule_wa', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('kode_angka');
-            $table->string('title',200);
-            $table->text('file_pdf');
+            $table->text('isi_pesan');
+            $table->timestamp('waktu_pengiriman');
+            $table->string('status_pengiriman',20);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hasil_tes');
+        Schema::dropIfExists('schedule_wa');
     }
 };
