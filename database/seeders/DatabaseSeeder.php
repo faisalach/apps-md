@@ -333,8 +333,8 @@ class DatabaseSeeder extends Seeder
 		]);
 
 		\App\Models\Settings::create([
-			'key' => "wa_device_id",
-			'value' => "12345",
+			'key' => "wa_sender",
+			'value' => "62812345678",
 		]);
 
 		\App\Models\Settings::create([
