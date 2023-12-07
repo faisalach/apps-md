@@ -234,7 +234,7 @@ class KuesionerController extends Controller
         $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
         $data["image"]                  = base64_encode(file_get_contents($root_path.'/assets/template_sertifikat.png'));
 
-        $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';
+        $pdf_filename   = 'sertifikat_'.time().rand(1000,9999).$kuesioner->no_peserta.'.pdf';
         $pdf_filepath   = 'sertifikat/'.$pdf_filename;
         $pdf = PDF::loadView('kuesioner.sertifikat', $data);
         $pdf->save($pdf_filepath);

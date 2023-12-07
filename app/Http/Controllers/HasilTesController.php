@@ -17,34 +17,42 @@ class HasilTesController extends Controller
         if(!empty($request->file("file_zip"))){
             $file = $request->file('file_zip');
 
-            $zip = new ZipArchive;
-            $zip_open   = $zip->open($file->getPathName(), ZipArchive::CREATE);
-
-            // reset folder
-            $pathFolder     = "pdf_file/kode_".$kode_angka;
-            if(file_exists($pathFolder)){
-                $scanFile   = scandir($pathFolder);
-                foreach($scanFile as $sFile){
-                    if(is_file("$pathFolder/$sFile")){
-                        unlink("$pathFolder/$sFile");
+            if(strtolower($file->getClientOriginalExtension()) == "pdf"){
+                $zip = new ZipArchive;
+                $zip_open   = $zip->open($file->getPathName(), ZipArchive::CREATE);
+    
+                // reset folder
+                $pathFolder     = "pdf_file/kode_".$kode_angka;
+                if(file_exists($pathFolder)){
+                    $scanFile   = scandir($pathFolder);
+                    foreach($scanFile as $sFile){
+                        if(is_file("$pathFolder/$sFile")){
+                            unlink("$pathFolder/$sFile");
+                        }
                     }
+                    rmdir($pathFolder);
                 }
-                rmdir($pathFolder);
-            }
-            if(!file_exists($pathFolder)){
-                mkdir($pathFolder);
+                if(!file_exists($pathFolder)){
+                    mkdir($pathFolder);
+                }
+    
+                $pdf_file_arr = [];
+                if($zip_open){
+                    $zip->extractTo($pathFolder);
+                    for( $i = 0; $i < $zip->numFiles; $i++ ){ 
+                        $stat = $zip->statIndex( $i ); 
+                        $pdf_file_arr[]     = $stat["name"];
+                    }                
+                }
+    
+                sort($pdf_file_arr);
+            }else if(strtolower($file->getClientOriginalExtension()) == "jpg"){
+                $pathFolder     = "pdf_file/kode_".$kode_angka;
+                if($file->move($pathFolder,$file->getClientOriginalName())){
+                    $pdf_file_arr[]     = $file->getClientOriginalName();
+                }
             }
 
-            $pdf_file_arr = [];
-            if($zip_open){
-                $zip->extractTo($pathFolder);
-                for( $i = 0; $i < $zip->numFiles; $i++ ){ 
-                    $stat = $zip->statIndex( $i ); 
-                    $pdf_file_arr[]     = $stat["name"];
-                }                
-            }
-
-            sort($pdf_file_arr);
             
             if(!empty($pdf_file_arr)){
                 $hasil_tes->file_pdf = json_encode($pdf_file_arr);

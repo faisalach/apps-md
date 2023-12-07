@@ -122,8 +122,8 @@
 						<input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type Title">
 					</div>
 					<div class="mb-4">
-						<label for="file_zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File ZIP</label>
-						<input type="file" accept=".zip" name="file_zip" id="file_zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+						<label for="file_zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File ZIP / JPG</label>
+						<input type="file" accept=".zip,.jpg" name="file_zip" id="file_zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
 						<small class="text-red-500 block">* Upload untuk mengganti file sebelumnya</small>
 						<small class="text-red-500 block">* Gunakan converter PDF to JPG di <a class="text-blue-500" href="https://www.ilovepdf.com/pdf_to_jpg" target="_blank">https://www.ilovepdf.com/pdf_to_jpg</a></small>
 					</div>
