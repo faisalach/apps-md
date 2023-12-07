@@ -110,13 +110,21 @@ class ContactPesertaController extends Controller
 
         $header_csv   = [];
         $index_phone    = [];
-
         if (($handle = fopen($file_csv, 'r')) !== FALSE) {
             $i = 0;
+            $delimiter = "\t";
             while(! feof($handle))
             {
                 if($i == 0){
-                    $header_csv     = fgetcsv($handle,0,";");
+                    $header_csv     = fgetcsv($handle,0,$delimiter);
+                    if(count($header_csv) === 1){
+                        if(strpos($header_csv[0],",") !== false){
+                            $delimiter  = ",";
+                        }else if(strpos($header_csv[0],";") !== false){
+                            $delimiter  = ";";
+                        }
+                        $header_csv     = explode($delimiter,$header_csv[0]);
+                    }
                     for($i = 1; $i <= 10;$i++){
                         $index   = array_search("Phone $i - Value",$header_csv);
                         if($index !== false){
@@ -128,10 +136,15 @@ class ContactPesertaController extends Controller
                         $index_phone[] = 0;
                     }
                 }else{
-                    $data_csv       = fgetcsv($handle,0,";");
+                    $data_csv       = fgetcsv($handle,0,$delimiter);
                     foreach($index_phone as $indx){
                         if(!empty($data_csv[$indx])){
-                            $nomor_contact_arr[]     = $data_csv[$indx];
+                            $nomor      = $data_csv[$indx];
+                            $split      = explode(":::",$nomor);
+
+                            foreach($split as $sp){
+                                $nomor_contact_arr[]    = trim($sp);
+                            }
                         }
                     }
                 }
@@ -150,7 +163,7 @@ class ContactPesertaController extends Controller
                 continue;
             }
 
-            if(array_search($nomor_contact,$nomor_contact_arr)){
+            if(array_search($nomor_contact, array_column($data_insert, 'nomor_contact')) !== false){
                 continue;
             }
     
