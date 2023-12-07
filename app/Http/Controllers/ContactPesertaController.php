@@ -206,10 +206,10 @@ class ContactPesertaController extends Controller
 
             $new_message        = $message;
             foreach($data_replace as $key => $val){
-                $new_message    = str_replace("{$key}",$val,$new_message);
+                $new_message    = str_replace("[$key]",$val,$new_message);
             }
 
-            $response = CustomHelper::sendWA($new_message,$nomor_contact);
+            CustomHelper::sendWA($new_message,$nomor_contact);
         }
 
         return response()->json([

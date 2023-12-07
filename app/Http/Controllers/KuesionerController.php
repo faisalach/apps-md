@@ -204,12 +204,16 @@ class KuesionerController extends Controller
 
             $sertifikat_url   = $this->sertifikat($kuesioner);
             $template_pesan     = CustomHelper::getSetting("template_pesan_sertifikat");
-            CustomHelper::sendWA($template_pesan,$no_wa,url($sertifikat_url));
+            $send_wa            = CustomHelper::sendWA($template_pesan,$no_wa,url($sertifikat_url));
+            if(!empty($send_wa["status"]) && $send_wa["status"] === true){
+                return back()->with([
+                    "message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat",
+                    // "url_open"  => url($sertifikat_url)
+                ]);
+            }else{
+                return redirect(url($sertifikat_url));
+            }
 
-            return back()->with([
-                "message" => "Kuesioner berhasil direkam. Silahkan cek Whatsapp anda untuk mendapatkan sertifikat",
-                // "url_open"  => url($sertifikat_url)
-            ]);
         }
         
         return back()->with(["message" => "Failed, Please try again."]);

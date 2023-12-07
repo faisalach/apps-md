@@ -130,8 +130,7 @@
         $(() => {
             $("body").on("blur","#no_wa",function(){
                 let val     = $(this).val();
-                val         = val.replace(/[^0-9]/,'');
-                val         = val.replace(/[^0]/,'62');
+                val         = val.replace(/[^0-9]/g,'');
                 $(this).val(val);
             })
         })

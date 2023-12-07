@@ -118,44 +118,52 @@ class CustomHelper
     }
 
     public static function getSetting($key){
-        return Settings::where("key","time_expired_token")->value('value');
+        return Settings::where("key",$key)->value('value');
     }
 
     public static function sendWA($pesan,$no_hp,$url_file = ''){
         $api_key    = CustomHelper::getSetting("wa_api_key");
-        $id_device  = CustomHelper::getSetting("wa_device_id");
-        $url        = 'https://api.watsap.id/send-media'; // URL API
+        $sender     = CustomHelper::getSetting("wa_sender");
 
         if(!empty($url_file)){
-            $tipe  = 'image'; // Tipe Pesan Media Gambar
+            $api_url = "https://wa.srv21.wapanels.com/send-media";
+            $data = [
+                'api_key' => $api_key,
+                'sender' => $sender,
+                'number' => $no_hp,
+                'media_type' => "pdf",
+                'caption'   => $pesan,
+                "url"       => $url_file
+            ];
+        }else{
+            $api_url = "https://wa.srv21.wapanels.com/send-message";
+            $data = [
+                'api_key' => $api_key,
+                'sender' => $sender,
+                'number' => $no_hp,
+                'message' => $pesan
+            ];
         }
-
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 0); // batas waktu response
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_POST, 1);
-
-        $data_post = [
-            'id_device' => $id_device,
-            'api-key' => $api_key,
-            'no_hp'   => $no_hp,
-            'pesan'   => $pesan,
-        ];
-        if(!empty($url_file)){
-            $data_post['tipe']    = $tipe;
-            $data_post['link']    = $url_file; // pake http
-        }
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data_post));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                                            
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $api_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+                                            
         $response = curl_exec($curl);
-        curl_close($curl);
 
-        return $response;
+        curl_close($curl);
+        return json_decode($response,true);
     }
 }
