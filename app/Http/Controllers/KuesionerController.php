@@ -231,17 +231,23 @@ class KuesionerController extends Controller
 
     private function sertifikat($kuesioner){
         $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
-        $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
-
         $root_path                      = $_SERVER["DOCUMENT_ROOT"];
+
+        $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
         foreach($pdf_hasil_tes as $key => $pdf){
             $pdf_hasil_tes[$key]    = base64_encode(file_get_contents($root_path.$pdf));
+        }
+        
+        $pdf_golongan_darah             = CustomHelper::get_pdf_golongan_darah($kuesioner->golongan_darah);
+        foreach($pdf_golongan_darah as $key => $pdf){
+            $pdf_golongan_darah[$key]    = base64_encode(file_get_contents($root_path.$pdf));
         }
 
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
         $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
+        $data["pdf_golongan_darah"]     = $pdf_golongan_darah;
         $data["image"]                  = base64_encode(file_get_contents($root_path.'/assets/template_sertifikat.png'));
 
         $pdf_filename   = 'sertifikat_'.time().rand(1000,9999).$kuesioner->no_peserta.'.pdf';

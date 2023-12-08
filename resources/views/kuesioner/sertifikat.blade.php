@@ -60,4 +60,9 @@
         <img src="data:image/jpeg;base64, {{ $img }}" alt="" style="width: 100%;">
     </div>
     @endforeach
+    @foreach($pdf_golongan_darah as $img)
+    <div style="width:20.99cm;position: relative;">
+        <img src="data:image/jpeg;base64, {{ $img }}" alt="" style="width: 100%;">
+    </div>
+    @endforeach
 </body>
