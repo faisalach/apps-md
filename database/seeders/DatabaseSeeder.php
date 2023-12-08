@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -329,9 +331,19 @@ class DatabaseSeeder extends Seeder
 			]);
 		}
 
+		foreach (["A","AB","B","O"] as $goldar) { 
+			\App\Models\GolonganDarah::create([
+				'golongan_darah' => $goldar,
+				'file_pdf' => "",
+			]);
+		}
+
 		\App\Models\Settings::create([
 			'key' => "time_expired_token",
-			'value' => "60",
+			'value' => json_encode([
+				"time" => 60,
+				"satuan" => "minutes"
+			]),
 		]);
 
 		\App\Models\Settings::create([

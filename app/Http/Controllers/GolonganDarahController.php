@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HasilTes;
+use App\Models\GolonganDarah;
 use Illuminate\Http\Request;
 use ZipArchive;
 
-class HasilTesController extends Controller
+class GolonganDarahController extends Controller
 {
-    public function get($kode_angka){
-        return HasilTes::where("kode_angka",$kode_angka)->first();
-    }
-    public function update(Request $request,$kode_angka){
-        $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();
+    public function update(Request $request,$golongan_darah){
+        $data_golongan_darah  = GolonganDarah::where("golongan_darah",$golongan_darah)->first();
 
         if(!empty($request->file("file_zip"))){
             $file = $request->file('file_zip');
@@ -23,7 +20,7 @@ class HasilTesController extends Controller
                 $zip_open   = $zip->open($file->getPathName(), ZipArchive::CREATE);
     
                 // reset folder
-                $pathFolder     = "pdf_file/kode_".$kode_angka;
+                $pathFolder     = "pdf_file/goldar_".$golongan_darah;
                 if(file_exists($pathFolder)){
                     $scanFile   = scandir($pathFolder);
                     foreach($scanFile as $sFile){
@@ -36,7 +33,6 @@ class HasilTesController extends Controller
                 if(!file_exists($pathFolder)){
                     mkdir($pathFolder);
                 }
-    
                 if($zip_open){
                     $zip->extractTo($pathFolder);
                     for( $i = 0; $i < $zip->numFiles; $i++ ){ 
@@ -47,26 +43,29 @@ class HasilTesController extends Controller
     
                 sort($pdf_file_arr);
             }else if(strtolower($file->getClientOriginalExtension()) == "jpg"){
-                $pathFolder     = "pdf_file/kode_".$kode_angka;
+                $pathFolder     = "pdf_file/goldar_".$golongan_darah;
                 if($file->move($pathFolder,$file->getClientOriginalName())){
                     $pdf_file_arr[]     = $file->getClientOriginalName();
                 }
             }
+
             
             if(!empty($pdf_file_arr)){
-                $hasil_tes->file_pdf = json_encode($pdf_file_arr);
+                $data_golongan_darah->file_pdf = json_encode($pdf_file_arr);
             }
+        }else{
+            return back()->with([
+                "message_golongan_darah"   => "Pilih file terlebih dulu"
+            ]);
         }
 
-        $hasil_tes->title   = $request->input("title");
-
-        if($hasil_tes->save()){
+        if($data_golongan_darah->save()){
             return back()->with([
-                "message_hasil_tes"   => "Successfuly update"
+                "message_golongan_darah"   => "Successfuly update"
             ]);
         }else{
             return back()->with([
-                "message_hasil_tes"   => "Failed, please try again"
+                "message_golongan_darah"   => "Failed, please try again"
             ]);
         }
     }

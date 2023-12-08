@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\ContactPesertaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GolonganDarahController;
 use App\Http\Controllers\HasilTesController;
 use App\Http\Controllers\KuesionerController;
 use App\Http\Controllers\UsersController;
@@ -42,6 +43,8 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
 
         Route::get("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"get"])->name("settings.hasil_tes.get");
         Route::post("/panel/settings/hasil_tes/{kode_angka}/update",[HasilTesController::class,"update"])->name("settings.hasil_tes.update");
+
+        Route::post("/panel/settings/golongan_darah/{golongan_darah}/update",[GolonganDarahController::class,"update"])->name("settings.golongan_darah.update");
 
         Route::get("/panel/cabang",[CabangController::class,"cabang"])->name("cabang");
         Route::get("/panel/cabang/get/{id}",[CabangController::class,"get"])->name("cabang.get");

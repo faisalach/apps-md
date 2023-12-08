@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CustomHelper;
+use App\Models\GolonganDarah;
 use App\Models\HasilTes;
 use App\Models\Kuesioner;
+use App\Models\Settings;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,33 +22,59 @@ class DashboardController extends Controller
 
     public function settings(Request $request){
         if($request->method() === "POST"){
-            $request->validate([
-                "username"  => ["required","min:8","max:32"],
-            ]);
-            if(!empty($request->input("password"))){
+            if(!empty($request->input("key"))){
                 $request->validate([
-                    "password"  => ["required","min:8","max:32"],
-                    "conf_password"     => ["required","same:password"]
+                    "key"  => ["required"],
+                    "value"  => ["required"],
+                ]);
+
+                $key        = $request->input("key");
+                $value      = is_array($request->input("value")) ? json_encode($request->input("value")) : $request->input("value");
+                $settings   = Settings::where("key",$key)->first();
+                $settings->value = $value;
+
+                if($settings->save()){
+                    return back()->with([
+                        "message_setting"   => "Successfuly save setting"
+                    ]);    
+                }
+
+                return back()->with([
+                    "message_setting"   => "Failed, Please try again"
+                ]);
+            }
+            if(!empty($request->input("username"))){
+                $request->validate([
+                    "username"  => ["required","min:8","max:32"],
+                ]);
+                if(!empty($request->input("password"))){
+                    $request->validate([
+                        "password"  => ["required","min:8","max:32"],
+                        "conf_password"     => ["required","same:password"]
+                    ]);
+                }
+
+                $auth   = Auth::user();
+                $user   = User::find($auth->id);
+                $user->username     = $request->input("username");
+                if(!empty($request->input("password"))){
+                    $user->password     = Hash::make($request->input("password"));
+                }
+                if($user->save()){
+                    return back()->with([
+                        "message"   => "Successfuly change account"
+                    ]);    
+                }
+
+                return back()->with([
+                    "message"   => "Failed, Please try again"
                 ]);
             }
 
-            $auth   = Auth::user();
-            $user   = User::find($auth->id);
-            $user->username     = $request->input("username");
-            if(!empty($request->input("password"))){
-                $user->password     = Hash::make($request->input("password"));
-            }
-            if($user->save()){
-                return back()->with([
-                    "message"   => "Successfuly change account"
-                ]);    
-            }
-
-            return back()->with([
-                "message"   => "Failed, Please try again"
-            ]);
+            return back();
         }else{
             $data   = [];
+            $data["golongan_darah"]  = GolonganDarah::orderBy("golongan_darah")->get();
             $data["hasil_tes"]  = HasilTes::orderBy("kode_angka")->get();
             return view("panel.settings",$data);
         }

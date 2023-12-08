@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\GolonganDarah;
 use App\Models\HasilTes;
 use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
@@ -86,6 +87,18 @@ class CustomHelper
         return $pdf_file;
     }
 
+    public static function get_pdf_golongan_darah($golongan_darah){
+        $data_golongan_darah  = GolonganDarah::where("golongan_darah",$golongan_darah)->first();
+        $pdf_file   = (!empty($data_golongan_darah->file_pdf) && json_decode($data_golongan_darah->file_pdf,true) ? json_decode($data_golongan_darah->file_pdf,true) : []);
+        if(!empty($pdf_file)){
+            foreach($pdf_file as $key => $file){
+                $file   = "/pdf_file/goldar_$golongan_darah/$file";
+                $pdf_file[$key]     = $file;
+            }
+        }
+        return $pdf_file;
+    }
+
     public static function form_url($nomor_contact){
         $token  = KuesionerToken::where("nomor_contact",$nomor_contact)
         ->where("start_date","<=",date("Y-m-d H:i:s"))
@@ -102,12 +115,14 @@ class CustomHelper
             $check  = KuesionerToken::where("token",$str_token)->first();
         } while (!empty($check));
 
-        $setting_time   = CustomHelper::getSetting("time_expired_token");
-        $time_interval  = !empty($setting_time) ? $setting_time : 60;
+        $time_expired_token   = CustomHelper::getSetting("time_expired_token");
+        $time_expired_token_arr     = json_decode($time_expired_token,true) ? json_decode($time_expired_token,true) : [];
+        $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
+        $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
 
         $token              = new KuesionerToken();
         $token->start_date  = date("Y-m-d H:i:s");
-        $token->end_date    = date("Y-m-d H:i:s",strtotime("+$time_interval minutes"));
+        $token->end_date    = date("Y-m-d H:i:s",strtotime("+$time_interval $satuan"));
         $token->sudah_diisi = 0;
         $token->nomor_contact = $nomor_contact;
         $token->token       = $str_token;
