@@ -35,6 +35,8 @@
 			<button type="submit" name="change_password" value="1" class=" focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Simpan</button>
 		</form>
 	</div>
+
+	@if(Auth::guard("superadmin")->check())
 	<div class="p-5 mt-5 bg-gray-50 rounded-lg border shadow">
 		<h3 class="text-lg font-bold">Hasil Tes</h3>
 		@if (Session::has('message_hasil_tes'))
@@ -97,7 +99,7 @@
 	</div>
 
 	<!-- Main modal -->
-	<div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+	<div id="hasil-tes-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
 		<div class="relative p-4 w-full max-w-md max-h-full">
 			<!-- Modal content -->
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -106,7 +108,7 @@
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
 						Edit Hasil Tes
 					</h3>
-					<button type="button" class="btn-close-crud-modal text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+					<button type="button" class="btn-close-hasil-tes-modal text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
 						<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
 							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
 						</svg>
@@ -138,8 +140,19 @@
 
 	<script>
 		$(() => {
-			const $targetElCrudModal = document.getElementById('crud-modal');
-			const crudModal = new Modal($targetElCrudModal);
+			const hasilTesModal = new Modal(document.getElementById('hasil-tes-modal'),{
+                placement: 'bottom-right',
+                backdrop: 'dynamic',
+                backdropClasses:
+                    'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+                closable: true,
+                onShow : () => {
+                    $("#id_cabang").parent().hide();
+                }
+            }, {
+                id: 'default-modal',
+                override: true
+            });
 
 			$("body").on("click",".btn-edit-hasil-tes",function(e) {
 				e.preventDefault();
@@ -152,16 +165,17 @@
 				$.ajax({
 					url 	: `{{ route('settings.hasil_tes.get',['kode_angka' => ":kode_angka"]) }}`.replace(":kode_angka",id),
 					success : (response) => {
-						crudModal.show();
+						hasilTesModal.show();
 						$("#title").val(response.title);
 					}
 				});
 			})
 
-			$("body").on("click",".btn-close-crud-modal",function(e) {
+			$("body").on("click",".btn-close-hasil-tes-modal",function(e) {
 				e.preventDefault();
-				crudModal.hide();
+				hasilTesModal.hide();
 			})
 		})
 	</script>
+	@endif
 @endsection
