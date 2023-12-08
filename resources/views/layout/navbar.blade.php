@@ -31,19 +31,13 @@
 			</a>
 		</li>
 		<li>
-			<a href="{{ route('settings') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-				<i class="fas fa-fw fa-cogs text-gray-500"></i>
-				<span class="ms-3">Settings</span>
-			</a>
-		</li>
-		<li>
-			<a href="{{ route('settings') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+			<a href="{{ route('cabang') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 			<i class="fas fa-fw fa-building text-gray-500"></i>
 			<span class="ms-3">Cabang</span>
 			</a>
 		</li>
 		<li>
-			<a href="{{ route('settings') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+			<a href="{{ route('users') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 			<i class="fas fa-fw fa-users text-gray-500"></i>
 			<span class="ms-3">User</span>
 			</a>
@@ -55,13 +49,13 @@
 				<span class="ms-3">Contact</span>
 			</a>
 		</li>
+		@endif
 		<li>
 			<a href="{{ route('settings') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 				<i class="fas fa-fw fa-cogs text-gray-500"></i>
 				<span class="ms-3">Settings</span>
 			</a>
 		</li>
-		@endif
 		<li>
 			<a href="{{ route('logout') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 				<i class="fas fa-fw fa-sign-out-alt text-gray-500"></i>

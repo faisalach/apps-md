@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CabangController;
 use App\Http\Controllers\ContactPesertaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilTesController;
 use App\Http\Controllers\KuesionerController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +43,20 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
         Route::get("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"get"])->name("settings.hasil_tes.get");
         Route::post("/panel/settings/hasil_tes/{kode_angka}/update",[HasilTesController::class,"update"])->name("settings.hasil_tes.update");
 
+        Route::get("/panel/cabang",[CabangController::class,"cabang"])->name("cabang");
+        Route::get("/panel/cabang/get/{id}",[CabangController::class,"get"])->name("cabang.get");
+        Route::get("/panel/cabang/datatable",[CabangController::class,"datatable"])->name("cabang.datatable");
+        Route::post("/panel/cabang/insert",[CabangController::class,"insert"])->name("cabang.insert");
+        Route::post("/panel/cabang/update/{id}",[CabangController::class,"update"])->name("cabang.update");
+        Route::post("/panel/cabang/update_kuota_link/{id}",[CabangController::class,"update_kuota_link"])->name("cabang.update_kuota_link");
+        Route::post("/panel/cabang/delete/{id}",[CabangController::class,"delete"])->name("cabang.delete");
+
+        Route::get("/panel/users",[UsersController::class,"users"])->name("users");
+        Route::get("/panel/users/get/{id}",[UsersController::class,"get"])->name("users.get");
+        Route::get("/panel/users/datatable",[UsersController::class,"datatable"])->name("users.datatable");
+        Route::post("/panel/users/insert",[UsersController::class,"insert"])->name("users.insert");
+        Route::post("/panel/users/update/{id}",[UsersController::class,"update"])->name("users.update");
+        Route::post("/panel/users/delete/{id}",[UsersController::class,"delete"])->name("users.delete");
     });
     
     Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");

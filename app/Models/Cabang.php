@@ -9,4 +9,9 @@ class Cabang extends Model
 {
     use HasFactory;
     public $table = "cabang"; 
+
+    public function users()
+    {
+        return $this->hasMany(User::class,"id_cabang","id");
+    }
 }
