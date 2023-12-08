@@ -21,8 +21,15 @@ class DatabaseSeeder extends Seeder
 		// ]);
 
 		\App\Models\User::create([
-			'username' => 'admin_account',
-			'password' => Hash::make("admin123456"),
+			'username' 	=> 'admin_pusat',
+			'password' 	=> Hash::make("admin123456"),
+			"role" 		=> "superadmin"
+		]);
+
+		\App\Models\User::create([
+			'username' 	=> 'admin_cabang',
+			'password' 	=> Hash::make("admin123456"),
+			"role" 		=> "admin_cabang"
 		]);
 
 		$bank_soal_arr  = [

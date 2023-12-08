@@ -26,21 +26,26 @@ Route::get("/form",[KuesionerController::class,"form"])->name("kuesioner.form");
 Route::post("/form/store",[KuesionerController::class,"form_store"])->name("kuesioner.formStore");
 Route::get("/form/sertifikat/{id}",[KuesionerController::class,"show_sertifikat"]);
 
-Route::group(["middleware" => "guest"],function(){
+Route::group(["middleware" => "guest:superadmin,admin_cabang"],function(){
     Route::redirect("/panel","/panel/login");
     Route::get("/panel/login",[AuthController::class,"login"])->name("login");
     Route::post("/panel/login",[AuthController::class,"authenticated"])->name("authenticated");
 });
-Route::group(["middleware" => "auth"],function(){
-    Route::get("/panel/dashboard",[DashboardController::class,"dashboard"])->name("dashboard");
-    Route::get("/panel/kuesioner/datatable",[KuesionerController::class,"datatable"])->name("kuesioner.datatable");
-    Route::get("/panel/kuesioner/export_csv",[DashboardController::class,"export"])->name("kuesioner.export_csv");
+Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
 
+    Route::group(["middleware" => "auth:superadmin"],function(){
+        Route::get("/panel/dashboard",[DashboardController::class,"dashboard"])->name("dashboard");
+        Route::get("/panel/kuesioner/datatable",[KuesionerController::class,"datatable"])->name("kuesioner.datatable");
+        Route::get("/panel/kuesioner/export_csv",[DashboardController::class,"export"])->name("kuesioner.export_csv");
+
+        Route::get("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"get"])->name("settings.hasil_tes.get");
+        Route::post("/panel/settings/hasil_tes/{kode_angka}/update",[HasilTesController::class,"update"])->name("settings.hasil_tes.update");
+
+    });
+    
     Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");
     Route::post("/panel/settings",[DashboardController::class,"settings"])->name("settings");
-    Route::get("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"get"])->name("settings.hasil_tes.get");
-    Route::post("/panel/settings/hasil_tes/{kode_angka}/update",[HasilTesController::class,"update"])->name("settings.hasil_tes.update");
-
+    
     Route::get("/panel/contact",[ContactPesertaController::class,"contact"])->name("contact");
     Route::get("/panel/contact/datatable",[ContactPesertaController::class,"datatable"])->name("contact.datatable");
     Route::post("/panel/contact/insert",[ContactPesertaController::class,"insert"])->name("contact.insert");
@@ -49,4 +54,5 @@ Route::group(["middleware" => "auth"],function(){
     Route::post("/panel/contact/delete/{id}",[ContactPesertaController::class,"delete"])->name("contact.delete");
 
     Route::get("/panel/logout",[AuthController::class,"logout"])->name("logout");
+
 });
