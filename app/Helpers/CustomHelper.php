@@ -7,6 +7,7 @@ use App\Models\HasilTes;
 use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
 use App\Models\KuesionerToken;
+use App\Models\ScheduleWa;
 use App\Models\Settings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -180,5 +181,15 @@ class CustomHelper
 
         curl_close($curl);
         return json_decode($response,true);
+    }
+
+    public static function scheduleWA($pesan,$no_wa,$waktu_pengiriman,$url_file = ''){
+        return ScheduleWa::create([
+            "nomor_wa" => $no_wa,
+            "isi_pesan" => $pesan,
+            "url_file" => $url_file,
+            "waktu_pengiriman" => $waktu_pengiriman,
+            "status_pengiriman" => "pending"
+        ]);
     }
 }

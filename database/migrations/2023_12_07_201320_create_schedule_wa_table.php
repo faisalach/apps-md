@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('schedule_wa', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nomor_wa',20);
             $table->text('isi_pesan');
+            $table->string('url_media',200);
             $table->timestamp('waktu_pengiriman');
             $table->string('status_pengiriman',20);
             $table->timestamps();
