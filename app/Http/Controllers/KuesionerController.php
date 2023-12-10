@@ -8,6 +8,7 @@ use App\Models\Kuesioner;
 use App\Models\KuesionerJawaban;
 use App\Models\KuesionerToken;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -184,14 +185,16 @@ class KuesionerController extends Controller
         $kuesioner->persentase_auditory   = 0;
         $kuesioner->persentase_kinestetik   = 0;
         if($kuesioner->save()){
-            
+            $kuesioner_jawaban_arr  = [];
             foreach($jawaban as $bank_soal_id => $bank_soal_jawaban_id){
-                $kuesioner_jawaban  = new KuesionerJawaban();
-                $kuesioner_jawaban->bank_soal_id    = $bank_soal_id;
-                $kuesioner_jawaban->bank_soal_jawaban_id    = $bank_soal_jawaban_id;
-                $kuesioner_jawaban->kuesioner_id    = $kuesioner->id;
-                $kuesioner_jawaban->save();
+                $kuesioner_jawaban_arr[$bank_soal_id]["bank_soal_id"]    = $bank_soal_id;
+                $kuesioner_jawaban_arr[$bank_soal_id]["bank_soal_jawaban_id"]    = $bank_soal_jawaban_id;
+                $kuesioner_jawaban_arr[$bank_soal_id]["kuesioner_id"]    = $kuesioner->id;
+                $kuesioner_jawaban_arr[$bank_soal_id]["created_at"]    = Carbon::now();
+                $kuesioner_jawaban_arr[$bank_soal_id]["updated_at"]    = Carbon::now();
             }
+            KuesionerJawaban::insert($kuesioner_jawaban_arr);
+
             $persentase_jawaban         = CustomHelper::get_persentase_kuesioner_jawaban($kuesioner->id);
             $kuesioner->persentase_visual   = $persentase_jawaban["visual"];
             $kuesioner->persentase_auditory   = $persentase_jawaban["auditory"];
@@ -201,7 +204,7 @@ class KuesionerController extends Controller
             $token  = KuesionerToken::where("token",$token_form)->first();
             $token->sudah_diisi = 1;
             $token->save();
-
+            
             $sertifikat_url   = $this->sertifikat($kuesioner);
             $template_pesan     = CustomHelper::getSetting("template_pesan_sertifikat");
             // $send_wa            = CustomHelper::sendWA($template_pesan,$no_wa,url($sertifikat_url));

@@ -10,6 +10,7 @@ use App\Models\KuesionerJawaban;
 use App\Models\KuesionerToken;
 use App\Models\ScheduleWa;
 use App\Models\Settings;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -198,12 +199,14 @@ class CustomHelper
     }
 
     public static function scheduleWA($pesan,$no_wa,$waktu_pengiriman,$url_file = ''){
-        return ScheduleWa::create([
+        return ScheduleWa::insert([
             "nomor_wa" => $no_wa,
             "isi_pesan" => $pesan,
-            "url_file" => $url_file,
+            "url_media" => $url_file,
             "waktu_pengiriman" => $waktu_pengiriman,
-            "status_pengiriman" => "pending"
+            "status_pengiriman" => "pending",
+            "created_at"    => Carbon::now(),
+            "updated_at"    => Carbon::now(),
         ]);
     }
 }
