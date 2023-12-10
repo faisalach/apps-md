@@ -73,12 +73,13 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
     Route::post("/panel/group_contact/update/{id}",[GroupContactController::class,"update"])->name("group_contact.update");
     Route::post("/panel/group_contact/delete/{id}",[GroupContactController::class,"delete"])->name("group_contact.delete");
     
-    Route::get("/panel/contact/{id_group_contact}",[ContactPesertaController::class,"contact"])->name("contact.detail");
+    Route::get("/panel/contact/show/{id_group_contact}",[ContactPesertaController::class,"contact"])->name("contact.detail");
     Route::get("/panel/contact/datatable",[ContactPesertaController::class,"datatable"])->name("contact.datatable");
     Route::post("/panel/contact/insert",[ContactPesertaController::class,"insert"])->name("contact.insert");
     Route::post("/panel/contact/send_wa",[ContactPesertaController::class,"send_wa"])->name("contact.send_wa");
     Route::post("/panel/contact/insert_csv",[ContactPesertaController::class,"insert_csv"])->name("contact.insert_csv");
     Route::post("/panel/contact/delete/{id}",[ContactPesertaController::class,"delete"])->name("contact.delete");
+    Route::post("/panel/contact/delete_bulk",[ContactPesertaController::class,"delete_bulk"])->name("contact.delete_bulk");
 
     Route::get("/panel/logout",[AuthController::class,"logout"])->name("logout");
 

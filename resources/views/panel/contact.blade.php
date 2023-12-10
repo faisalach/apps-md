@@ -6,22 +6,24 @@
 	<h1 class="text-2xl font-semibold mb-4">Contact</h1>
 	<div class="p-5 mt-4 bg-gray-50 rounded-lg border shadow">
 		
-		<!-- Modal toggle -->
-		<button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class=" mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+		<button class="btn-add-contact mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
 			Tambah Contact
 		</button>
-		<button id="button-send-wa-selected" class="hidden disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-			Kirim Token ke Nomor yang dipilih
-		</button>
-		<button id="button-send-wa-all" class="disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-			Kirim Token ke Semua Nomor
-		</button>
-		<button id="button-delete-wa-selected" class="hidden disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-			Hapus Nomor yang dipilih
-		</button>
-		<button id="button-delete-wa-all" class="disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-			Hapus Semua Nomor
-		</button>
+		<div class="flex flex-row flex-wrap">
+			<!-- Modal toggle -->
+			<button id="button-send-wa-selected" class="mr-2 hidden disabled:bg-green-500 disabled:cursor-wait mb-2 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+				Kirim Token ke Nomor yang dipilih
+			</button>
+			<button id="button-send-wa-all" class="mr-2 disabled:bg-green-500 disabled:cursor-wait mb-2 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+				Kirim Token ke Semua Nomor
+			</button>
+			<button id="button-delete-wa-selected" class="mr-2 hidden disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+				Hapus Nomor yang dipilih
+			</button>
+			<button id="button-delete-wa-all" class="mr-2 disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+				Hapus Semua Nomor
+			</button>
+		</div>
 
 		<div class="relative">
 			<table id="dt_contact" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -43,7 +45,7 @@
 	</div>
 
 	<!-- Main modal -->
-	<div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+	<div id="contact-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
 		<div class="relative p-4 w-full max-w-md max-h-full">
 			<!-- Modal content -->
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -52,7 +54,7 @@
 					<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
 						Tambah Contact
 					</h3>
-					<button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+					<button type="button" class="btn-close-modal-contact text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
 						<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
 							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
 						</svg>
@@ -75,6 +77,7 @@
 				<div id="default-tab-content">
 					<div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 						<form id="form_input" action="{{ route('contact.insert') }}" class="p-4 md:p-5" method="POST">
+							<input type="hidden" id="id_group_contact" name="id_group_contact" value="{{ $id_group_contact }}">
 							@csrf
 							<div class="mb-4">
 								<label for="nomor_contact" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Contact</label>
@@ -109,13 +112,29 @@
 	<script src="/assets/datatable_tailwind.js"></script>
 	<script>
 		$(() => {
+			let totalData 			= 0;
+			const contactModal     = new Modal(document.getElementById('contact-modal'), {
+                placement: 'bottom-right',
+                backdrop: 'dynamic',
+                backdropClasses:
+                    'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+                closable: true,
+            });
+
 			$("#dt_contact").DataTable({
 				processing : true,
 				serverSide : true,
 				ajax    : {
 					url     : "{{ route('contact.datatable') }}",
+					data 	: function(data){
+						data.id_group_contact =	"{{ $id_group_contact }}";
+						return data;
+					}
 				},
-				order : [[1,"DESC"]],
+				drawCallback : function(data,data1,data2){
+					totalData = data.json.recordsTotal;
+				},
+				order : [[1,"ASC"]],
 				columns: [
 					{ 
 						data: 'nomor_contact',
@@ -130,7 +149,15 @@
 					{ 
 						data: 'nomor_contact',
 						name: 'nomor_contact',
-						class : "px-6 py-4"
+						class : "px-6 py-4",
+						render : (data) => {
+							let kode_negara 	= data.slice(0,2);
+							let angka_pertama 	= data.slice(2,5);
+							let angka_kedua 	= data.slice(5,8);
+							let angka_ketiga 	= data.slice(8);
+							let newFormat 	= `${kode_negara} (${angka_pertama}) ${angka_kedua}-${angka_ketiga}`;
+							return newFormat;
+						}
 					},
 					{
 						data : 'id',
@@ -159,28 +186,17 @@
 				
 			});
 
-			
+			$("body").on("click",".btn-close-modal-contact",function(e) {
+				contactModal.hide();
+			});
 
-			$("body").on("click","#refresh_dt_contact",function(e) {
-				e.preventDefault();
-				
-				$("#dt_contact").DataTable().ajax.reload();
-			})
+			$("body").on("click",".btn-add-contact",function(e) {
+                e.preventDefault();
 
-			$("body").on("click",".btn-dropdown",function(e) {
-				e.preventDefault();
-
-				$targetEl   = $(this).closest('td').find(".menu-dropdown")[0];
-				const dropdown = new Dropdown($targetEl, this,{
-					placement: 'left'
-				});
-				if(dropdown.isVisible()){
-					dropdown.hide();
-				}else{
-					dropdown.show();
-				}
-				
-			})
+                contactModal.show();
+                $("#form_input")[0].reset();
+                $("#form_csv")[0].reset();
+            });
 
 			$("body").on("submit","#form_input",function(e) {
 				e.preventDefault();
@@ -198,12 +214,12 @@
 					type : method,
 					url : url,
 					data : $(this).serialize(),
+					beforeSend:loadingSweetalert,
 					success : (response) => {
 						form.find("[type=submit]").prop("disabled",false);
-						$("#crud-modal").find("[data-modal-toggle]").click();
-						$("#dt_contact").DataTable().ajax.reload();
-
 						form[0].reset();
+						contactModal.hide();
+						$("#dt_contact").DataTable().ajax.reload();
 						
 						Swal.fire({
 							title: response?.message,
@@ -226,13 +242,15 @@
 			$("body").on("submit","#form_csv",function(e) {
 				e.preventDefault();
 				
-				let form 		= $(this);
-				let file 		= $("#file").prop("files")[0];
-				let url 		= form.attr("action");
-				let method 		= form.attr("method");
+				let form				= $(this);
+				let file				= $("#file").prop("files")[0];
+				let id_group_contact	= $("#id_group_contact").val();
+				let url					= form.attr("action");
+				let method				= form.attr("method");
 
 				let formData 	= new FormData();
 				formData.append("file", file);
+				formData.append("id_group_contact", id_group_contact);
 				formData.append("_token", $(`{{ csrf_field() }}`).val());
 
 				form.find("[type=submit]").prop("disabled",true);
@@ -249,12 +267,13 @@
 					data : formData,
 					dataType : "JSON",
 					timeout: 30000,
+					beforeSend:loadingSweetalert,
 					success : (response) => {
-						form.find("[type=submit]").prop("disabled",false);
-						$("#crud-modal").find("[data-modal-toggle]").click();
-						$("#dt_contact").DataTable().ajax.reload();
 
+						form.find("[type=submit]").prop("disabled",false);
 						form[0].reset();
+						contactModal.hide();
+						$("#dt_contact").DataTable().ajax.reload();
 						
 						Swal.fire({
 							title: response?.message,
@@ -265,7 +284,6 @@
 						form.find("[type=submit]").prop("disabled",false);
 
 						let message 	= response?.responseJSON?.message;
-
 						form.prepend(`
 							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
 								${message}
@@ -292,6 +310,7 @@
 							data 	: {
 								_token : $(`{{ csrf_field() }}`).val()
 							},
+							beforeSend:loadingSweetalert,
 							success 	: (response) => {
 								let message 	= response?.message;
 								Swal.fire({
@@ -321,6 +340,11 @@
 				if($(".checkbox-contact:checked").length > 0){
 					$("#button-send-wa-selected").removeClass("hidden");
 				}
+
+				$("#button-delete-wa-selected").addClass("hidden");
+				if($(".checkbox-contact:checked").length > 0){
+					$("#button-delete-wa-selected").removeClass("hidden");
+				}
 			}
 
 			$("body").on("click", "#button-send-wa-selected",function(e){
@@ -343,12 +367,14 @@
 					type 	: "POST",
 					data 	: {
 						_token 	: $(`{{ csrf_field() }}`).val(),
+						id_group_contact : "{{ $id_group_contact }}",
 						nomor_contact : nomor_contact_arr
 					},
+					beforeSend:loadingSweetalert,
 					success : function(response) {
 						$(".checkbox-contact").prop("checked",false);
-						showHideBtnWaSelected();
 						$("#button-send-wa-selected").prop("disabled",false);
+						showHideBtnWaSelected();
 
 						Swal.fire(response?.message,"","success");
 					},
@@ -361,24 +387,144 @@
 			$("body").on("click", "#button-send-wa-all",function(e){
 				e.preventDefault();
 
-				$.ajax({
-					url : "{{ route('contact.send_wa') }}",
-					type 	: "POST",
-					data 	: {
-						_token 	: $(`{{ csrf_field() }}`).val(),
-						id_group_contact : "{{ $id_group_contact }}"
-					},
-					success : function(response) {
-						$(".checkbox-contact").prop("checked",false);
-						showHideBtnWaSelected();
-						$("#button-send-wa-selected").prop("disabled",false);
-
-						Swal.fire(response?.message,"","success");
-					},
-					error : function(response) {
-						Swal.fire(response?.data?.message,"","error");
+				Swal.fire({
+					title: `Kirim token kepada seluruh contact pada group ini (${totalData} contact)?`,
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url : "{{ route('contact.send_wa') }}",
+							type 	: "POST",
+							data 	: {
+								_token 	: $(`{{ csrf_field() }}`).val(),
+								id_group_contact : "{{ $id_group_contact }}"
+							},
+							beforeSend:loadingSweetalert,
+							success : function(response) {
+								$(".checkbox-contact").prop("checked",false);
+								showHideBtnWaSelected();
+								$("#button-send-wa-selected").prop("disabled",false);
+		
+								Swal.fire(response?.message,"","success");
+							},
+							error : function(response) {
+								Swal.fire(response?.data?.message,"","error");
+							}
+						})
 					}
+				});
+
+			})
+
+			$("body").on("click", "#button-delete-wa-selected",function(e){
+				e.preventDefault();
+
+				let nomor_contact_arr 	= [];
+				$.each($(".checkbox-contact:checked"),function(k,el){
+					nomor_contact_arr.push($(el).val());
 				})
+
+				$("#button-delete-wa-selected").prop("disabled",true);
+
+				if(nomor_contact_arr.length < 1){
+					Swal.fire("Pilih contact terlebih dulu","","error");
+					return false;
+				}
+				Swal.fire({
+					title: `Hapus contact terplih?`,
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url : "{{ route('contact.delete_bulk') }}",
+							type 	: "POST",
+							data 	: {
+								_token 	: $(`{{ csrf_field() }}`).val(),
+								id_group_contact : "{{ $id_group_contact }}",
+								nomor_contact : nomor_contact_arr
+							},
+							beforeSend:loadingSweetalert,
+							success : function(response) {
+								$(".checkbox-contact").prop("checked",false);
+								$("#button-delete-wa-selected").prop("disabled",false);
+								showHideBtnWaSelected();
+
+								Swal.fire(response?.message,"","success");
+							},
+							error : function(response) {
+								Swal.fire(response?.data?.message,"","error");
+							}
+						})
+					}
+				});
+			})
+
+			$("body").on("click", "#button-delete-wa-all",function(e){
+				e.preventDefault();
+
+				Swal.fire({
+					title: `Hapus seluruh contact pada group ini (${totalData} contact)?`,
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url : "{{ route('contact.delete_bulk') }}",
+							type 	: "POST",
+							data 	: {
+								_token 	: $(`{{ csrf_field() }}`).val(),
+								id_group_contact : "{{ $id_group_contact }}"
+							},
+							beforeSend:loadingSweetalert,
+							success : function(response) {
+								$(".checkbox-contact").prop("checked",false);
+								showHideBtnWaSelected();
+								$("#button-delete-wa-selected").prop("disabled",false);
+		
+								Swal.fire(response?.message,"","success");
+							},
+							error : function(response) {
+								Swal.fire(response?.data?.message,"","error");
+							}
+						})
+					}
+				});
+
+			})
+
+			function loadingSweetalert() {
+                Swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    icon : "warning",
+                    onRender: function() {
+                        let sweet_loader = '<div class="sweet_loader"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div>';
+                        // there will only ever be one sweet alert open.
+                        $('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            }
+            
+			$("body").on("click",".btn-dropdown",function(e) {
+				e.preventDefault();
+
+				$targetEl   = $(this).closest('td').find(".menu-dropdown")[0];
+				const dropdown = new Dropdown($targetEl, this,{
+					placement: 'left'
+				});
+				if(dropdown.isVisible()){
+					dropdown.hide();
+				}else{
+					dropdown.show();
+				}
 			})
 		})
 	</script>

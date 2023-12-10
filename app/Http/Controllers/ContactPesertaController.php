@@ -4,13 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CustomHelper;
 use App\Models\ContactPeserta;
+use App\Models\GroupContact;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactPesertaController extends Controller
 {
-    public function contact(){
-        return view('panel.contact');
+    public function contact($id_group_contact){
+        $group_contact = GroupContact::find($id_group_contact);
+        if(!$group_contact){
+            return redirect(route('contact'));
+        }
+        if($group_contact->id_cabang !== Auth::user()->id_cabang){
+            return redirect(route('contact'));
+        }
+
+        $data   = [];
+        $data["id_group_contact"] = $id_group_contact;
+        return view('panel.contact',$data);
     }
 
     public function datatable(Request $request){
@@ -21,7 +33,22 @@ class ContactPesertaController extends Controller
         $order   = $request->input("order");
         $search   = $request->input("search")["value"];
 
+        $id_group_contact   = $request->input("id_group_contact");
+        if($group_contact = GroupContact::find($id_group_contact)){
+            if(Auth::user()->id_cabang != $group_contact->id_cabang){
+                return [
+                    "draw"=> $draw,
+                    "recordsTotal"=> 0,
+                    "recordsFiltered"=> 0,
+                    "data" => []
+                ];
+            }
+        }
+
+
         $data   = ContactPeserta::select("*");
+        $data->where("id_group_contact",$id_group_contact);
+        
         $record_total   = $data->count();
 
         if(!empty($search)){
@@ -59,7 +86,8 @@ class ContactPesertaController extends Controller
     public function insert(Request $request){
 
         $request->validate([
-            "nomor_contact"     => "required|digits_between:10,20"
+            "nomor_contact"     => "required|digits_between:10,20",
+            "id_group_contact"     => "required"
         ]);
 
         $nomor_contact  = $request->input("nomor_contact");
@@ -80,8 +108,18 @@ class ContactPesertaController extends Controller
             ],422);
         }
 
+        $id_group_contact   = $request->input("id_group_contact");
+        $group_contact      = GroupContact::find($id_group_contact);
+        if($group_contact->id_cabang !== Auth::user()->id_cabang){
+            return response()->json([
+                "message"   => "Failed, please try again"
+            ],422);
+        }
+
         $contact    = new ContactPeserta();
         $contact->nomor_contact = $nomor_contact;
+        $contact->id_group_contact = $id_group_contact;
+        $contact->id_user = Auth::user()->id;
         if($contact->save()){
             return response()->json([
                 "message"   => "Successfuly insert data"
@@ -96,6 +134,17 @@ class ContactPesertaController extends Controller
     public function insert_csv(Request $request){
         $nomor_contact_arr  = [];
 
+        $request->validate([
+            "id_group_contact"     => "required"
+        ]);
+
+        $id_group_contact   = $request->input("id_group_contact");
+        $group_contact      = GroupContact::find($id_group_contact);
+        if($group_contact->id_cabang !== Auth::user()->id_cabang){
+            return response()->json([
+                "message"   => "Failed, please try again"
+            ],422);
+        }
 
         $file_csv   = $request->file("file");
 
@@ -172,6 +221,8 @@ class ContactPesertaController extends Controller
 
             $data_insert[]    = [
                 "nomor_contact" => $nomor_contact,
+                "id_group_contact"  => $id_group_contact,
+                "id_user"  => Auth::user()->id,
                 "created_at"    => Carbon::now(),
                 "updated_at"    => Carbon::now(),
             ];
@@ -204,30 +255,90 @@ class ContactPesertaController extends Controller
 
     public function send_wa(Request $request){
         $request->validate([
-            "nomor_contact" => "required",
-            "nomor_contact.*" => "required"
+            "id_group_contact"     => "required"
         ]);
 
-        $nomor_contact_arr  = $request->input("nomor_contact");
         $message            = CustomHelper::getSetting("template_pesan_kirim_link");
-        
-        foreach($nomor_contact_arr as $nomor_contact){
-            $link_sertifikat    = CustomHelper::form_url($nomor_contact);
-            $data_replace       = [
-                "link"    => $link_sertifikat
-            ];
+        $id_group_contact   = !empty($request->input("id_group_contact")) ? $request->input("id_group_contact") : [];
+        $nomor_contact_arr  = !empty($request->input("nomor_contact")) ? $request->input("nomor_contact") : [];
 
-            $new_message        = $message;
-            foreach($data_replace as $key => $val){
-                $new_message    = str_replace("[$key]",$val,$new_message);
+        if(empty($nomor_contact_arr)){
+            $contact        = ContactPeserta::where("id_group_contact",$id_group_contact)->get();
+            $nomor_contact_arr  = [];
+            foreach($contact as $row){
+                $nomor_contact_arr[]    = $row->nomor_contact;
             }
+        }else{
+            $contact        = ContactPeserta::where("id_group_contact",$id_group_contact)
+            ->whereIn("nomor_contact",$nomor_contact_arr)
+            ->get();
 
-            CustomHelper::sendWA($new_message,$nomor_contact);
+            $nomor_contact_arr  = [];
+            foreach($contact as $row){
+                $nomor_contact_arr[]    = $row->nomor_contact;
+            }
+        }
+        
+        if(!empty($nomor_contact)){
+            foreach($nomor_contact_arr as $nomor_contact){
+                $link_sertifikat    = CustomHelper::form_url($nomor_contact);
+                $data_replace       = [
+                    "link"    => $link_sertifikat
+                ];
+    
+                $new_message        = $message;
+                foreach($data_replace as $key => $val){
+                    $new_message    = str_replace("[$key]",$val,$new_message);
+                }
+    
+                CustomHelper::sendWA($new_message,$nomor_contact);
+            }
+    
+            return response()->json([
+                "message" => "Success"
+            ]);
         }
 
         return response()->json([
-            "message" => "Success"
-        ]);
+            "message"   => "Failed, please try again"
+        ],422);
+
+    }
+
+    public function delete_bulk(Request $request){
+        $nomor_contact_arr  = !empty($request->input("nomor_contact")) ? $request->input("nomor_contact") : [];
+        $id_group_contact   = !empty($request->input("id_group_contact")) ? $request->input("id_group_contact") : [];
+        $id_arr  = [];
+
+        if(empty($nomor_contact_arr)){
+            $contact        = ContactPeserta::where("id_group_contact",$id_group_contact)->get();
+
+            foreach($contact as $row){
+                $id_arr[]    = $row->id;
+            }
+        }else{
+            $contact        = ContactPeserta::where("id_group_contact",$id_group_contact)
+            ->whereIn("nomor_contact",$nomor_contact_arr)
+            ->get();
+            
+            foreach($contact as $row){
+                $id_arr[]    = $row->id;
+            }
+        }
+        
+        if(!empty($nomor_contact)){
+            $delete     = ContactPeserta::whereIn("id",$id_arr)->delete();
+            if($delete){
+                return response()->json([
+                    "message" => "Successfuly delete contact"
+                ]);
+            }
+    
+        }
+
+        return response()->json([
+            "message"   => "Failed, please try again"
+        ],422);
 
     }
     
