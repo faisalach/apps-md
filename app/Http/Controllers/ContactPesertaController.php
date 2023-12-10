@@ -304,6 +304,12 @@ class ContactPesertaController extends Controller
                 }
                 $i++;
             }
+
+            if(empty($i)){
+                return response()->json([
+                    "message"   => "Kuota token habis. Silahkan konfirmasi ke pusat"
+                ],422);
+            }
     
             return response()->json([
                 "message" => "Successfuly send $i token"
