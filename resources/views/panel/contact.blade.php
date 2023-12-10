@@ -424,7 +424,7 @@
 					return false;
 				}
 				Swal.fire({
-					title: `Hapus contact terplih?`,
+					title: `Hapus contact terpilih?`,
 					icon: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#3085d6",
@@ -443,7 +443,7 @@
 							success : function(response) {
 								$(".checkbox-contact").prop("checked",false);
 								showHideBtnWaSelected();
-
+								$("#dt_contact").DataTable().ajax.reload();
 								Swal.fire(response?.message,"","success");
 							},
 							error : function(response) {
@@ -476,7 +476,7 @@
 							success : function(response) {
 								$(".checkbox-contact").prop("checked",false);
 								showHideBtnWaSelected();
-		
+								$("#dt_contact").DataTable().ajax.reload();
 								Swal.fire(response?.message,"","success");
 							},
 							error : function(response) {

@@ -337,7 +337,7 @@ class ContactPesertaController extends Controller
             }
         }
         
-        if(!empty($nomor_contact)){
+        if(!empty($id_arr)){
             $delete     = ContactPeserta::whereIn("id",$id_arr)->delete();
             if($delete){
                 return response()->json([
