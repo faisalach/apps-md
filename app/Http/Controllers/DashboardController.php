@@ -29,9 +29,29 @@ class DashboardController extends Controller
                 ]);
 
                 $key        = $request->input("key");
-                $value      = is_array($request->input("value")) ? json_encode($request->input("value")) : $request->input("value");
+                $value      = $request->input("value");
+                switch($key){
+                    case 'time_expired_token':
+                        $value      = is_array($value) ? json_encode($value) : json_encode(["time" => 1, "satuan" => "hours"]);
+                        break;
+                    case 'wa_sender':
+                        $value  = preg_replace("/[^0-9]/","",$value);
+                        $value  = preg_replace("/^0/","62",$value);
+
+                        if(strlen($value) < 10 || strlen($value) > 20){
+                            return back()->with([
+                                "message_setting"   => "Format nomor salah"
+                            ]);
+                        }
+                        break;
+                        break;
+                    case 'template_pesan_kirim_link':
+                        $value  = nl2br($value);
+                        break;
+                }
+
                 $settings   = Settings::where("key",$key)->first();
-                $settings->value = nl2br($value);
+                $settings->value = $value;
 
                 if($settings->save()){
                     return back()->with([
@@ -47,6 +67,7 @@ class DashboardController extends Controller
                 $request->validate([
                     "username"  => ["required","min:8","max:32"],
                 ]);
+                
                 if(!empty($request->input("password"))){
                     $request->validate([
                         "password"  => ["required","min:8","max:32"],
