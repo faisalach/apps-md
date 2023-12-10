@@ -47,9 +47,6 @@ class ContactPesertaController extends Controller
         
         $result = $data->get();
 
-        foreach($result as $row){
-            $row->url    = CustomHelper::form_url($row->nomor_contact);
-        }
 
         return [
             "draw"=> $draw,

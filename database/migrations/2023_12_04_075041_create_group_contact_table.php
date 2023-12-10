@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('group_contact', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nama_group');
-            $table->integer('id_cabang')->unsigned();
+            $table->integer('id_cabang')->unsigned()->nullable();
             $table->foreign('id_cabang')->references('id')->on('cabang')->onDelete('cascade');
             $table->timestamps();
         });

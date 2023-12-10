@@ -10,22 +10,26 @@
 		<button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class=" mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
 			Tambah Contact
 		</button>
+		<button id="button-send-wa-selected" class="hidden disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			Kirim Token ke Nomor yang dipilih
+		</button>
+		<button id="button-send-wa-all" class="disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			Kirim Token ke Semua Nomor
+		</button>
+		<button id="button-delete-wa-selected" class="hidden disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			Hapus Nomor yang dipilih
+		</button>
+		<button id="button-delete-wa-all" class="disabled:bg-green-500 disabled:cursor-wait mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			Hapus Semua Nomor
+		</button>
 
 		<div class="relative">
 			<table id="dt_contact" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-gray-700 uppercase bg-green-300 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
-						<th scope="col" class="px-6 py-3">
-							<input id="check-contact-all" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-							<button id="button-send-wa" class="hidden disabled:bg-green-500 disabled:cursor-wait ml-4 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium text-sm px-1 py-1 rounded text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-								Kirim
-							</button>
-						</th>
+						<th scope="col" class="px-6 py-3"></th>
 						<th scope="col" class="px-6 py-3">
 							Nomor Contact
-						</th>
-						<th scope="col" class="px-6 py-3">
-							Link
 						</th>
 						<th scope="col" class="px-6 py-3">
 							#
@@ -126,11 +130,6 @@
 					{ 
 						data: 'nomor_contact',
 						name: 'nomor_contact',
-						class : "px-6 py-4"
-					},
-					{ 
-						data: 'url',
-						orderable : false,
 						class : "px-6 py-4"
 					},
 					{
@@ -313,33 +312,18 @@
 				});
 			})
 
-			$("body").on("click","#check-contact-all",function(e){
-				if($(this).is(":checked")){
-					$(".checkbox-contact").prop("checked",true);
-				}else{
-					$(".checkbox-contact").prop("checked",false);
-				}
-
-				showHideBtnSendWa();
-			})
 			$("body").on("click",".checkbox-contact",function(e){
-				if($(".checkbox-contact:checked").length === $(".checkbox-contact").length){
-					$("#check-contact-all").prop("checked",true);
-				}else{
-					$("#check-contact-all").prop("checked",false);
-				}
-
-				showHideBtnSendWa();
+				showHideBtnWaSelected();
 			});
 			
-			function showHideBtnSendWa(){
-				$("#button-send-wa").addClass("hidden");
+			function showHideBtnWaSelected(){
+				$("#button-send-wa-selected").addClass("hidden");
 				if($(".checkbox-contact:checked").length > 0){
-					$("#button-send-wa").removeClass("hidden");
+					$("#button-send-wa-selected").removeClass("hidden");
 				}
 			}
 
-			$("body").on("click", "#button-send-wa",function(e){
+			$("body").on("click", "#button-send-wa-selected",function(e){
 				e.preventDefault();
 
 				let nomor_contact_arr 	= [];
@@ -347,7 +331,7 @@
 					nomor_contact_arr.push($(el).val());
 				})
 
-				$("#button-send-wa").prop("disabled",true);
+				$("#button-send-wa-selected").prop("disabled",true);
 
 				if(nomor_contact_arr.length < 1){
 					Swal.fire("Pilih contact terlebih dulu","","error");
@@ -363,9 +347,31 @@
 					},
 					success : function(response) {
 						$(".checkbox-contact").prop("checked",false);
-						$("#check-contact-all").prop("checked",false);
-						showHideBtnSendWa();
-						$("#button-send-wa").prop("disabled",false);
+						showHideBtnWaSelected();
+						$("#button-send-wa-selected").prop("disabled",false);
+
+						Swal.fire(response?.message,"","success");
+					},
+					error : function(response) {
+						Swal.fire(response?.data?.message,"","error");
+					}
+				})
+			})
+
+			$("body").on("click", "#button-send-wa-all",function(e){
+				e.preventDefault();
+
+				$.ajax({
+					url : "{{ route('contact.send_wa') }}",
+					type 	: "POST",
+					data 	: {
+						_token 	: $(`{{ csrf_field() }}`).val(),
+						id_group_contact : "{{ $id_group_contact }}"
+					},
+					success : function(response) {
+						$(".checkbox-contact").prop("checked",false);
+						showHideBtnWaSelected();
+						$("#button-send-wa-selected").prop("disabled",false);
 
 						Swal.fire(response?.message,"","success");
 					},

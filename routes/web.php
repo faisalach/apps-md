@@ -5,6 +5,7 @@ use App\Http\Controllers\CabangController;
 use App\Http\Controllers\ContactPesertaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GolonganDarahController;
+use App\Http\Controllers\GroupContactController;
 use App\Http\Controllers\HasilTesController;
 use App\Http\Controllers\KuesionerController;
 use App\Http\Controllers\UsersController;
@@ -64,8 +65,15 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
     
     Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");
     Route::post("/panel/settings",[DashboardController::class,"settings"])->name("settings");
+
+    Route::get("/panel/contact",[GroupContactController::class,"group_contact"])->name("contact");
+    Route::get("/panel/group_contact/get/{id}",[GroupContactController::class,"get"])->name("group_contact.get");
+    Route::get("/panel/group_contact/datatable",[GroupContactController::class,"datatable"])->name("group_contact.datatable");
+    Route::post("/panel/group_contact/insert",[GroupContactController::class,"insert"])->name("group_contact.insert");
+    Route::post("/panel/group_contact/update/{id}",[GroupContactController::class,"update"])->name("group_contact.update");
+    Route::post("/panel/group_contact/delete/{id}",[GroupContactController::class,"delete"])->name("group_contact.delete");
     
-    Route::get("/panel/contact",[ContactPesertaController::class,"contact"])->name("contact");
+    Route::get("/panel/contact/{id_group_contact}",[ContactPesertaController::class,"contact"])->name("contact.detail");
     Route::get("/panel/contact/datatable",[ContactPesertaController::class,"datatable"])->name("contact.datatable");
     Route::post("/panel/contact/insert",[ContactPesertaController::class,"insert"])->name("contact.insert");
     Route::post("/panel/contact/send_wa",[ContactPesertaController::class,"send_wa"])->name("contact.send_wa");
