@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nomor_contact',20);
             $table->integer('id_group_contact')->unsigned();
             $table->integer('id_user')->unsigned();
-            $table->foreign('id_user')->references('id')->on("users");
-            $table->foreign('id_group_contact')->references('id')->on("group_contact");
+            $table->foreign('id_user')->references('id')->on("users")->onDelete("cascade");
+            $table->foreign('id_group_contact')->references('id')->on("group_contact")->onDelete("cascade");
             $table->timestamps();
         });
     }

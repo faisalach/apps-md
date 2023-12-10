@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Cabang;
 use App\Models\GolonganDarah;
 use App\Models\HasilTes;
 use App\Models\Kuesioner;
@@ -9,6 +10,7 @@ use App\Models\KuesionerJawaban;
 use App\Models\KuesionerToken;
 use App\Models\ScheduleWa;
 use App\Models\Settings;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -116,6 +118,13 @@ class CustomHelper
             $check  = KuesionerToken::where("token",$str_token)->first();
         } while (!empty($check));
 
+        if(Auth::user()->role !== "superadmin"){
+            $cabang     = Cabang::find(Auth::user()->id_cabang);
+            if($cabang->kuota_link < 1){
+                return "";
+            }
+        }
+
         $time_expired_token   = CustomHelper::getSetting("time_expired_token");
         $time_expired_token_arr     = json_decode($time_expired_token,true) ? json_decode($time_expired_token,true) : [];
         $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
@@ -127,7 +136,13 @@ class CustomHelper
         $token->sudah_diisi = 0;
         $token->nomor_contact = $nomor_contact;
         $token->token       = $str_token;
-        $token->save();
+        // $token->save();
+        if($token->save()){
+            if(!empty($cabang)){
+                $cabang->kuota_link     = $cabang->kuota_link-1;
+                $cabang->save();
+            }
+        }
 
 
         return url(route("kuesioner.form",["token" => $token->token]));
