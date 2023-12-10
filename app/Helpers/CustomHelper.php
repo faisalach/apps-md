@@ -193,7 +193,6 @@ class CustomHelper
         ));
                                             
         $response = curl_exec($curl);
-
         curl_close($curl);
         return json_decode($response,true);
     }
