@@ -279,7 +279,7 @@ class ContactPesertaController extends Controller
             }
         }
         
-        if(!empty($nomor_contact)){
+        if(!empty($nomor_contact_arr)){
             $i  = 0;
             foreach($nomor_contact_arr as $nomor_contact){
                 $link_sertifikat    = CustomHelper::form_url($nomor_contact);
@@ -296,7 +296,12 @@ class ContactPesertaController extends Controller
                     $new_message    = str_replace("[$key]",$val,$new_message);
                 }
     
-                CustomHelper::sendWA($new_message,$nomor_contact);
+                $send_wa = CustomHelper::sendWA($new_message,$nomor_contact);
+                if(empty($send_wa["status"])){
+                    return response()->json([
+                        "message"   => $send_wa["msg"]
+                    ],422);
+                }
                 $i++;
             }
     

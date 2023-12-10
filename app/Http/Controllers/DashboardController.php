@@ -46,7 +46,7 @@ class DashboardController extends Controller
                         break;
                         break;
                     case 'template_pesan_kirim_link':
-                        $value  = nl2br($value);
+                        // $value  = nl2br($value);
                         break;
                 }
 

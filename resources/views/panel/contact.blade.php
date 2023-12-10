@@ -204,8 +204,6 @@
 				let form 		= $(this);
 				let url 		= form.attr("action");
 				let method 		= form.attr("method");
-
-				form.find("[type=submit]").prop("disabled",true);
 				if(form.find(".alert").length > 0){
 					form.find(".alert")[0].outerHTML = '';
 				}
@@ -252,8 +250,6 @@
 				formData.append("file", file);
 				formData.append("id_group_contact", id_group_contact);
 				formData.append("_token", $(`{{ csrf_field() }}`).val());
-
-				form.find("[type=submit]").prop("disabled",true);
 				if(form.find(".alert").length > 0){
 					form.find(".alert")[0].outerHTML = '';
 				}
@@ -355,8 +351,6 @@
 					nomor_contact_arr.push($(el).val());
 				})
 
-				$("#button-send-wa-selected").prop("disabled",true);
-
 				if(nomor_contact_arr.length < 1){
 					Swal.fire("Pilih contact terlebih dulu","","error");
 					return false;
@@ -373,13 +367,12 @@
 					beforeSend:loadingSweetalert,
 					success : function(response) {
 						$(".checkbox-contact").prop("checked",false);
-						$("#button-send-wa-selected").prop("disabled",false);
 						showHideBtnWaSelected();
-
+						
 						Swal.fire(response?.message,"","success");
 					},
 					error : function(response) {
-						Swal.fire(response?.data?.message,"","error");
+						Swal.fire(response?.responseJSON?.message,"","error");
 					}
 				})
 			})
@@ -406,12 +399,11 @@
 							success : function(response) {
 								$(".checkbox-contact").prop("checked",false);
 								showHideBtnWaSelected();
-								$("#button-send-wa-selected").prop("disabled",false);
-		
+								
 								Swal.fire(response?.message,"","success");
 							},
 							error : function(response) {
-								Swal.fire(response?.data?.message,"","error");
+								Swal.fire(response?.responseJSON?.message,"","error");
 							}
 						})
 					}
@@ -426,8 +418,6 @@
 				$.each($(".checkbox-contact:checked"),function(k,el){
 					nomor_contact_arr.push($(el).val());
 				})
-
-				$("#button-delete-wa-selected").prop("disabled",true);
 
 				if(nomor_contact_arr.length < 1){
 					Swal.fire("Pilih contact terlebih dulu","","error");
@@ -452,13 +442,12 @@
 							beforeSend:loadingSweetalert,
 							success : function(response) {
 								$(".checkbox-contact").prop("checked",false);
-								$("#button-delete-wa-selected").prop("disabled",false);
 								showHideBtnWaSelected();
 
 								Swal.fire(response?.message,"","success");
 							},
 							error : function(response) {
-								Swal.fire(response?.data?.message,"","error");
+								Swal.fire(response?.responseJSON?.message,"","error");
 							}
 						})
 					}
@@ -487,12 +476,11 @@
 							success : function(response) {
 								$(".checkbox-contact").prop("checked",false);
 								showHideBtnWaSelected();
-								$("#button-delete-wa-selected").prop("disabled",false);
 		
 								Swal.fire(response?.message,"","success");
 							},
 							error : function(response) {
-								Swal.fire(response?.data?.message,"","error");
+								Swal.fire(response?.responseJSON?.message,"","error");
 							}
 						})
 					}

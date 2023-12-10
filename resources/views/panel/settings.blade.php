@@ -91,7 +91,7 @@
 				<p>Template Pesan Kirim Link</p>
 				@php
 				$template_pesan_kirim_link   = CustomHelper::getSetting("template_pesan_kirim_link");
-				$template_pesan_kirim_link = str_replace('<br />', "", $template_pesan_kirim_link);
+				// $template_pesan_kirim_link = str_replace('<br />', "", $template_pesan_kirim_link);
 				@endphp
 				<textarea name="value" rows="5" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>{{ $template_pesan_kirim_link }}</textarea>
 				<div>
@@ -103,7 +103,7 @@
 				<p>Template Pesan Sertifikat</p>
 				@php
 				$template_pesan_sertifikat   = CustomHelper::getSetting("template_pesan_sertifikat");
-				$template_pesan_sertifikat = str_replace('<br />', "", $template_pesan_sertifikat);
+				// $template_pesan_sertifikat = str_replace('<br />', "", $template_pesan_sertifikat);
 				@endphp
 				<textarea name="value" rows="5" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>{{ $template_pesan_sertifikat }}</textarea>
 				<div>
