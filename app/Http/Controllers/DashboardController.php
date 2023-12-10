@@ -31,7 +31,7 @@ class DashboardController extends Controller
                 $key        = $request->input("key");
                 $value      = is_array($request->input("value")) ? json_encode($request->input("value")) : $request->input("value");
                 $settings   = Settings::where("key",$key)->first();
-                $settings->value = $value;
+                $settings->value = nl2br($value);
 
                 if($settings->save()){
                     return back()->with([
