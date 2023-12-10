@@ -37,12 +37,11 @@ class scheduleWA extends Command
 
             if($row->status_pengiriman === "failed_send_media"){
                 $template_pesan     = CustomHelper::getSetting("template_pesan_sertifikat");
-                $sendWa     = CustomHelper::sendWA($template_pesan . " " . $row->url_media,$row->nomor_wa,$row->url_media);
+                $sendWa     = CustomHelper::sendWA($template_pesan . " " . $row->url_media,$row->nomor_wa);
             }else{
                 $sendWa     = CustomHelper::sendWA($row->isi_pesan,$row->nomor_wa,$row->url_media);
             }
-            
-            if($sendWa["status"] === "success"){
+            if($sendWa["status"]){
                 $row->status_pengiriman = "success";
                 $row->save();
             }else{
