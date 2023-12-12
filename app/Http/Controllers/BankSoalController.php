@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cabang;
-use App\Models\User;
+use App\Models\BankSoal;
+use App\Models\BankSoalJawaban;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class UsersController extends Controller
+class BankSoalController extends Controller
 {
-    public function users(){
-
-        $cabang     = Cabang::all();
-        
-        $data   = [
-            "cabang"    => $cabang
-        ];
-        return view('panel.users',$data);
+    public function bank_soal(){
+        return view('panel.bank_soal');
     }
 
     public function get($id){
-        return User::find($id);
+        return BankSoal::where("id",$id)->with(["bank_soal_jawaban"])->first();
     }
 
     public function datatable(Request $request){
@@ -32,7 +24,7 @@ class UsersController extends Controller
         $order   = $request->input("order");
         $search   = $request->input("search")["value"];
 
-        $data   = User::with(["cabang"]);
+        $data   = BankSoal::select("*");
         $record_total   = $data->count();
 
         if(!empty($search)){
@@ -58,10 +50,6 @@ class UsersController extends Controller
         
         $result = $data->get();
 
-        foreach($result as $row){
-            $row->nama_role     = $row->role === "superadmin" ? "Superadmin" : "Cabang";
-        }
-
         return [
             "draw"=> $draw,
             "recordsTotal"=> $record_total,
@@ -73,23 +61,25 @@ class UsersController extends Controller
     public function insert(Request $request){
 
         $request->validate([
-            "username"     => "required",
-            "password"     => "required",
-            "role"         => "required|in:superadmin,admin_cabang,agen",
+            "pertanyaan"            => "required",
+            "no_urut"               => "required|numeric",
+            "jawaban.visual"        => "required",
+            "jawaban.auditory"      => "required",
+            "jawaban.kinestetik"    => "required",
         ]);
 
-        if($request->input("role") !== "superadmin"){
-            $request->validate([
-                "id_cabang"    => "required",
-            ]); 
-        }
-
-        $user    = new User();
-        $user->username  = $request->input("username");
-        $user->password  = Hash::make($request->input("password"));
-        $user->role      = $request->input("role");
-        $user->id_cabang      = $user->role !== "superadmin" ? $request->input("id_cabang") : null;
-        if($user->save()){
+        $bank_soal    = new BankSoal();
+        $bank_soal->pertanyaan  = $request->input("pertanyaan");
+        $bank_soal->no_urut     = $request->input("no_urut");
+        if($bank_soal->save()){
+            foreach($request->input("jawaban") as $type => $jawaban){
+                $bank_soal_jawaban    = new BankSoalJawaban();
+                $bank_soal_jawaban->bank_soal_id  = $bank_soal->id;
+                $bank_soal_jawaban->jawaban  = $jawaban;
+                $bank_soal_jawaban->type     = $type;
+                $bank_soal_jawaban->save();
+            }
+            
             return response()->json([
                 "message"   => "Successfuly insert data"
             ]);
@@ -103,30 +93,27 @@ class UsersController extends Controller
     public function update(Request $request,$id){
 
         $request->validate([
-            "username"     => "required",
-            "role"         => "required|in:superadmin,admin_cabang,agen",
+            "pertanyaan"            => "required",
+            "no_urut"               => "required|numeric",
+            "jawaban.visual"        => "required",
+            "jawaban.auditory"      => "required",
+            "jawaban.kinestetik"    => "required",
         ]);
 
-        if(!empty($request->input("password"))){
-            $request->validate([
-                "password"  => "min:8|max:32"
-            ]);
-        }
+        $bank_soal    = BankSoal::find($id);
+        $bank_soal->pertanyaan  = $request->input("pertanyaan");
+        $bank_soal->no_urut     = $request->input("no_urut");
+        if($bank_soal->save()){
+            foreach($request->input("jawaban") as $type => $jawaban){
+                $bank_soal_jawaban    = BankSoalJawaban::where("bank_soal_id",$bank_soal->id)
+                ->where("type",$type)
+                ->first();
 
-        if($request->input("role") !== "superadmin"){
-            $request->validate([
-                "id_cabang"    => "required",
-            ]); 
-        }
+                $bank_soal_jawaban->jawaban  = $jawaban;
+                $bank_soal_jawaban->type     = $type;
+                $bank_soal_jawaban->save();
+            }
 
-        $user    = User::find($id);
-        $user->username  = $request->input("username");
-        if(!empty($request->input("password"))){
-            $user->password  = Hash::make($request->input("password"));
-        }
-        $user->role         = $request->input("role");
-        $user->id_cabang    = $user->role !== "superadmin" ? $request->input("id_cabang") : null;
-        if($user->save()){
             return response()->json([
                 "message"   => "Successfuly update data"
             ]);
@@ -138,14 +125,8 @@ class UsersController extends Controller
     }
 
     public function delete($id){
-        $user    = User::find($id);
-
-        if($user->id == Auth::user()->id){
-            return response()->json([
-                "message"   => "Permission denied."
-            ],422);
-        }
-        if($user->delete()){
+        $bank_soal    = BankSoal::find($id);
+        if($bank_soal->delete()){
             return response()->json([
                 "message"   => "Successfuly delete data"
             ]);

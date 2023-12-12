@@ -48,6 +48,10 @@ class ContactPesertaController extends Controller
 
         $data   = ContactPeserta::select("*");
         $data->where("id_group_contact",$id_group_contact);
+
+        if(empty($id_group_contact)){
+            $data->where("id_user",Auth::user()->id);
+        }
         
         $record_total   = $data->count();
 
@@ -87,9 +91,10 @@ class ContactPesertaController extends Controller
 
         $request->validate([
             "nomor_contact"     => "required|digits_between:10,20",
-            "id_group_contact"     => "required"
+            // "id_group_contact"     => "required"
         ]);
 
+        $id_group_contact   = $request->input("id_group_contact");
         $nomor_contact  = $request->input("nomor_contact");
         $nomor_contact  = preg_replace("/[^0-9]/","",$nomor_contact);
         $nomor_contact  = preg_replace("/^0/","62",$nomor_contact);
@@ -100,20 +105,22 @@ class ContactPesertaController extends Controller
             ],422);
         }
         
-
-        $check      = ContactPeserta::where("nomor_contact",$nomor_contact)->first();
+        $check      = ContactPeserta::where("nomor_contact",$nomor_contact)
+        ->where("id_group_contact",$id_group_contact)
+        ->first();
         if(!empty($check)){
             return response()->json([
                 "message"   => "Nomor sudah terdaftar"
             ],422);
         }
 
-        $id_group_contact   = $request->input("id_group_contact");
-        $group_contact      = GroupContact::find($id_group_contact);
-        if($group_contact->id_cabang !== Auth::user()->id_cabang){
-            return response()->json([
-                "message"   => "Failed, please try again"
-            ],422);
+        if(!empty($id_group_contact)){
+            $group_contact      = GroupContact::find($id_group_contact);
+            if($group_contact->id_cabang !== Auth::user()->id_cabang){
+                return response()->json([
+                    "message"   => "Failed, please try again"
+                ],422);
+            }
         }
 
         $contact    = new ContactPeserta();
@@ -254,12 +261,12 @@ class ContactPesertaController extends Controller
     }
 
     public function send_wa(Request $request){
-        $request->validate([
-            "id_group_contact"     => "required"
-        ]);
+        // $request->validate([
+        //     "id_group_contact"     => "required"
+        // ]);
 
         $message            = CustomHelper::getSetting("template_pesan_kirim_link");
-        $id_group_contact   = !empty($request->input("id_group_contact")) ? $request->input("id_group_contact") : [];
+        $id_group_contact   = !empty($request->input("id_group_contact")) ? $request->input("id_group_contact") : null;
         $nomor_contact_arr  = !empty($request->input("nomor_contact")) ? $request->input("nomor_contact") : [];
 
         if(empty($nomor_contact_arr)){
@@ -324,7 +331,7 @@ class ContactPesertaController extends Controller
 
     public function delete_bulk(Request $request){
         $nomor_contact_arr  = !empty($request->input("nomor_contact")) ? $request->input("nomor_contact") : [];
-        $id_group_contact   = !empty($request->input("id_group_contact")) ? $request->input("id_group_contact") : [];
+        $id_group_contact   = !empty($request->input("id_group_contact")) ? $request->input("id_group_contact") : null;
         $id_arr  = [];
 
         if(empty($nomor_contact_arr)){

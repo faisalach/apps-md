@@ -6,6 +6,11 @@
 			<span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Apps MD</span>
 		</a>
 		<div class="flex items-center space-x-6 rtl:space-x-reverse">
+			@if(Auth::user()->role != "superadmin")
+			<p class="font-bold">
+				Sisa Kuota Token : {{ CustomHelper::getKuotaToken() }}
+			</p>
+			@endif
 			<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
 				<i class="fas fa-fw fa-bars text-gray-500 fa-lg"></i>
 			</button>
@@ -25,9 +30,21 @@
 			</a>
 		</li>
 		<li>
+			<a href="{{ route('dashboard.calculator') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+				<i class="fas fa-fw fa-calculator text-gray-500"></i>
+				<span class="ms-3">Kalkulator</span>
+			</a>
+		</li>
+		<li>
 			<a href="{{ route('contact') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 				<i class="fas fa-fw fa-address-book text-gray-500"></i>
 				<span class="ms-3">Contact</span>
+			</a>
+		</li>
+		<li>
+			<a href="{{ route('bank_soal') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+				<i class="fas fa-fw fa-book text-gray-500"></i>
+				<span class="ms-3">Bank Soal</span>
 			</a>
 		</li>
 		<li>

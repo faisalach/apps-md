@@ -29,7 +29,9 @@
 			<table id="dt_contact" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-gray-700 uppercase bg-green-300 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
-						<th scope="col" class="px-6 py-3"></th>
+						<th scope="col" class="px-6 py-3">
+							<input type="checkbox" id="checkbox-contact-all" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+						</th>
 						<th scope="col" class="px-6 py-3">
 							Nomor Contact
 						</th>
@@ -133,6 +135,7 @@
 				},
 				drawCallback : function(data,data1,data2){
 					totalData = data.json.recordsTotal;
+					$("#checkbox-contact-all").prop("checked",false);
 				},
 				order : [[1,"ASC"]],
 				columns: [
@@ -327,8 +330,22 @@
 				});
 			})
 
+			$("body").on("click","#checkbox-contact-all",function(e){
+				if($(this).is(":checked")){
+					$(".checkbox-contact").prop("checked",true);
+				}else{
+					$(".checkbox-contact").prop("checked",false);
+				}
+				showHideBtnWaSelected();
+			});
+			
 			$("body").on("click",".checkbox-contact",function(e){
 				showHideBtnWaSelected();
+				if($(".checkbox-contact:checked").length >= $(".checkbox-contact").length){
+					$("#checkbox-contact-all").prop("checked",true);
+				}else{
+					$("#checkbox-contact-all").prop("checked",false);
+				}
 			});
 			
 			function showHideBtnWaSelected(){

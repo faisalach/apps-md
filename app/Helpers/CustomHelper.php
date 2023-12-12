@@ -209,4 +209,14 @@ class CustomHelper
             "updated_at"    => Carbon::now(),
         ]);
     }
+
+    public static function getKuotaToken(){
+        $id_cabang  = Auth::user()->id_cabang;
+        if(!empty($id_cabang)){
+            $cabang     = Cabang::find($id_cabang);
+            return $cabang->kuota_link;
+        }
+
+        return 0;
+    }
 }

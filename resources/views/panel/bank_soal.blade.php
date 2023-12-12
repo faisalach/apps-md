@@ -3,26 +3,23 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" href="/assets/datatable_tailwind.css">
 
-	<h1 class="text-2xl font-semibold mb-4">Users</h1>
+	<h1 class="text-2xl font-semibold mb-4">Bank Soal</h1>
 	<div class="p-5 mt-4 bg-gray-50 rounded-lg border shadow">
 		
 		<!-- Modal toggle -->
-		<button class="btn-add-users mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
-			Tambah User
+		<button class="btn-add-bank-soal mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			Tambah Soal
 		</button>
 
 		<div class="relative">
-			<table id="dt_users" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+			<table id="dt_bank_soal" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-gray-700 uppercase bg-green-300 dark:bg-gray-700 dark:text-gray-400">
 					<tr>
 						<th scope="col" class="px-6 py-3">
-							Username
+							Nomor Urut
 						</th>
 						<th scope="col" class="px-6 py-3">
-							Role
-						</th>
-						<th scope="col" class="px-6 py-3">
-							Cabang
+							Pertanyaan
 						</th>
 						<th scope="col" class="px-6 py-3">
 							#
@@ -43,7 +40,7 @@
 				<!-- Modal header -->
 				<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
 					<h3 class="title-modal text-lg font-semibold text-gray-900 dark:text-white">
-						Tambah User
+						Tambah Soal
 					</h3>
 					<button type="button" class="btn-close-default-modal text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
 						<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -54,38 +51,34 @@
 				</div>
 				<!-- Modal body -->
                 
-                <form id="form_input" action="{{ route('users.insert') }}" class="p-4 md:p-5" method="POST">
+                <form id="form_input" action="{{ route('bank_soal.insert') }}" class="p-4 md:p-5" method="POST">
                     @csrf
                     <div class="mb-4">
-                        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                        <input type="text" name="username" id="username"  placeholder="Type text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <label for="no_urut" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Urut</label>
+                        <input name="no_urut" type="number" id="no_urut" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type number">
                     </div>
                     <div class="mb-4">
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <input type="password" name="password" id="password"  placeholder="Type text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <label for="pertanyaan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pertanyaan</label>
+                        <textarea name="pertanyaan" rows="5" id="pertanyaan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type text"></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <select name="role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="superadmin">Superadmin</option>
-                            <option value="admin_cabang">Cabang</option>
-                            <option value="agen">Agen</option>
-                        </select>
+                        <label for="visual" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jawaban Visual</label>
+                        <input name="jawaban[visual]" type="text" id="visual" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type text">
                     </div>
                     <div class="mb-4">
-                        <label for="id_cabang" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cabang</label>
-                        <select name="id_cabang" id="id_cabang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">Pilih Cabang</option>
-                            @foreach($cabang as $row)
-                            <option value="{{ $row->id }}">{{ $row->nama_cabang }}</option>
-                            @endforeach
-                        </select>
+                        <label for="auditory" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jawaban Auditory</label>
+                        <input name="jawaban[auditory]" type="text" id="auditory" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type text">
+                    </div>
+                    <div class="mb-4">
+                        <label for="kinestetik" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jawaban Kinestetik</label>
+                        <input name="jawaban[kinestetik]" type="text" id="kinestetik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type text">
                     </div>
                     <button type="submit" class="disabled:bg-green-300 disabled:cursor-wait text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                         Submit
                     </button>
                 </form>
+
 			</div>
 		</div>
 	</div> 
@@ -103,34 +96,26 @@
                 backdropClasses:
                     'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
                 closable: true,
-                onShow : () => {
-                    $("#id_cabang").parent().hide();
-                }
             }, {
                 id: 'default-modal',
                 override: true
             });
 
-			$("#dt_users").DataTable({
+			$("#dt_bank_soal").DataTable({
 				processing : true,
 				serverSide : true,
 				ajax    : {
-					url     : "{{ route('users.datatable') }}",
+					url     : "{{ route('bank_soal.datatable') }}",
 				},
 				columns: [
 					{ 
-						data: 'username',
-						name: 'username',
+						data: 'no_urut',
+						name: 'no_urut',
 						class : "px-6 py-4"
 					},
 					{ 
-						data: 'nama_role',
-						name: 'role',
-						class : "px-6 py-4"
-					},
-					{ 
-						data: 'cabang.nama_cabang',
-						name: 'cabang.nama_cabang',
+						data: 'pertanyaan',
+						name: 'pertanyaan',
 						class : "px-6 py-4"
 					},
 					{
@@ -139,20 +124,20 @@
 						orderable : false,
 						render : (id) => {
 							return `
-								<button id="button_dropdown_users_${id}" data-dropdown-toggle="dropdown" class="btn-dropdown" type="button">
+								<button id="button_dropdown_bank_soal_${id}" data-dropdown-toggle="dropdown" class="btn-dropdown" type="button">
 									<i class="fas fa-fw fa-bars"></i>
 								</button>
 
-								<div id="menu_dropdown_users_${id}" class="menu-dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+								<div id="menu_dropdown_bank_soal_${id}" class="menu-dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
 									<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                         <li>
-											<a href="#" data-id="${id}" class="btn-edit-users block px-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<a href="#" data-id="${id}" class="btn-edit-bank-soal block px-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fas fa-fw fa-pen-alt"></i>
 												Edit
 											</a>
 										</li>
 										<li>
-											<a href="#" data-id="${id}" class="btn-delete-users block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<a href="#" data-id="${id}" class="btn-delete-bank-soal block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 												<i class="fas fa-fw fa-trash-alt"></i>
 												Hapus
 											</a>
@@ -165,12 +150,6 @@
 				]
 				
 			});
-
-			$("body").on("click","#refresh_dt_users",function(e) {
-				e.preventDefault();
-				
-				$("#dt_users").DataTable().ajax.reload();
-			})
 
 			$("body").on("click",".btn-dropdown",function(e) {
 				e.preventDefault();
@@ -185,13 +164,6 @@
 					dropdown.show();
 				}
 				
-			})
-			$("body").on("change","#role",function(e) {
-                if($(this).val() === "superadmin"){
-                    $("#id_cabang").parent().hide();
-                }else{
-                    $("#id_cabang").parent().show();
-                }
 			})
 
 			$("body").on("submit","#form_input",function(e) {
@@ -220,7 +192,7 @@
 						});
 
                         defaultModal.hide();
-                        $("#dt_users").DataTable().ajax.reload();
+                        $("#dt_bank_soal").DataTable().ajax.reload();
 					},
 					error : (response) => {
 						form.find("[type=submit]").prop("disabled",false);
@@ -235,14 +207,14 @@
 				});
 			})
             
-            $("body").on("click",".btn-add-users",function(e) {
+            $("body").on("click",".btn-add-bank-soal",function(e) {
                 e.preventDefault();
 
                 defaultModal.show();
                 $("#form_input")[0].reset();
-                $("#default-modal").find(".title-modal").html("Tambah User");
+                $("#default-modal").find(".title-modal").html("Tambah Soal");
 
-                let action 	= "{{ route('users.insert') }}";
+                let action 	= "{{ route('bank_soal.insert') }}";
                 $("#form_input").prop("action",action);
             })
 
@@ -251,15 +223,14 @@
                 defaultModal.hide();
             })
 
-            $("body").on("click",".btn-edit-users",function(e) {
+            $("body").on("click",".btn-edit-bank-soal",function(e) {
                 e.preventDefault();
-
                 $("#form_input")[0].reset();
-                $("#default-modal").find(".title-modal").html("Edit User");
+                $("#default-modal").find(".title-modal").html("Edit Soal");
                 
 				let id 	= $(this).data("id");
-				let url 	= "{{ route('users.get',['id' => ':id']) }}".replace(":id",id);
-				let action 	= "{{ route('users.update',['id' => ':id']) }}".replace(":id",id);
+				let url 	= "{{ route('bank_soal.get',['id' => ':id']) }}".replace(":id",id);
+				let action 	= "{{ route('bank_soal.update',['id' => ':id']) }}".replace(":id",id);
 
                 $("#form_input").prop("action",action);
                 $.ajax({
@@ -267,19 +238,20 @@
                     type 	: "GET",
                     success 	: (response) => {
                         defaultModal.show();
-                        $("#username").val(response.username);
-                        console.log(response.role);
-                        $("#role").val(response.role).change();
-                        $("#id_cabang").val(response.id_cabang).select();
+                        $("#no_urut").val(response.no_urut);
+                        $("#pertanyaan").val(response.pertanyaan);
+                        response.bank_soal_jawaban.map(jwb => {
+                            $("#"+jwb.type).val(jwb.jawaban);
+                        })
                     }
                 })
 			})
 
-			$("body").on("click",".btn-delete-users",function(e) {
+			$("body").on("click",".btn-delete-bank-soal",function(e) {
                 e.preventDefault();
 
 				let id 	= $(this).data("id");
-				let url 	= "{{ route('users.delete',['id' => ':id']) }}".replace(":id",id);
+				let url 	= "{{ route('bank_soal.delete',['id' => ':id']) }}".replace(":id",id);
 				Swal.fire({
 					title: "Hapus data ini?",
 					icon: "warning",
@@ -300,7 +272,7 @@
 									title: message,
 									icon: "success"
 								});
-								$("#dt_users").DataTable().ajax.reload();
+								$("#dt_bank_soal").DataTable().ajax.reload();
 							},
 							error 	: (response) => {
 								let message 	= response?.responseJSON?.message;
@@ -313,6 +285,7 @@
 					}
 				});
 			})
+
 		})
 	</script>
 @endsection

@@ -81,7 +81,7 @@ class CabangController extends Controller
     public function update(Request $request,$id){
 
         $request->validate([
-            "nama_cabang"     => "required|numeric"
+            "nama_cabang"     => "required"
         ]);
 
         $cabang    = Cabang::find($id);

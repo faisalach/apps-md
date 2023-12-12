@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contact_peserta', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nomor_contact',20);
-            $table->integer('id_group_contact')->unsigned();
+            $table->integer('id_group_contact')->unsigned()->nullable();
             $table->integer('id_user')->unsigned();
             $table->foreign('id_user')->references('id')->on("users")->onDelete("cascade");
             $table->foreign('id_group_contact')->references('id')->on("group_contact")->onDelete("cascade");

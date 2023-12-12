@@ -20,3 +20,7 @@
 .sorting_asc:before, .sorting_desc:after {
     opacity: .6;
 }
+
+.simple_numbers>span{
+    display: inline-flex;
+}

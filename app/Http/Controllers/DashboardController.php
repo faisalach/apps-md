@@ -20,6 +20,10 @@ class DashboardController extends Controller
         return view("panel.dashboard");
     }
 
+    public function calculator(){
+        return view("panel.calculator");
+    }
+
     public function settings(Request $request){
         if($request->method() === "POST"){
             if(!empty($request->input("key"))){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\CustomHelper;
 use App\Models\HasilTes;
 use Illuminate\Http\Request;
 use ZipArchive;
@@ -9,7 +10,10 @@ use ZipArchive;
 class HasilTesController extends Controller
 {
     public function get($kode_angka){
-        return HasilTes::where("kode_angka",$kode_angka)->first();
+        $data   = HasilTes::where("kode_angka",$kode_angka)->first();
+        $file_pdf     = CustomHelper::get_pdf_hasil_tes($kode_angka);
+        $data->file_pdf     = $file_pdf;
+        return $data;
     }
     public function update(Request $request,$kode_angka){
         $hasil_tes  = HasilTes::where("kode_angka",$kode_angka)->first();

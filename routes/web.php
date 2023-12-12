@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankSoalController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\ContactPesertaController;
 use App\Http\Controllers\DashboardController;
@@ -39,6 +40,7 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
 
     Route::group(["middleware" => "auth:superadmin"],function(){
         Route::get("/panel/dashboard",[DashboardController::class,"dashboard"])->name("dashboard");
+        Route::get("/panel/dashboard/calculator",[DashboardController::class,"calculator"])->name("dashboard.calculator");
         Route::get("/panel/kuesioner/datatable",[KuesionerController::class,"datatable"])->name("kuesioner.datatable");
         Route::get("/panel/kuesioner/export_csv",[DashboardController::class,"export"])->name("kuesioner.export_csv");
 
@@ -61,6 +63,13 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
         Route::post("/panel/users/insert",[UsersController::class,"insert"])->name("users.insert");
         Route::post("/panel/users/update/{id}",[UsersController::class,"update"])->name("users.update");
         Route::post("/panel/users/delete/{id}",[UsersController::class,"delete"])->name("users.delete");
+
+        Route::get("/panel/bank_soal",[BankSoalController::class,"bank_soal"])->name("bank_soal");
+        Route::get("/panel/bank_soal/get/{id}",[BankSoalController::class,"get"])->name("bank_soal.get");
+        Route::get("/panel/bank_soal/datatable",[BankSoalController::class,"datatable"])->name("bank_soal.datatable");
+        Route::post("/panel/bank_soal/insert",[BankSoalController::class,"insert"])->name("bank_soal.insert");
+        Route::post("/panel/bank_soal/update/{id}",[BankSoalController::class,"update"])->name("bank_soal.update");
+        Route::post("/panel/bank_soal/delete/{id}",[BankSoalController::class,"delete"])->name("bank_soal.delete");
     });
     
     Route::get("/panel/settings",[DashboardController::class,"settings"])->name("settings");

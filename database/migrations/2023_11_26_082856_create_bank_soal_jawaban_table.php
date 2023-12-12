@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('bank_soal_id')->unsigned();
             $table->string("jawaban",255);
             $table->enum("type",["visual","auditory","kinestetik"]);
-            $table->foreign("bank_soal_id")->references("id")->on("bank_soal");
+            $table->foreign("bank_soal_id")->references("id")->on("bank_soal")->onDelete("cascade");
             $table->timestamps();
         });
     }

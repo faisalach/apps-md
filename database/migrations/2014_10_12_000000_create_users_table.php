@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('username')->unique();
             $table->integer('id_cabang')->unsigned()->nullable();
-            $table->enum('role',['superadmin','admin_cabang']);
+            $table->enum('role',['superadmin','admin_cabang','agen']);
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
