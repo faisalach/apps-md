@@ -6,31 +6,31 @@
 	<h1 class="text-2xl font-semibold mb-4">Contact</h1>
 	<div class="p-5 mt-4 bg-gray-50 rounded-lg border shadow">
 		
-		<button class="btn-add-contact mb-4 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+		<button class="btn-add-contact mb-4 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
 			Tambah Contact
 		</button>
 		<div class="flex flex-row flex-wrap">
 			<!-- Modal toggle -->
-			<button id="button-send-wa-selected" class="mr-2 hidden disabled:bg-green-500 disabled:cursor-wait mb-2 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			<button id="button-send-wa-selected" class="mr-2 hidden disabled:bg-blue-500 disabled:cursor-wait mb-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
 				Kirim Token ke Nomor yang dipilih
 			</button>
-			<button id="button-send-wa-all" class="mr-2 disabled:bg-green-500 disabled:cursor-wait mb-2 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+			<button id="button-send-wa-all" class="mr-2 disabled:bg-blue-500 disabled:cursor-wait mb-2 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
 				Kirim Token ke Semua Nomor
 			</button>
-			<button id="button-delete-wa-selected" class="mr-2 hidden disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+			<button id="button-delete-wa-selected" class="mr-2 hidden disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
 				Hapus Nomor yang dipilih
 			</button>
-			<button id="button-delete-wa-all" class="mr-2 disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+			<button id="button-delete-wa-all" class="mr-2 disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
 				Hapus Semua Nomor
 			</button>
 		</div>
 
 		<div class="relative">
-			<table id="dt_contact" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-				<thead class="text-xs text-gray-700 uppercase bg-green-300 dark:bg-gray-700 dark:text-gray-400">
+			<table id="dt_contact" class="w-full text-sm text-left rtl:text-right text-gray-500">
+				<thead class="text-xs text-white uppercase bg-blue-500">
 					<tr>
 						<th scope="col" class="px-6 py-3">
-							<input type="checkbox" id="checkbox-contact-all" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+							<input type="checkbox" id="checkbox-contact-all" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
 						</th>
 						<th scope="col" class="px-6 py-3">
 							Nomor Contact
@@ -50,13 +50,13 @@
 	<div id="contact-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
 		<div class="relative p-4 w-full max-w-md max-h-full">
 			<!-- Modal content -->
-			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+			<div class="relative bg-white rounded-lg shadow">
 				<!-- Modal header -->
-				<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-					<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+				<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+					<h3 class="text-lg font-semibold text-gray-900">
 						Tambah Contact
 					</h3>
-					<button type="button" class="btn-close-modal-contact text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+					<button type="button" class="btn-close-modal-contact text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
 						<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
 							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
 						</svg>
@@ -66,13 +66,13 @@
 				<!-- Modal body -->
 				
 
-				<div class="border-b border-gray-200 dark:border-gray-700">
+				<div class="border-b border-gray-200">
 					<ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
 						<li class="me-2" role="presentation">
 							<button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Form</button>
 						</li>
 						<li class="me-2" role="presentation">
-							<button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">CSV</button>
+							<button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">CSV</button>
 						</li>
 					</ul>
 				</div>
@@ -82,10 +82,10 @@
 							<input type="hidden" id="id_group_contact" name="id_group_contact" value="{{ $id_group_contact }}">
 							@csrf
 							<div class="mb-4">
-								<label for="nomor_contact" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor Contact</label>
-								<input type="text" name="nomor_contact" id="nomor_contact" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type number" required="">
+								<label for="nomor_contact" class="block mb-2 text-sm font-medium text-gray-900">Nomor Contact</label>
+								<input type="text" name="nomor_contact" id="nomor_contact" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type number" required="">
 							</div>
-							<button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+							<button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
 								<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
 								Submit
 							</button>
@@ -94,10 +94,10 @@
 					<div class="hidden" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
 						<form id="form_csv" action="{{ route('contact.insert_csv') }}" class="p-4 md:p-5" method="POST">
 							<div class="mb-4">
-								<label for="file" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File CSV</label>
-								<input accept=".csv" id="file" name="file" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" >
+								<label for="file" class="block mb-2 text-sm font-medium text-gray-900">File CSV</label>
+								<input accept=".csv" id="file" name="file" type="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" >
 							</div>
-							<button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+							<button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
 								<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
 								Submit
 							</button>
@@ -119,7 +119,7 @@
                 placement: 'bottom-right',
                 backdrop: 'dynamic',
                 backdropClasses:
-                    'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+                    'bg-gray-900/50/80 fixed inset-0 z-40',
                 closable: true,
             });
 
@@ -145,7 +145,7 @@
 						class : "px-6 py-4",
 						render : (nomor_contact) => {
 							return `
-							<input type="checkbox" value="${nomor_contact}" class="checkbox-contact w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+							<input type="checkbox" value="${nomor_contact}" class="checkbox-contact w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
 							`;
 						}
 					},
@@ -172,10 +172,10 @@
 									<i class="fas fa-fw fa-bars"></i>
 								</button>
 
-								<div id="menu_dropdown_contact_${id}" class="menu-dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-									<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+								<div id="menu_dropdown_contact_${id}" class="menu-dropdown z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+									<ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
 										<li>
-											<a href="#" data-id="${id}" class="btn-delete-contact block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+											<a href="#" data-id="${id}" class="btn-delete-contact block px-4 py-2 text-red-500 hover:bg-gray-100">
 												<i class="fas fa-fw fa-trash-alt"></i>
 												Hapus
 											</a>
@@ -232,7 +232,7 @@
 
 						let message 	= response?.responseJSON?.message;
 						form.prepend(`
-							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50" role="alert">
 								${message}
 							</div>
 						`);
@@ -284,7 +284,7 @@
 
 						let message 	= response?.responseJSON?.message;
 						form.prepend(`
-							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+							<div class="alert p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50" role="alert">
 								${message}
 							</div>
 						`);
