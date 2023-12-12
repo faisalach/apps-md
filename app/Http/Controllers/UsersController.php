@@ -59,7 +59,20 @@ class UsersController extends Controller
         $result = $data->get();
 
         foreach($result as $row){
-            $row->nama_role     = $row->role === "superadmin" ? "Superadmin" : "Cabang";
+            switch($row->role){
+                case 'superadmin':
+                    $row->nama_role = "Superadmin";
+                    break;
+                case 'admin_cabang':
+                    $row->nama_role = "Cabang";
+                    break;
+                case 'agen':
+                    $row->nama_role = "Agen";
+                    break;
+                default : 
+                    $row->nama_role = "";
+                    break;
+            }
         }
 
         return [
