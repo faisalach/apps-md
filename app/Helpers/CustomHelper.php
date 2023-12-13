@@ -124,12 +124,19 @@ class CustomHelper
             if($cabang->kuota_link < 1){
                 return "";
             }
+
+            $time_expired_token_arr     = json_decode($cabang->time_expired_token,true) ? json_decode($cabang->time_expired_token,true) : [];
+            $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
+            $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
+        }
+        
+        if(empty($time_expired_token_arr)){
+            $time_expired_token   = CustomHelper::getSetting("time_expired_token");
+            $time_expired_token_arr     = json_decode($time_expired_token,true) ? json_decode($time_expired_token,true) : [];
+            $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
+            $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
         }
 
-        $time_expired_token   = CustomHelper::getSetting("time_expired_token");
-        $time_expired_token_arr     = json_decode($time_expired_token,true) ? json_decode($time_expired_token,true) : [];
-        $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
-        $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
 
         $token              = new KuesionerToken();
         $token->start_date  = date("Y-m-d H:i:s");
