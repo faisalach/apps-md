@@ -31,12 +31,12 @@ Route::get("/form",[KuesionerController::class,"form"])->name("kuesioner.form");
 Route::post("/form/store",[KuesionerController::class,"form_store"])->name("kuesioner.formStore");
 Route::get("/form/sertifikat/{id}",[KuesionerController::class,"show_sertifikat"]);
 
-Route::group(["middleware" => "guest:superadmin,admin_cabang"],function(){
+Route::group(["middleware" => "guest:superadmin,admin_cabang,agen"],function(){
     Route::redirect("/panel","/panel/login");
     Route::get("/panel/login",[AuthController::class,"login"])->name("login");
     Route::post("/panel/login",[AuthController::class,"authenticated"])->name("authenticated");
 });
-Route::group(["middleware" => "auth:superadmin,admin_cabang"],function(){
+Route::group(["middleware" => "auth:superadmin,admin_cabang,agen"],function(){
 
     Route::group(["middleware" => "auth:superadmin"],function(){
         Route::get("/panel/dashboard",[DashboardController::class,"dashboard"])->name("dashboard");

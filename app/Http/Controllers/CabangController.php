@@ -105,7 +105,7 @@ class CabangController extends Controller
         ]);
 
         $cabang    = Cabang::find($id);
-        $cabang->kuota_link = $request->input("kuota_link");
+        $cabang->kuota_link = $cabang->kuota_link + $request->input("kuota_link");
         if($cabang->save()){
             return response()->json([
                 "message"   => "Successfuly update data"
