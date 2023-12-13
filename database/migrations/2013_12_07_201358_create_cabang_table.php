@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('nama_cabang');
             $table->integer('kuota_link');
+            $table->text('time_expired_token')->nullable();
             $table->timestamps();
         });
     }
