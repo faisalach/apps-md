@@ -25,7 +25,7 @@
 			</button>
 		</div>
 
-		<div class="relative">
+		<div class="relative overflow-x-auto">
 			<table id="dt_contact" class="w-full text-sm text-left rtl:text-right text-gray-500">
 				<thead class="text-xs text-white uppercase bg-blue-500">
 					<tr>

@@ -11,7 +11,7 @@
 				Sisa Kuota Token : {{ CustomHelper::getKuotaToken() }}
 			</p>
 			@endif
-			<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-inherit rounded-lg sm:hidden hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-200">
+			<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex text-white items-center p-2 text-sm text-inherit rounded-lg sm:hidden">
 				<i class="fas fa-fw fa-bars text-inherit fa-lg"></i>
 			</button>
 		</div>

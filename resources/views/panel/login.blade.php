@@ -1,9 +1,9 @@
 @include('layout.header')
     <div style="background-image: url('/assets/bg2.jpg')" class="min-h-screen relative flex items-center justify-center bg-repeat-y bg-cover p-4">
-        <span class="fixed top-0 left-0 bottom-0 right-0 bg-gray-500 z-5 opacity-5"></span>
-        <form action="{{ route('authenticated') }}" method="POST" class="relative z-10">
-            @csrf
-            <div class="w-96 bg-white shadow-lg border border-gray-100 p-3 rounded-xl max-w-full  m-auto px-8 py-4">
+        <span class="fixed top-0 left-0 bottom-0 right-0 bg-gray-500 z-5 opacity-30"></span>
+        <div class="relative z-10 sm:w-96 w-full bg-white shadow-lg border border-gray-100 p-3 rounded-md max-w-full m-auto px-8 py-4">
+            <form action="{{ route('authenticated') }}" method="POST" >
+                @csrf
                 <div class="text-center pb-5 mb-5 border-b">
                     <h3 class="text-xl leading-tight mt-10 font-semibold ">Aplikasi Mengenal Diri</h3>
                     <h5 class="font-semibold mb-3 mt-4 text-gray-500">Log In</h5>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <button type="submit" class=" w-full focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2">Kirim</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 @include('layout.footer')

@@ -9,8 +9,8 @@
 				{{ Session::get("message") }}
 			</div>
 			@endif
-			<div class="grid grid-cols-2 mt-3 gap-2">
-				<div class="col-span-2 bg-white rounded-lg py-3 px-5 mb-3 border shadow">
+			<div class="grid md:grid-cols-2 mt-3 gap-2">
+				<div class="md:col-span-2 bg-white rounded-lg py-3 px-5 mb-3 border shadow">
 					<label for="username" class="text-xs uppercase font-semibold">Username*</label>
 					<input type="text" value="{{ Auth::user()->username }}" id="username" name="username" class="px-0 block border-0 w-full hover:border-0 focus:ring-0 leading-tight text-lg" placeholder="Masukkan Username">
 					@error("username")
@@ -45,7 +45,7 @@
 		</div>
 		@endif
 		<div class="mt-5">
-			<form method="POST" class="grid mb-4 items-center grid-cols-4 gap-2">
+			<form method="POST" class="grid mb-4 items-center md:grid-cols-4 gap-2">
 				@csrf
 				<p>Masa Aktif Token Form</p>
 				@php
@@ -64,7 +64,7 @@
 					<button type="submit" name="key" value="time_expired_token" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4 items-center grid-cols-4 gap-2">
+			<form method="POST" class="grid mb-4 items-center md:grid-cols-4 gap-2">
 				@csrf
 				<p>Whatsapp Key API</p>
 				@php
@@ -75,7 +75,7 @@
 					<button type="submit" name="key" value="wa_api_key" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4 items-center grid-cols-4 gap-2">
+			<form method="POST" class="grid mb-4 items-center md:grid-cols-4 gap-2">
 				@csrf
 				<p>Whatsapp Sender</p>
 				@php
@@ -86,7 +86,7 @@
 					<button type="submit" name="key" value="wa_sender" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4  grid-cols-4 gap-2">
+			<form method="POST" class="grid mb-4  md:grid-cols-4 gap-2">
 				@csrf
 				<p>Template Pesan Kirim Link</p>
 				@php
@@ -98,7 +98,7 @@
 					<button type="submit" name="key" value="template_pesan_kirim_link" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4  grid-cols-4 gap-2">
+			<form method="POST" class="grid mb-4  md:grid-cols-4 gap-2">
 				@csrf
 				<p>Template Pesan Sertifikat</p>
 				@php
@@ -122,7 +122,7 @@
 		</div>
 		@endif
 		
-		<div class="relative my-5">
+		<div class="relative my-5 overflow-x-auto">
 			<table class="w-full text-sm text-left rtl:text-right text-gray-500">
 				<thead class="text-xs text-white uppercase bg-blue-500">
 					<tr>
@@ -263,7 +263,7 @@
 		</div>
 		@endif
 		
-		<div class="relative my-5">
+		<div class="relative my-5 overflow-x-auto">
 			<table class="w-full text-sm text-left rtl:text-right text-gray-500">
 				<thead class="text-xs text-white uppercase bg-blue-500">
 					<tr>
