@@ -19,6 +19,12 @@
 							Nama Cabang
 						</th>
 						<th scope="col" class="px-6 py-3">
+							Sisa Kuota Token
+						</th>
+						<th scope="col" class="px-6 py-3">
+							Waktu Expired Token
+						</th>
+						<th scope="col" class="px-6 py-3">
 							#
 						</th>
 					</tr>
@@ -73,8 +79,12 @@
 							<select name="time_expired_token[satuan]" id="time_expired_token_satuan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 								<option value="">Pilih Satuan</option>
 								<option value="day">Hari</option>
-								<option value="hours">Jam</option>
-								<option value="minutes">Menit</option>
+								<option value="week">Minggu</option>
+								<option value="month">Bulan</option>
+								<option value="year">Tahun</option>
+								<option value="year_3">3 Tahun</option>
+								<option value="year_5">5 Tahun</option>
+								<option value="year_10">10 Tahun</option>
 							</select>
 						</div>
                     </div>
@@ -118,6 +128,45 @@
 						name: 'nama_cabang',
 						class : "px-6 py-4"
 					},
+					{ 
+						data: 'kuota_link',
+						name: 'kuota_link',
+						class : "px-6 py-4"
+					},
+					{ 
+						data: 'time_expired_token',
+						name: 'time_expired_token',
+						class : "px-6 py-4",
+						render : function(data){
+							let obj 	= JSON.parse(data);
+							let time 	= obj.time;
+							let satuan 	= obj.satuan;
+							switch (satuan) {
+								case 'minutes':
+									satuan 	= "Menit"
+									break;
+								case 'hours':
+									satuan 	= "Jam"
+									break;
+								case 'day':
+									satuan 	= "Hari"
+									break;
+								case 'week':
+									satuan 	= "Minggu"
+									break;
+								case 'month':
+									satuan 	= "Bulan"
+									break;
+								case 'year':
+									satuan 	= "Tahun"
+									break;
+							
+								default:
+									break;
+							}
+							return time + " " + satuan;
+						}
+					},
 					{
 						data : 'id',
 						class : "px-6 py-4",
@@ -133,7 +182,7 @@
                                         <li>
 											<a href="#" data-id="${id}" class="btn-update-kuota-link block px-4 py-2 text-gray-500 hover:bg-gray-100">
 												<i class="fas fa-fw fa-plus"></i>
-												Tambah Kuota
+												Update Kuota
 											</a>
 										</li>
                                         <li>
@@ -341,6 +390,19 @@
 				});
 			})
 
+			$("body").on("change","#time_expired_token_satuan",function(e) {
+				if($(this).val() === "year_3"){
+					$("#time_expired_token_satuan").val("year").select();
+					$("#time_expired_token_time").val(3);
+				}else if($(this).val() === "year_5"){
+					$("#time_expired_token_satuan").val("year").select();
+					$("#time_expired_token_time").val(5);
+				}else if($(this).val() === "year_10"){
+					$("#time_expired_token_satuan").val("year").select();
+					$("#time_expired_token_time").val(10);
+				}
+			})
+
             $("body").on("click",".btn-update-kuota-link",function(e) {
                 e.preventDefault();
 
@@ -354,20 +416,23 @@
 				let id 	= $(this).data("id");
 				let action 	= "{{ route('cabang.update_kuota_link',['id' => ':id']) }}".replace(":id",id);
                 $("#form_update_kuota_link").prop("action",action);
-				defaultModal.show();
+				// defaultModal.show();
 
-				/* let url 	= "{{ route('cabang.get',['id' => ':id']) }}".replace(":id",id);
+				let url 	= "{{ route('cabang.get',['id' => ':id']) }}".replace(":id",id);
                 $.ajax({
                     url 	: url,
                     type 	: "GET",
                     success 	: (response) => {
+						defaultModal.show();
+						$("#kuota_link").val(response.kuota_link);
 						if(response.time_expired_token != ""){
+
 							let time_expired_token 	= JSON.parse(response.time_expired_token);
 							$("#time_expired_token_time").val(time_expired_token.time);
 							$("#time_expired_token_satuan").val(time_expired_token.satuan).select();
 						}
                     }
-                }) */
+                })
 
 			})
 		})

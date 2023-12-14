@@ -126,15 +126,15 @@ class CustomHelper
             }
 
             $time_expired_token_arr     = json_decode($cabang->time_expired_token,true) ? json_decode($cabang->time_expired_token,true) : [];
-            $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
-            $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
+            $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "month";
+            $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 1;
         }
         
         if(empty($time_expired_token_arr)){
             $time_expired_token   = CustomHelper::getSetting("time_expired_token");
             $time_expired_token_arr     = json_decode($time_expired_token,true) ? json_decode($time_expired_token,true) : [];
-            $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
-            $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
+            $satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "month";
+            $time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 1;
         }
 
 

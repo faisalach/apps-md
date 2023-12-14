@@ -58,14 +58,14 @@ class DashboardController extends Controller
                 $settings->value = $value;
 
                 if($settings->save()){
-                    return back()->with([
-                        "message_setting"   => "Successfuly save setting"
+                    return response()->json([
+                        "message"   => "Successfuly save setting"
                     ]);    
                 }
 
-                return back()->with([
-                    "message_setting"   => "Failed, Please try again"
-                ]);
+                return response()->json([
+                    "message"   => "Failed, Please try again"
+                ],422);
             }
             if(!empty($request->input("username"))){
                 $request->validate([
@@ -96,7 +96,6 @@ class DashboardController extends Controller
                 ]);
             }
 
-            return back();
         }else{
             $data   = [];
             $data["golongan_darah"]  = GolonganDarah::orderBy("golongan_darah")->get();

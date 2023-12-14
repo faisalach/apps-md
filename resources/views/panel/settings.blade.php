@@ -45,26 +45,31 @@
 		</div>
 		@endif
 		<div class="mt-5">
-			<form method="POST" class="grid mb-4 items-center md:grid-cols-4 gap-2">
+			<form method="POST" class="form-settings grid mb-4 items-center md:grid-cols-4 gap-2">
 				@csrf
 				<p>Masa Aktif Token Form</p>
 				@php
 				$time_expired_token   = CustomHelper::getSetting("time_expired_token");
 				$time_expired_token_arr     = json_decode($time_expired_token,true) ? json_decode($time_expired_token,true) : [];
-				$satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "minutes";
-				$time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 60;
+				$satuan         = !empty($time_expired_token_arr["satuan"]) ? $time_expired_token_arr["satuan"] : "month";
+				$time_interval  = !empty($time_expired_token_arr["time"]) ? $time_expired_token_arr["time"] : 1;
 				@endphp
-				<input value="{{ $time_interval }}" type="number" min="0" name="value[time]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-				<select name="value[satuan]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-					<option {{$satuan === "day" ? "selected" : ""}} value="day">Hari</option>
-					<option {{$satuan === "hours" ? "selected" : ""}} value="hours">Jam</option>
-					<option {{$satuan === "minutes" ? "selected" : ""}} value="minutes">Menit</option>
+				<input value="{{ $time_interval }}" id="time_expired_token_time" type="number" min="0" name="value[time]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+				<select name="value[satuan]" id="time_expired_token_satuan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+					<option {{ $satuan === "day" ? "selected" : "" }} value="day">Hari</option>
+					<option {{ $satuan === "week" ? "selected" : "" }} value="week">Minggu</option>
+					<option {{ $satuan === "month" ? "selected" : "" }} value="month">Bulan</option>
+					<option {{ $satuan === "year" ? "selected" : "" }} value="year">Tahun</option>
+					<option value="year_3">3 Tahun</option>
+					<option value="year_5">5 Tahun</option>
+					<option value="year_10">10 Tahun</option>
 				</select>
 				<div>
-					<button type="submit" name="key" value="time_expired_token" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
+					<input type="hidden" name="key" value="time_expired_token">
+					<button type="submit" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4 items-center md:grid-cols-4 gap-2">
+			<form method="POST" class="form-settings grid mb-4 items-center md:grid-cols-4 gap-2">
 				@csrf
 				<p>Whatsapp Key API</p>
 				@php
@@ -72,10 +77,11 @@
 				@endphp
 				<input value="{{ $wa_api_key }}" type="text" min="0" name="value" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
 				<div>
-					<button type="submit" name="key" value="wa_api_key" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
+					<input type="hidden" name="key" value="wa_api_key">
+					<button type="submit" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4 items-center md:grid-cols-4 gap-2">
+			<form method="POST" class="form-settings grid mb-4 items-center md:grid-cols-4 gap-2">
 				@csrf
 				<p>Whatsapp Sender</p>
 				@php
@@ -83,10 +89,11 @@
 				@endphp
 				<input value="{{ $wa_sender }}" type="text" min="0" name="value" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
 				<div>
-					<button type="submit" name="key" value="wa_sender" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
+					<input type="hidden" name="key" value="wa_sender">
+					<button type="submit" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4  md:grid-cols-4 gap-2">
+			<form method="POST" class="form-settings grid mb-4  md:grid-cols-4 gap-2">
 				@csrf
 				<p>Template Pesan Kirim Link</p>
 				@php
@@ -95,10 +102,11 @@
 				@endphp
 				<textarea name="value" rows="5" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>{{ $template_pesan_kirim_link }}</textarea>
 				<div>
-					<button type="submit" name="key" value="template_pesan_kirim_link" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
+					<input type="hidden" name="key" value="template_pesan_kirim_link">
+					<button type="submit" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
-			<form method="POST" class="grid mb-4  md:grid-cols-4 gap-2">
+			<form method="POST" class="form-settings grid mb-4  md:grid-cols-4 gap-2">
 				@csrf
 				<p>Template Pesan Sertifikat</p>
 				@php
@@ -107,7 +115,8 @@
 				@endphp
 				<textarea name="value" rows="5" class="col-span-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>{{ $template_pesan_sertifikat }}</textarea>
 				<div>
-					<button type="submit" name="key" value="template_pesan_sertifikat" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
+					<input type="hidden" name="key" value="template_pesan_sertifikat">
+					<button type="submit" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Save</button>
 				</div>
 			</form>
 		</div>
@@ -372,6 +381,50 @@
 			$("body").on("click",".btn-close-golongan-darah-modal",function(e) {
 				e.preventDefault();
 				golonganDarahModal.hide();
+			})
+
+			$("body").on("change","#time_expired_token_satuan",function(e) {
+				if($(this).val() === "year_3"){
+					$("#time_expired_token_satuan").val("year").select();
+					$("#time_expired_token_time").val(3);
+				}else if($(this).val() === "year_5"){
+					$("#time_expired_token_satuan").val("year").select();
+					$("#time_expired_token_time").val(5);
+				}else if($(this).val() === "year_10"){
+					$("#time_expired_token_satuan").val("year").select();
+					$("#time_expired_token_time").val(10);
+				}
+			})
+
+			$("body").on("submit",".form-settings",function(e) {
+				e.preventDefault();
+
+				let form 		= $(this);
+				let url 		= form.attr("action");
+				let method 		= form.attr("method");
+
+				form.find("[type=submit]").prop("disabled",true);
+
+				$.ajax({
+					type : method,
+					url : url,
+					data : $(this).serialize(),
+					success : (response) => {
+						form.find("[type=submit]").prop("disabled",false);
+						Swal.fire({
+                            title: response?.message,
+							icon: "success"
+						});
+					},
+					error : (response) => {
+						form.find("[type=submit]").prop("disabled",false);
+						let message 	= response?.responseJSON?.message;
+						Swal.fire({
+                            title: message,
+							icon: "error"
+						});
+					}
+				});
 			})
 		})
 	</script>
