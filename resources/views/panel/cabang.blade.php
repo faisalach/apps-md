@@ -139,6 +139,9 @@
 						class : "px-6 py-4",
 						render : function(data){
 							let obj 	= JSON.parse(data);
+							if(obj == null){
+								return '';
+							}
 							let time 	= obj.time;
 							let satuan 	= obj.satuan;
 							switch (satuan) {
