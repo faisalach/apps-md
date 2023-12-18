@@ -179,7 +179,7 @@ class ContactPesertaController extends Controller
                         }
                         $header_csv     = explode($delimiter,$header_csv[0]);
                     }
-                    for($i = 1; $i <= 10;$i++){
+                    /* for($i = 1; $i <= 10;$i++){
                         $index   = array_search("Phone $i - Value",$header_csv);
                         if($index !== false){
                             $index_phone[] = $index;
@@ -188,6 +188,9 @@ class ContactPesertaController extends Controller
 
                     if(empty($index_phone)){
                         $index_phone[] = 0;
+                    } */
+                    for($i = 0; $i <= count($header_csv);$i++){
+                        $index_phone[] = $i;
                     }
                 }else{
                     $data_csv       = fgetcsv($handle,0,$delimiter);
@@ -196,8 +199,17 @@ class ContactPesertaController extends Controller
                             $nomor      = $data_csv[$indx];
                             $split      = explode(":::",$nomor);
 
-                            foreach($split as $sp){
-                                $nomor_contact_arr[]    = trim($sp);
+                            foreach($split as $contact){
+                                $contact  = preg_replace("/[^0-9]/","",$contact);
+                                $contact  = preg_replace("/^0/","62",$contact);
+
+                                if(strlen($contact) < 10 || strlen($contact) > 20){
+                                    continue;
+                                }
+                                if(array_search($contact, $nomor_contact_arr) !== false){
+                                    continue;
+                                }
+                                $nomor_contact_arr[]    = trim($contact);
                             }
                         }
                     }
@@ -207,20 +219,11 @@ class ContactPesertaController extends Controller
             fclose($handle);
         }
 
+        dd($nomor_contact_arr);
+
         $data_insert    = [];
 
-        foreach($nomor_contact_arr as $key => $nomor_contact){
-            $nomor_contact  = preg_replace("/[^0-9]/","",$nomor_contact);
-            $nomor_contact  = preg_replace("/^0/","62",$nomor_contact);
-
-            if(strlen($nomor_contact) < 10 || strlen($nomor_contact) > 20){
-                continue;
-            }
-
-            if(array_search($nomor_contact, array_column($data_insert, 'nomor_contact')) !== false){
-                continue;
-            }
-    
+        foreach($nomor_contact_arr as $nomor_contact){
             $check      = ContactPeserta::where("nomor_contact",$nomor_contact)->first();
             if(!empty($check)){
                 continue;
