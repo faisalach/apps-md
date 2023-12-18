@@ -21,9 +21,9 @@
 						<th scope="col" class="px-6 py-3">
 							Sisa Kuota Token
 						</th>
-						<th scope="col" class="px-6 py-3">
+						{{-- <th scope="col" class="px-6 py-3">
 							Waktu Expired Token
-						</th>
+						</th> --}}
 						<th scope="col" class="px-6 py-3">
 							#
 						</th>
@@ -133,43 +133,43 @@
 						name: 'kuota_link',
 						class : "px-6 py-4"
 					},
-					{ 
-						data: 'time_expired_token',
-						name: 'time_expired_token',
-						class : "px-6 py-4",
-						render : function(data){
-							let obj 	= JSON.parse(data);
-							if(obj == null){
-								return '';
-							}
-							let time 	= obj.time;
-							let satuan 	= obj.satuan;
-							switch (satuan) {
-								case 'minutes':
-									satuan 	= "Menit"
-									break;
-								case 'hours':
-									satuan 	= "Jam"
-									break;
-								case 'day':
-									satuan 	= "Hari"
-									break;
-								case 'week':
-									satuan 	= "Minggu"
-									break;
-								case 'month':
-									satuan 	= "Bulan"
-									break;
-								case 'year':
-									satuan 	= "Tahun"
-									break;
+					// { 
+					// 	data: 'time_expired_token',
+					// 	name: 'time_expired_token',
+					// 	class : "px-6 py-4",
+					// 	render : function(data){
+					// 		let obj 	= JSON.parse(data);
+					// 		if(obj == null){
+					// 			return '';
+					// 		}
+					// 		let time 	= obj.time;
+					// 		let satuan 	= obj.satuan;
+					// 		switch (satuan) {
+					// 			case 'minutes':
+					// 				satuan 	= "Menit"
+					// 				break;
+					// 			case 'hours':
+					// 				satuan 	= "Jam"
+					// 				break;
+					// 			case 'day':
+					// 				satuan 	= "Hari"
+					// 				break;
+					// 			case 'week':
+					// 				satuan 	= "Minggu"
+					// 				break;
+					// 			case 'month':
+					// 				satuan 	= "Bulan"
+					// 				break;
+					// 			case 'year':
+					// 				satuan 	= "Tahun"
+					// 				break;
 							
-								default:
-									break;
-							}
-							return time + " " + satuan;
-						}
-					},
+					// 			default:
+					// 				break;
+					// 		}
+					// 		return time + " " + satuan;
+					// 	}
+					// },
 					{
 						data : 'id',
 						class : "px-6 py-4",
