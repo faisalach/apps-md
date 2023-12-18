@@ -95,9 +95,9 @@ class KuesionerController extends Controller
         
         $result = $data->get();
 
-       /*  foreach($result as $row){
+        foreach($result as $row){
             $row->hasil_tes    = CustomHelper::get_value_number_tgl_lahir($row->number_tgl_lahir);
-        } */
+        }
 
         return [
             "draw"=> $draw,
@@ -177,7 +177,7 @@ class KuesionerController extends Controller
         $kuesioner->tempat_lahir    = $tempat_lahir;
         $kuesioner->tanggal_lahir    = $tanggal_lahir;
         $kuesioner->number_tgl_lahir    = $number_tgl_lahir;
-        $kuesioner->hasil_tes    = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
+        // $kuesioner->hasil_tes    = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $kuesioner->golongan_darah    = $golongan_darah;
         $kuesioner->agama    = $agama;
         $kuesioner->jenis_kelamin    = $jenis_kelamin;
@@ -239,7 +239,8 @@ class KuesionerController extends Controller
     }
 
     private function sertifikat($kuesioner){
-        $value_number_tgl_lahir         = $kuesioner->hasil_tes;
+        $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
+        // $value_number_tgl_lahir         = $kuesioner->hasil_tes;
         $root_path                      = $_SERVER["DOCUMENT_ROOT"];
 
         $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);

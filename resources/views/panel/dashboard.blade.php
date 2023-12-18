@@ -296,7 +296,7 @@
                     },
                     { 
                         data: 'hasil_tes',
-                        name: 'hasil_tes',
+                        name: 'number_tgl_lahir',
                         class : "px-6 py-4"
                     },
                     { 
