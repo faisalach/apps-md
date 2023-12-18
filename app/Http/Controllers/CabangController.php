@@ -101,14 +101,20 @@ class CabangController extends Controller
     public function update_kuota_link(Request $request,$id){
 
         $request->validate([
-            "kuota_link"     => "required",
             "time_expired_token" => "required",
             "time_expired_token.time" => "required|numeric",
-            "time_expired_token.satuan" => "required|in:day,hours,minutes",
+            "time_expired_token.satuan" => "required",
         ]);
+        if($request->input("time_expired_token")["satuan"] === "day"){
+            $request->validate([
+                "kuota_link"     => "required",
+            ]);
+        }
 
         $cabang    = Cabang::find($id);
-        $cabang->kuota_link = $cabang->kuota_link + $request->input("kuota_link");
+        if($request->input("time_expired_token")["satuan"] === "day"){
+            $cabang->kuota_link = $cabang->kuota_link + $request->input("kuota_link");
+        }
         $cabang->time_expired_token = json_encode($request->input("time_expired_token"));
         if($cabang->save()){
             return response()->json([

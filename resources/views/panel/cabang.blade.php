@@ -404,6 +404,12 @@
 					$("#time_expired_token_satuan").val("year").select();
 					$("#time_expired_token_time").val(10);
 				}
+
+				if($(this).val() === "day"){
+					$("#kuota_link").closest('div').show();
+				}else{
+					$("#kuota_link").closest('div').hide();
+				}
 			})
 
             $("body").on("click",".btn-update-kuota-link",function(e) {
@@ -411,6 +417,7 @@
 
                 $("#form_input").hide();
                 $("#form_update_kuota_link").show();
+				$("#kuota_link").closest('div').show();
 
                 $("#form_update_kuota_link")[0].reset();
                 $("#default-modal").find(".title-modal").html("Update Kuota Link Form");
@@ -427,12 +434,13 @@
                     type 	: "GET",
                     success 	: (response) => {
 						defaultModal.show();
-						$("#kuota_link").val(response.kuota_link);
+						// $("#kuota_link").val(response.kuota_link);
 						if(response.time_expired_token != ""){
 
 							let time_expired_token 	= JSON.parse(response.time_expired_token);
 							$("#time_expired_token_time").val(time_expired_token.time);
 							$("#time_expired_token_satuan").val(time_expired_token.satuan).select();
+							$("#time_expired_token_satuan").change();
 						}
                     }
                 })
