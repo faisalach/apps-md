@@ -457,6 +457,8 @@
 			})
 
 			$("body").on("click",".btn-delete-contact",function(e) {
+				e.preventDefault();
+				
 				let id 	= $(this).data("id");
 				let url 	= "{{ route('contact.delete',['id' => ':id']) }}".replace(":id",id);
 				Swal.fire({
