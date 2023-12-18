@@ -43,6 +43,7 @@ Route::group(["middleware" => "auth:superadmin,admin_cabang,agen"],function(){
         Route::get("/panel/dashboard/calculator",[DashboardController::class,"calculator"])->name("dashboard.calculator");
         Route::get("/panel/kuesioner/datatable",[KuesionerController::class,"datatable"])->name("kuesioner.datatable");
         Route::get("/panel/kuesioner/export_csv",[DashboardController::class,"export"])->name("kuesioner.export_csv");
+        Route::post("/panel/kuesioner/delete_bulk",[KuesionerController::class,"delete_bulk"])->name("kuesioner.delete_bulk");
 
         Route::get("/panel/settings/hasil_tes/{kode_angka}",[HasilTesController::class,"get"])->name("settings.hasil_tes.get");
         Route::post("/panel/settings/hasil_tes/{kode_angka}/update",[HasilTesController::class,"update"])->name("settings.hasil_tes.update");

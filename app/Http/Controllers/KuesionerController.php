@@ -61,6 +61,9 @@ class KuesionerController extends Controller
                         case 'tanggal_lahir':
                             $query->where(DB::raw("DAY(tanggal_lahir)"),"like","%$value%");
                             break;
+                        case 'created_at':
+                            $query->where(DB::raw("DATE(created_at)"),$value);
+                            break;
                         default :
                             $query->where($column,"like","%$value%");
                             break;
@@ -92,9 +95,9 @@ class KuesionerController extends Controller
         
         $result = $data->get();
 
-        foreach($result as $row){
+       /*  foreach($result as $row){
             $row->hasil_tes    = CustomHelper::get_value_number_tgl_lahir($row->number_tgl_lahir);
-        }
+        } */
 
         return [
             "draw"=> $draw,
@@ -174,6 +177,7 @@ class KuesionerController extends Controller
         $kuesioner->tempat_lahir    = $tempat_lahir;
         $kuesioner->tanggal_lahir    = $tanggal_lahir;
         $kuesioner->number_tgl_lahir    = $number_tgl_lahir;
+        $kuesioner->hasil_tes    = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
         $kuesioner->golongan_darah    = $golongan_darah;
         $kuesioner->agama    = $agama;
         $kuesioner->jenis_kelamin    = $jenis_kelamin;
@@ -235,7 +239,7 @@ class KuesionerController extends Controller
     }
 
     private function sertifikat($kuesioner){
-        $value_number_tgl_lahir         = CustomHelper::get_value_number_tgl_lahir($kuesioner->number_tgl_lahir);
+        $value_number_tgl_lahir         = $kuesioner->hasil_tes;
         $root_path                      = $_SERVER["DOCUMENT_ROOT"];
 
         $pdf_hasil_tes                  = CustomHelper::get_pdf_hasil_tes($kuesioner->number_tgl_lahir);
@@ -284,5 +288,32 @@ class KuesionerController extends Controller
         // $pdf = PDF::loadView('kuesioner.sertifikat', $data);
         // return $pdf->download($pdf_filepath);
         return view('kuesioner.sertifikat', $data);
+    }
+
+    public function delete_bulk(Request $request){
+        $id_arr     = !empty($request->input("id")) ? $request->input("id") : [];
+        $date       = !empty($request->input("date")) ? $request->input("date") : null;
+
+        if(!empty($date)){
+            $delete        = Kuesioner::where(DB::raw("DATE(created_at)"),$date)->delete();
+            if($delete){
+                return response()->json([
+                    "message" => "Successfuly delete kuesioner"
+                ]);
+            }
+        }elseif(!empty($id_arr)){
+            $delete     = Kuesioner::whereIn("id",$id_arr)->delete();
+            if($delete){
+                return response()->json([
+                    "message" => "Successfuly delete kuesioner"
+                ]);
+            }
+    
+        }
+
+        return response()->json([
+            "message"   => "Failed, please try again"
+        ],422);
+
     }
 }

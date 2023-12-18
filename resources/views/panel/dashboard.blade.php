@@ -128,10 +128,29 @@
     </div>
 
     <div class="p-5 mt-4 bg-gray-50 rounded-lg border shadow">
+        <div class="mb-3">
+            <label for="created_at" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Pengisian</label>
+            <input type="date" id="created_at" value="{{ date("Y-m-d") }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="...">
+        </div>
+        <div class="flex flex-row flex-wrap">
+			<button id="button-delete-kuesioner-selected" class="mr-2 hidden disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+				Hapus Kuesioner yang dipilih
+			</button>
+			<button id="button-delete-kuesioner-all" class="mr-2 disabled:bg-red-500 disabled:cursor-wait mb-2 block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
+				Hapus Semua Kuesioner
+			</button>
+		</div>
+
         <div class="relative overflow-x-auto">
             <table id="dt_kuesioner" class="w-full text-sm text-left rtl:text-right text-gray-700">
                 <thead class="text-xs text-white uppercase bg-blue-500">
                     <tr>
+                        <th scope="col" class="px-6 py-3">
+							<input type="checkbox" id="checkbox-kuesioner-all" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+						</th>
+                        <th scope="col" class="px-6 py-3">
+                            Waktu Pengisian Form
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Nama Lengkap
                         </th>
@@ -187,12 +206,15 @@
     <script src="/assets/datatable_tailwind.js"></script>
     <script>
         $(() => {
+            let totalData 			= 0;
             $("#dt_kuesioner").DataTable({
                 processing : true,
                 serverSide : true,
-                drawCallback: () => {
+                drawCallback: (data) => {
                     let params = $("#dt_kuesioner").DataTable().ajax.params();
                     let url_export  = $("#export_data").attr("href","{{ route('kuesioner.export_csv') }}?" + $.param(params));
+                    $("#checkbox-kuesioner-all").prop("checked",false);
+                    totalData = data.json.recordsTotal;
                 },
                 ajax    : {
                     url     : "{{ route('kuesioner.datatable') }}",
@@ -211,6 +233,7 @@
                             alamat : $("#alamat").val(),
                             email : $("#email").val(),
                             no_wa : $("#no_wa").val(),
+                            created_at : $("#created_at").val(),
                             min_persentase : {
                                 persentase_visual : $("#min_persentase_visual").val(),
                                 persentase_auditory : $("#min_persentase_auditory").val(),
@@ -226,6 +249,31 @@
                     }
                 },
                 columns: [
+                    { 
+						data: 'id',
+						orderable : false,
+						class : "px-6 py-4",
+						render : (id) => {
+							return `
+							<input type="checkbox" value="${id}" class="checkbox-kuesioner w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+							`;
+						}
+					},
+                    { 
+                        data: 'created_at',
+                        name: 'created_at',
+                        class : "px-6 py-4",
+                        render : function(created_at){
+                            let d    = new Date(created_at);
+                            let year    = d.getFullYear();
+                            let month     = (d.getMonth() + 1) > 9 ? (d.getMonth() + 1) : "0"+(d.getMonth() + 1);
+                            let date     = d.getDate() > 9 ? d.getDate() : "0"+d.getDate();
+                            let hour     = d.getHours() > 9 ? d.getHours() : "0"+d.getHours();
+                            let minute     = d.getMinutes() > 9 ? d.getMinutes() : "0"+d.getMinutes();
+
+                            return `${year}-${month}-${date} ${hour}:${minute}`;
+                        }
+                    },
                     { 
                         data: 'nama_lengkap',
                         name: 'nama_lengkap',
@@ -248,7 +296,7 @@
                     },
                     { 
                         data: 'hasil_tes',
-                        name: 'number_tgl_lahir',
+                        name: 'hasil_tes',
                         class : "px-6 py-4"
                     },
                     { 
@@ -305,7 +353,8 @@
                             return data + "%";
                         }
                     },
-                ]
+                ],
+                order : [[1,"DESC"]]
                 
             });
 
@@ -314,6 +363,127 @@
                 
                 $("#dt_kuesioner").DataTable().ajax.reload();
             })
+
+            $("body").on("change","#created_at",(e) => {
+                e.preventDefault();
+                
+                $("#dt_kuesioner").DataTable().ajax.reload();
+            })
+
+            $("body").on("click","#checkbox-kuesioner-all",function(e){
+				if($(this).is(":checked")){
+					$(".checkbox-kuesioner").prop("checked",true);
+				}else{
+					$(".checkbox-kuesioner").prop("checked",false);
+				}
+				showHideBtnKuesionerSelected();
+			});
+			$("body").on("click",".checkbox-kuesioner",function(e){
+				showHideBtnKuesionerSelected();
+				if($(".checkbox-kuesioner:checked").length >= $(".checkbox-kuesioner").length){
+					$("#checkbox-kuesioner-all").prop("checked",true);
+				}else{
+					$("#checkbox-kuesioner-all").prop("checked",false);
+				}
+			});
+			
+			function showHideBtnKuesionerSelected(){
+				$("#button-delete-kuesioner-selected").addClass("hidden");
+				if($(".checkbox-kuesioner:checked").length > 0){
+					$("#button-delete-kuesioner-selected").removeClass("hidden");
+				}
+			}
+
+            $("body").on("click", "#button-delete-kuesioner-selected",function(e){
+				e.preventDefault();
+
+				let id_arr 	= [];
+				$.each($(".checkbox-kuesioner:checked"),function(k,el){
+					id_arr.push($(el).val());
+				})
+
+				if(id_arr.length < 1){
+					Swal.fire("Pilih kuesioner terlebih dulu","","error");
+					return false;
+				}
+				Swal.fire({
+					title: `Hapus kuesioner terpilih?`,
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url : "{{ route('kuesioner.delete_bulk') }}",
+							type 	: "POST",
+							data 	: {
+								_token 	: $(`{{ csrf_field() }}`).val(),
+								id : id_arr
+							},
+							beforeSend:loadingSweetalert,
+							success : function(response) {
+								$(".checkbox-kuesioner").prop("checked",false);
+								showHideBtnKuesionerSelected();
+								$("#dt_kuesioner").DataTable().ajax.reload();
+								Swal.fire(response?.message,"","success");
+							},
+							error : function(response) {
+								Swal.fire(response?.responseJSON?.message,"","error");
+							}
+						})
+					}
+				});
+			})
+
+			$("body").on("click", "#button-delete-kuesioner-all",function(e){
+				e.preventDefault();
+
+                let date    = $("#created_at").val()
+
+				Swal.fire({
+					title: `Hapus seluruh kuesioner pada tanggal ${date} (${totalData} kuesioner)?`,
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							url : "{{ route('kuesioner.delete_bulk') }}",
+							type 	: "POST",
+							data 	: {
+								_token 	: $(`{{ csrf_field() }}`).val(),
+                                date : date
+							},
+							beforeSend:loadingSweetalert,
+							success : function(response) {
+								$(".checkbox-kuesioner").prop("checked",false);
+								showHideBtnKuesionerSelected();
+								$("#dt_kuesioner").DataTable().ajax.reload();
+								Swal.fire(response?.message,"","success");
+							},
+							error : function(response) {
+								Swal.fire(response?.responseJSON?.message,"","error");
+							}
+						})
+					}
+				});
+
+			})
+
+            function loadingSweetalert() {
+                Swal.fire({
+                    html: '<h5>Loading...</h5>',
+                    showConfirmButton: false,
+                    icon : "warning",
+                    onRender: function() {
+                        let sweet_loader = '<div class="sweet_loader"><svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg></div>';
+                        // there will only ever be one sweet alert open.
+                        $('.swal2-content').prepend(sweet_loader);
+                    }
+                });
+            }
         })
     </script>
 @endsection

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("tempat_lahir",200);
             $table->date("tanggal_lahir");
             $table->integer("number_tgl_lahir");
+            $table->string("hasil_tes");
             $table->enum("golongan_darah",["A","B","AB","O"]);
             $table->string("agama",100);
             $table->enum("jenis_kelamin",["laki-laki","perempuan"]);
