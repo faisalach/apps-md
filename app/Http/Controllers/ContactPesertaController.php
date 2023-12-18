@@ -219,8 +219,6 @@ class ContactPesertaController extends Controller
             fclose($handle);
         }
 
-        dd($nomor_contact_arr);
-
         $data_insert    = [];
 
         foreach($nomor_contact_arr as $nomor_contact){
