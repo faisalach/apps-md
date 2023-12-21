@@ -214,7 +214,7 @@
 						<small class="text-red-500 block">* Upload untuk mengganti file sebelumnya</small>
 						<small class="text-red-500 block">* Gunakan converter PDF to JPG di <a class="text-blue-500" href="https://www.ilovepdf.com/pdf_to_jpg" target="_blank">https://www.ilovepdf.com/pdf_to_jpg</a></small>
 					</div>
-					<button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+					<button type="submit" class="disabled:cursor-wait disabled:bg-blue-500 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
 						<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
 						Submit
 					</button>
@@ -222,44 +222,6 @@
 			</div>
 		</div>
 	</div> 
-
-	<script>
-		$(() => {
-			const hasilTesModal = new Modal(document.getElementById('hasil-tes-modal'),{
-                placement: 'bottom-right',
-                backdrop: 'dynamic',
-                backdropClasses:
-                    'bg-gray-900/50 fixed inset-0 z-40',
-                closable: true
-            }, {
-                id: 'default-modal',
-                override: true
-            });
-
-			$("body").on("click",".btn-edit-hasil-tes",function(e) {
-				e.preventDefault();
-				
-				let id 		= $(this).data("id");
-				let url 	= `{{ route('settings.hasil_tes.update',['kode_angka' => ":kode_angka"]) }}`;
-				url 		= url.replace(":kode_angka",id);
-				$("#form_edit_hasil_tes").attr("action",url);
-				$("#form_edit_hasil_tes")[0].reset();
-				
-				$.ajax({
-					url 	: `{{ route('settings.hasil_tes.get',['kode_angka' => ":kode_angka"]) }}`.replace(":kode_angka",id),
-					success : (response) => {
-						hasilTesModal.show();
-						$("#title").val(response.title);
-					}
-				});
-			})
-
-			$("body").on("click",".btn-close-hasil-tes-modal",function(e) {
-				e.preventDefault();
-				hasilTesModal.hide();
-			})
-		})
-	</script>
 	{{-- Hasil Test --}}
 
 
@@ -345,7 +307,7 @@
 						<small class="text-red-500 block">* Upload untuk mengganti file sebelumnya</small>
 						<small class="text-red-500 block">* Gunakan converter PDF to JPG di <a class="text-blue-500" href="https://www.ilovepdf.com/pdf_to_jpg" target="_blank">https://www.ilovepdf.com/pdf_to_jpg</a></small>
 					</div>
-					<button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+					<button type="submit" class="disabled:cursor-wait disabled:bg-blue-500 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
 						<svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
 						Submit
 					</button>
@@ -353,9 +315,48 @@
 			</div>
 		</div>
 	</div> 
+	{{-- Golongan Darah --}}
 
 	<script>
 		$(() => {
+			const hasilTesModal = new Modal(document.getElementById('hasil-tes-modal'),{
+                placement: 'bottom-right',
+                backdrop: 'dynamic',
+                backdropClasses:
+                    'bg-gray-900/50 fixed inset-0 z-40',
+                closable: true
+            }, {
+                id: 'default-modal',
+                override: true
+            });
+
+			$("body").on("click",".btn-edit-hasil-tes",function(e) {
+				e.preventDefault();
+				
+				let id 		= $(this).data("id");
+				let url 	= `{{ route('settings.hasil_tes.update',['kode_angka' => ":kode_angka"]) }}`;
+				url 		= url.replace(":kode_angka",id);
+				$("#form_edit_hasil_tes").attr("action",url);
+				$("#form_edit_hasil_tes")[0].reset();
+				
+				$.ajax({
+					url 	: `{{ route('settings.hasil_tes.get',['kode_angka' => ":kode_angka"]) }}`.replace(":kode_angka",id),
+					success : (response) => {
+						hasilTesModal.show();
+						$("#title").val(response.title);
+					}
+				});
+			})
+
+			$("body").on("click",".btn-close-hasil-tes-modal",function(e) {
+				e.preventDefault();
+				hasilTesModal.hide();
+			})
+
+			$("body").on("submit","#form_edit_hasil_tes",function(){
+				$(this).find("[type=submit]").prop("disabled",true)
+			})
+
 			const golonganDarahModal = new Modal(document.getElementById('golongan-darah-modal'),{
                 placement: 'bottom-right',
                 backdrop: 'dynamic',
@@ -396,6 +397,10 @@
 				}
 			})
 
+			$("body").on("submit","#form_edit_golongan_darah",function(){
+				$(this).find("[type=submit]").prop("disabled",true)
+			})
+
 			$("body").on("submit",".form-settings",function(e) {
 				e.preventDefault();
 
@@ -428,6 +433,5 @@
 			})
 		})
 	</script>
-	{{-- Golongan Darah --}}
 	@endif
 @endsection
