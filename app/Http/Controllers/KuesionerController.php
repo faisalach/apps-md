@@ -158,7 +158,7 @@ class KuesionerController extends Controller
         $alamat             = $request->input("alamat");
         $email              = $request->input("email");
         $no_wa              = $request->input("no_wa");
-        $no_peserta         = !empty($request->input("no_peserta")) ? $request->input("no_peserta") : CustomHelper::get_no_peserta();
+        // $no_peserta         = !empty($request->input("no_peserta")) ? $request->input("no_peserta") : CustomHelper::get_no_peserta();
         $jawaban            = $request->input("jawaban");
         $token_form         = $request->input("token_form");
 
@@ -184,11 +184,14 @@ class KuesionerController extends Controller
         $kuesioner->alamat    = $alamat;
         $kuesioner->email    = $email;
         $kuesioner->no_wa    = $no_wa;
-        $kuesioner->no_peserta    = $no_peserta;
+        $kuesioner->no_peserta    = "0";
         $kuesioner->persentase_visual   = 0;
         $kuesioner->persentase_auditory   = 0;
         $kuesioner->persentase_kinestetik   = 0;
         if($kuesioner->save()){
+            $kuesioner->no_peserta  = substr('000000' . $kuesioner->id,-6);
+            $kuesioner->save();
+            
             $kuesioner_jawaban_arr  = [];
             foreach($jawaban as $bank_soal_id => $bank_soal_jawaban_id){
                 $kuesioner_jawaban_arr[$bank_soal_id]["bank_soal_id"]    = $bank_soal_id;
@@ -278,10 +281,16 @@ class KuesionerController extends Controller
             $pdf_hasil_tes[$key]    = base64_encode(file_get_contents($root_path.$pdf));
         }
 
+        $pdf_golongan_darah             = CustomHelper::get_pdf_golongan_darah($kuesioner->golongan_darah);
+        foreach($pdf_golongan_darah as $key => $pdf){
+            $pdf_golongan_darah[$key]    = base64_encode(file_get_contents($root_path.$pdf));
+        }
+
         $data   = [];
         $data["kuesioner"]              = $kuesioner;
         $data["value_number_tgl_lahir"] = $value_number_tgl_lahir;
         $data["pdf_hasil_tes"]          = $pdf_hasil_tes;
+        $data["pdf_golongan_darah"]     = $pdf_golongan_darah;
         $data["image"]                  = base64_encode(file_get_contents($root_path.'/assets/template_sertifikat.png'));
 
         // $pdf_filename   = 'sertifikat_'.$kuesioner->no_peserta.'.pdf';

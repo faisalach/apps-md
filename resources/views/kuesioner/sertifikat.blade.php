@@ -17,7 +17,7 @@
         font-family:Arial, Helvetica, sans-serif;
         font-weight: bold;">{{ $kuesioner->nama_lengkap }}</p>
         <p style="position: absolute;
-        left: 6cm;
+        left: 6.5cm;
         right: 1cm;
         top: 13cm;
         text-align: center;
